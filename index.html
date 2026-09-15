@@ -3,110 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRD - Sistem Penerimaan Tamu Sekolah</title>
-    <!-- Menggunakan CDN Tailwind CSS untuk styling instan -->
+    <title>Aplikasi Penerimaan Tamu Sekolah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Gaya khusus untuk mode cetak (Print) */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-page, #print-page * {
+                visibility: visible;
+            }
+            #print-page {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased p-6 md:p-12">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-sm border border-slate-200">
+    <!-- Container Utama Aplikasi -->
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl border border-slate-200 overflow-hidden min-h-[500px] relative">
         
-        <!-- Header -->
-        <div class="border-b-4 border-blue-600 pb-6 mb-8">
-            <h1 class="text-3xl font-bold text-slate-900 mb-2">Product Requirements Document (PRD)</h1>
-            <p class="text-lg text-slate-500 font-medium">Sistem Penerimaan Tamu Sekolah</p>
+        <!-- ==================== 1. HALAMAN LOGIN ==================== -->
+        <div id="login-page" class="p-8 block">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-slate-900">Portal Resepsionis</h1>
+                <p class="text-slate-500 text-sm mt-1">Sistem Penerimaan Tamu Sekolah</p>
+            </div>
+            <form id="login-form" class="space-y-5">
+                <!-- [SECURITY AUDIT POINT]: Autentikasi sebenarnya harus divalidasi dengan API Backend -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Username / Email</label>
+                    <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Masukkan username">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <input type="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors">
+                    Masuk
+                </button>
+            </form>
         </div>
 
-        <!-- Ringkasan -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-700 border-l-4 border-blue-700 pl-3 mb-4">1. Ringkasan Proyek</h2>
-            <p class="text-slate-700 leading-relaxed text-lg">
-                Aplikasi berbasis web untuk mendigitalisasi proses pencatatan dan penerimaan tamu di lingkungan sekolah. Sistem ini akan mencatat identitas, mengambil foto wajah tamu, mengumpulkan data kunjungan, dan mencetak kartu akses pengunjung secara instan.
-            </p>
-        </section>
-
-        <!-- Tujuan -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-700 border-l-4 border-blue-700 pl-3 mb-4">2. Tujuan Utama</h2>
-            <ul class="list-disc list-outside ml-6 space-y-2 text-slate-700 text-lg">
-                <li>Meningkatkan keamanan sekolah dengan memverifikasi setiap tamu yang masuk.</li>
-                <li>Mempercepat proses registrasi di meja resepsionis atau pos satpam.</li>
-                <li>Menyediakan pangkalan data historis kunjungan yang rapi dan mudah dilacak.</li>
-            </ul>
-        </section>
-
-        <!-- Alur Pengguna -->
-        <section class="mb-10">
-            <h2 class="text-2xl font-bold text-blue-700 border-l-4 border-blue-700 pl-3 mb-4">3. Alur Pengguna (User Flow)</h2>
-            <ol class="list-decimal list-outside ml-6 space-y-3 text-slate-700 text-lg">
-                <li><strong>Akses Awal:</strong> Pengguna membuka situs dan dihadapkan pada halaman Login.</li>
-                <li><strong>Autentikasi:</strong> Pengguna masuk menggunakan kredensial yang sah.</li>
-                <li><strong>Verifikasi Visual:</strong> Sistem meminta izin akses kamera dan mengambil foto wajah tamu.</li>
-                <li><strong>Pengisian Data:</strong> Tamu atau staf melengkapi formulir detail kunjungan.</li>
-                <li><strong>Konfirmasi & Cetak:</strong> Sistem menampilkan ringkasan data dan foto, dilengkapi tombol untuk mencetak Kartu Pengunjung.</li>
-            </ol>
-        </section>
-
-        <!-- Spesifikasi Fitur -->
-        <section class="mb-10">
-            <h2 class="text-2xl font-bold text-blue-700 border-l-4 border-blue-700 pl-3 mb-6">4. Spesifikasi Fitur Utama</h2>
+        <!-- ==================== 2. HALAMAN KAMERA ==================== -->
+        <div id="camera-page" class="p-8 hidden flex-col h-full">
+            <h2 class="text-xl font-bold text-slate-900 mb-2">Ambil Foto Wajah</h2>
+            <p class="text-sm text-slate-500 mb-4">Pastikan wajah tamu terlihat jelas di dalam bingkai.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Box A -->
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="text-xl font-semibold text-slate-800 mb-3">A. Halaman Login</h3>
-                    <p class="text-slate-700 mb-2"><strong>Fitur:</strong> Form input <em>Username/Email</em>, <em>Password</em>, dan tombol <em>Submit</em>.</p>
-                    <p class="text-slate-700"><strong>Fungsi:</strong> Autentikasi awal untuk membatasi akses aplikasi hanya bagi staf yang berwenang.</p>
-                </div>
+            <div class="relative bg-slate-900 rounded-lg overflow-hidden w-full aspect-square mb-4 flex items-center justify-center">
+                <video id="video-feed" autoplay playsinline class="w-full h-full object-cover"></video>
+                <canvas id="photo-canvas" class="hidden w-full h-full object-cover"></canvas>
+            </div>
 
-                <!-- Box B -->
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="text-xl font-semibold text-slate-800 mb-3">B. Pengambilan Foto</h3>
-                    <p class="text-slate-700 mb-2"><strong>Fitur:</strong> Integrasi API Kamera (Webcam), antarmuka <em>viewfinder</em>, tombol ambil foto, dan <em>retake</em>.</p>
-                    <p class="text-slate-700"><strong>Fungsi:</strong> Menangkap wajah tamu secara <em>real-time</em> untuk dicetak pada kartu ID pengunjung.</p>
-                </div>
+            <!-- [SECURITY AUDIT POINT]: Tangani fallback jika izin kamera ditolak (Permission Denied) -->
+            <div class="flex gap-2">
+                <button id="btn-capture" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors">
+                    Ambil Foto
+                </button>
+                <button id="btn-retake" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2.5 rounded-lg transition-colors hidden">
+                    Ulangi
+                </button>
+            </div>
+            <button id="btn-next-form" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition-colors mt-2 hidden">
+                Lanjutkan Isi Form
+            </button>
+        </div>
 
-                <!-- Box C -->
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="text-xl font-semibold text-slate-800 mb-3">C. Formulir Registrasi</h3>
-                    <ul class="list-disc list-outside ml-5 space-y-1 text-slate-700">
-                        <li><strong>Nama & Instansi:</strong> Input teks.</li>
-                        <li><strong>Tujuan Kunjungan:</strong> <em>Dropdown</em> (Rapat, Bertemu Siswa/Guru, dll).</li>
-                        <li><strong>Jadwal:</strong> Komponen <em>Date & Time picker</em> otomatis.</li>
-                        <li><strong>Pihak Dituju:</strong> Input teks dan numerik dengan validasi.</li>
-                    </ul>
+        <!-- ==================== 3. HALAMAN FORMULIR ==================== -->
+        <div id="form-page" class="p-8 hidden">
+            <h2 class="text-xl font-bold text-slate-900 mb-4">Data Kunjungan</h2>
+            <form id="guest-form" class="space-y-4">
+                <!-- [SECURITY AUDIT POINT]: Wajib sanitasi input dari serangan XSS (Cross-Site Scripting) sebelum disimpan ke Database -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="input-nama" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Tujuan Kunjungan</label>
+                    <select id="input-tujuan" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                        <option value="">Pilih Tujuan...</option>
+                        <option value="Bertemu Siswa">Bertemu Siswa</option>
+                        <option value="Bertemu Guru/Staf">Bertemu Guru/Staf</option>
+                        <option value="Rapat/Dinas">Rapat / Dinas</option>
+                        <option value="Pengiriman Barang">Pengiriman Barang</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Pihak yang Dituju</label>
+                    <input type="text" id="input-dituju" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Nama Guru/Staf/Siswa">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors mt-6">
+                    Simpan & Buat Kartu
+                </button>
+            </form>
+        </div>
 
-                <!-- Box D -->
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                    <h3 class="text-xl font-semibold text-slate-800 mb-3">D. Konfirmasi & Cetak</h3>
-                    <p class="text-slate-700 mb-2"><strong>Fitur:</strong> Pratinjau (Preview) ID Card pengunjung.</p>
-                    <p class="text-slate-700"><strong>Fungsi:</strong> Menggunakan fungsi cetak pada peramban web (browser) untuk mencetak ID tamu langsung ke printer.</p>
+        <!-- ==================== 4. HALAMAN CETAK KARTU ==================== -->
+        <div id="print-page" class="p-8 hidden flex-col items-center">
+            <h2 class="text-xl font-bold text-slate-900 mb-6 no-print">Pratinjau Kartu Pengunjung</h2>
+            
+            <!-- Desain ID Card -->
+            <div class="w-72 bg-white border-2 border-slate-800 rounded-xl overflow-hidden shadow-sm relative">
+                <div class="bg-slate-800 text-white text-center py-3">
+                    <h3 class="font-bold text-lg">VISITOR / TAMU</h3>
+                    <p class="text-xs">Sekolah Menengah Terpadu</p>
+                </div>
+                <div class="p-4 flex flex-col items-center">
+                    <img id="card-photo" src="" alt="Foto Tamu" class="w-24 h-24 object-cover rounded-md border-2 border-slate-200 mb-4 bg-slate-100">
+                    <div class="w-full text-center space-y-1">
+                        <p id="card-nama" class="font-bold text-lg text-slate-900 uppercase">NAMA TAMU</p>
+                        <p id="card-tujuan" class="text-sm font-medium text-blue-700">Tujuan Kunjungan</p>
+                        <p class="text-xs text-slate-500 mt-2">Menemui:</p>
+                        <p id="card-dituju" class="text-sm font-medium text-slate-800">Nama Pihak Dituju</p>
+                    </div>
+                </div>
+                <div class="bg-slate-100 text-center py-2 border-t border-slate-200">
+                    <p id="card-tanggal" class="text-xs font-mono text-slate-600">DD/MM/YYYY - HH:MM</p>
                 </div>
             </div>
-        </section>
 
-        <!-- Security Review -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-bold text-blue-700 border-l-4 border-blue-700 pl-3 mb-4">5. Pedoman Audit Keamanan & Bug (Security Review)</h2>
-            <p class="text-slate-700 text-lg mb-4">
-                Sebagai bagian dari proses <em>hybrid vibe coding</em>, setelah kode di-<em>generate</em>, audit manual difokuskan untuk mencari celah pada titik-titik krusial berikut:
-            </p>
-            <ul class="list-disc list-outside ml-6 space-y-3 text-slate-700 text-lg bg-red-50 p-6 rounded-lg border border-red-100">
-                <li><strong>Bypass Autentikasi:</strong> Memastikan halaman form dan cetak tidak dapat diakses paksa melalui URL tanpa sesi login.</li>
-                <li><strong>Izin Perangkat (Kamera):</strong> Menyediakan skenario <em>fallback</em> yang aman tanpa menyebabkan aplikasi <em>crash</em> apabila akses kamera ditolak.</li>
-                <li><strong>Validasi Input (XSS/SQLi):</strong> Melakukan sanitasi ketat pada input teks (nama, instansi) agar terhindar dari injeksi *script* berbahaya.</li>
-                <li><strong>Keamanan File Upload:</strong> Memastikan pengambilan gambar hanya menyimpan format yang aman (.jpg/.png) ke server/repositori.</li>
-            </ul>
-        </section>
-
-        <!-- Footer -->
-        <div class="mt-12 pt-6 border-t border-slate-200 text-center text-slate-500">
-            <p>Disusun untuk dokumentasi proyek web, Deployment GitHub, dan Presentasi Lisan Laboratorium.</p>
-            <p class="text-sm mt-1">Deadline Presentasi: 3 September 2026</p>
+            <div class="w-full flex gap-2 mt-8 no-print">
+                <button onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Cetak Kartu
+                </button>
+                <button onclick="location.reload()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium py-2.5 rounded-lg transition-colors">
+                    Selesai
+                </button>
+            </div>
         </div>
 
     </div>
 
+    <!-- Script Logika UI -->
+    <script>
+        // DOM Elements
+        const pages = {
+            login: document.getElementById('login-page'),
+            camera: document.getElementById('camera-page'),
+            form: document.getElementById('form-page'),
+            print: document.getElementById('print-page')
+        };
+        
+        // Fungsi Pindah Halaman
+        function showPage(pageName) {
+            Object.values(pages).forEach(page => {
+                page.classList.remove('block', 'hidden');
+                page.classList.add('hidden');
+            });
+            pages[pageName].classList.remove('hidden');
+            pages[pageName].classList.add(pageName === 'camera' || pageName === 'print' ? 'flex' : 'block');
+        }
+
+        // ================= 1. Logika Login =================
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Bypass login di UI untuk demontrasi
+            showPage('camera');
+            initCamera();
+        });
+
+        // ================= 2. Logika Kamera =================
+        const video = document.getElementById('video-feed');
+        const canvas = document.getElementById('photo-canvas');
+        const btnCapture = document.getElementById('btn-capture');
+        const btnRetake = document.getElementById('btn-retake');
+        const btnNextForm = document.getElementById('btn-next-form');
+        let stream;
+        let photoDataUrl = '';
+
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = stream;
+            } catch (err) {
+                alert("Gagal mengakses kamera. Mohon izinkan akses kamera pada browser Anda.");
+                console.error("Camera Error:", err);
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        btnCapture.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            photoDataUrl = canvas.toDataURL('image/jpeg');
+            
+            video.classList.add('hidden');
+            canvas.classList.remove('hidden');
+            
+            btnCapture.classList.add('hidden');
+            btnRetake.classList.remove('hidden');
+            btnNextForm.classList.remove('hidden');
+        });
+
+        btnRetake.addEventListener('click', () => {
+            video.classList.remove('hidden');
+            canvas.classList.add('hidden');
+            
+            btnCapture.classList.remove('hidden');
+            btnRetake.classList.add('hidden');
+            btnNextForm.classList.add('hidden');
+            photoDataUrl = '';
+        });
+
+        btnNextForm.addEventListener('click', () => {
+            stopCamera();
+            showPage('form');
+        });
+
+        // ================= 3. Logika Form & Render Kartu =================
+        document.getElementById('guest-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Ambil Data
+            const nama = document.getElementById('input-nama').value;
+            const tujuan = document.getElementById('input-tujuan').value;
+            const dituju = document.getElementById('input-dituju').value;
+            
+            // Format Tanggal Real-time
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID', { day:'2-digit', month:'2-digit', year:'numeric' });
+            const timeStr = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+
+            // Masukkan data ke Kartu ID
+            document.getElementById('card-photo').src = photoDataUrl;
+            document.getElementById('card-nama').textContent = nama;
+            document.getElementById('card-tujuan').textContent = tujuan;
+            document.getElementById('card-dituju').textContent = dituju;
+            document.getElementById('card-tanggal').textContent = `${dateStr} - ${timeStr}`;
+
+            showPage('print');
+        });
+    </script>
 </body>
 </html>
