@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - Sistem Penerimaan Tamu Sekolah</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #1e293b; /* Slate-800 */
+            line-height: 1.6;
+            margin: 0 auto;
+            padding: 40px 20px;
+            max-width: 800px;
+            background-color: #ffffff;
+        }
+        .header {
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h1 { 
+            color: #0f172a; 
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 16px;
+            margin-top: 0;
+        }
+        h2 { 
+            color: #1d4ed8; /* Blue-700 */
+            font-size: 22px;
+            margin-top: 30px; 
+            border-left: 4px solid #1d4ed8; 
+            padding-left: 12px; 
+        }
+        h3 { 
+            color: #334155; 
+            font-size: 18px;
+            margin-top: 20px; 
+        }
+        p, li { font-size: 16px; }
+        ul, ol { margin-bottom: 20px; padding-left: 25px; }
+        li { margin-bottom: 8px; }
+        .box { 
+            background-color: #f8fafc; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 20px; 
+        }
+        .footer { 
+            margin-top: 40px; 
+            font-size: 14px; 
+            text-align: center; 
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Product Requirements Document (PRD)</h1>
+        <p class="subtitle"><strong>Sistem Penerimaan Tamu Sekolah</strong></p>
+    </div>
+
+    <h2>1. Ringkasan Proyek</h2>
+    <p>Aplikasi berbasis web untuk mendigitalisasi proses pencatatan dan penerimaan tamu di lingkungan sekolah. Sistem ini akan mencatat identitas, mengambil foto wajah tamu, mengumpulkan data kunjungan, dan mencetak kartu akses pengunjung secara instan.</p>
+
+    <h2>2. Tujuan Utama</h2>
+    <ul>
+        <li>Meningkatkan keamanan sekolah dengan memverifikasi setiap tamu yang masuk.</li>
+        <li>Mempercepat proses registrasi di meja resepsionis atau pos satpam.</li>
+        <li>Menyediakan pangkalan data historis kunjungan yang rapi dan mudah dilacak.</li>
+    </ul>
+
+    <h2>3. Alur Pengguna (User Flow)</h2>
+    <ol>
+        <li><strong>Akses Awal:</strong> Pengguna membuka situs dan dihadapkan pada halaman Login.</li>
+        <li><strong>Autentikasi:</strong> Pengguna masuk menggunakan kredensial yang sah.</li>
+        <li><strong>Verifikasi Visual:</strong> Sistem meminta izin akses kamera dan mengambil foto wajah tamu.</li>
+        <li><strong>Pengisian Data:</strong> Tamu atau staf melengkapi formulir detail kunjungan.</li>
+        <li><strong>Konfirmasi & Cetak:</strong> Sistem menampilkan ringkasan data dan foto, dilengkapi tombol untuk mencetak Kartu Pengunjung.</li>
+    </ol>
+
+    <h2>4. Spesifikasi Fitur Utama</h2>
+    
+    <div class="box">
+        <h3>A. Halaman Akses (Login Page)</h3>
+        <p><strong>Fitur:</strong> Form input <em>Username/Email</em>, <em>Password</em>, dan tombol <em>Submit</em>.<br>
+        <strong>Fungsi:</strong> Autentikasi awal untuk membatasi akses aplikasi hanya bagi staf yang berwenang.</p>
+    </div>
+
+    <div class="box">
+        <h3>B. Halaman Pengambilan Foto (Face Capture Page)</h3>
+        <p><strong>Fitur:</strong> Integrasi API Kamera (Webcam), antarmuka <em>viewfinder</em>, tombol ambil foto, dan retake.<br>
+        <strong>Fungsi:</strong> Menangkap wajah tamu secara <em>real-time</em> untuk dicetak pada kartu ID pengunjung.</p>
+    </div>
+
+    <div class="box">
+        <h3>C. Halaman Formulir Registrasi (Guest Form)</h3>
+        <ul>
+            <li><strong>Nama Lengkap & Instansi:</strong> Input teks.</li>
+            <li><strong>Tujuan Kunjungan:</strong> <em>Dropdown</em> (contoh: Rapat, Bertemu Siswa/Guru, Pengiriman Barang).</li>
+            <li><strong>Jadwal & Waktu:</strong> Komponen <em>Date & Time picker</em> otomatis.</li>
+            <li><strong>Pihak yang Dituju & Kontak:</strong> Input teks dan numerik dengan validasi.</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <h3>D. Halaman Konfirmasi & Cetak</h3>
+        <p><strong>Fitur:</strong> Pratinjau (Preview) ID Card pengunjung.<br>
+        <strong>Fungsi:</strong> Menggunakan fungsi cetak pada peramban web untuk mencetak ID tamu langsung ke printer yang terhubung.</p>
+    </div>
+
+    <h2>5. Spesifikasi Teknis & UI/UX</h2>
+    <p>Pengembangan antarmuka akan difokuskan pada desain yang bersih (clean design) dan responsif. Implementasi UI akan menggunakan <strong>Tailwind CSS</strong> yang dipadukan dengan komponen dari <strong>Shadcn UI</strong>. Pilihan teknologi ini akan sangat mempercepat proses *vibe coding* dalam menyusun struktur komponen frontend.</p>
+
+    <h2>6. Pedoman Audit Keamanan & Bug (Security Review)</h2>
+    <p>Karena alur pengembangan menggunakan metodologi <em>hybrid vibe coding</em>, setelah kode di-<em>generate</em>, audit manual difokuskan untuk mencari celah pada titik-titik krusial berikut:</p>
+    <ul>
+        <li><strong>Bypass Autentikasi (Broken Access Control):</strong> Memastikan halaman form dan cetak tidak dapat diakses paksa melalui URL tanpa melewati halaman login.</li>
+        <li><strong>Izin Perangkat (Camera Permissions):</strong> Menyediakan skenario <em>fallback</em> yang aman tanpa menyebabkan aplikasi <em>crash</em> apabila akses kamera ditolak oleh browser tamu.</li>
+        <li><strong>Validasi Input (XSS & SQL Injection):</strong> Melakukan sanitasi ketat pada input teks (nama, instansi) agar terhindar dari eksekusi *script* berbahaya.</li>
+        <li><strong>Keamanan File Upload:</strong> Memastikan pengambilan gambar hanya menyimpan format yang aman (.jpg/.png) ke dalam storage.</li>
+    </ul>
+
+    <div class="footer">
+        Disusun untuk kebutuhan implementasi pengembangan web, Deployment GitHub, dan Presentasi Lisan Laboratorium.
+    </div>
+</body>
+</html>
+"""
+
+html_path = '/tmp/PRD_Penerimaan_Tamu_Sekolah.html'
+with open(html_path, 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print(f"File HTML berhasil dibuat: {html_path}")
