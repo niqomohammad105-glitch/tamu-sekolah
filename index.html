@@ -65,7 +65,6 @@
             margin: 0 auto;
         }
 
-        /* Konfigurasi Cetak (Print) agar tidak berantakan saat Split-Screen */
         @media print {
             body { background: white !important; overflow: auto !important; display: block !important; }
             #hero-section, .no-print { display: none !important; }
@@ -77,10 +76,9 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden">
 
-    <!-- WRAPPER RESPONSIVE: Mode Kolom (Mobile) / Mode Bersebelahan (PC) -->
     <div class="flex flex-col lg:flex-row min-h-screen w-full">
         
-        <!-- ==================== 1. HERO SECTION (Kiri di PC, Atas di Mobile) ==================== -->
+        <!-- ==================== 1. HERO SECTION ==================== -->
         <section id="hero-section" class="relative min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 flex flex-col items-center justify-center bg-gradient-to-br from-sekolah-navy via-blue-900 to-slate-900 overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-20">
                 <div class="absolute -top-24 -right-24 w-96 h-96 bg-sekolah-gold rounded-full blur-3xl"></div>
@@ -98,24 +96,21 @@
                 </div>
 
                 <div class="glass rounded-2xl p-6 lg:p-8 w-full shadow-2xl animate-fade-in" style="animation-delay: 0.5s;">
+                    <!-- DI SINI TEMPAT FOTO 3D NYA -->
                     <div class="w-full h-40 lg:h-56 bg-slate-800/50 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/10 shadow-inner">
-                        <p class="text-slate-300 text-sm text-center px-4">
-                            [Area Gambar 3D Render]<br>
-                            <span class="text-xs text-slate-400 italic">Ilustrasi gerbang sekolah bergaya 3D toy figure dengan material plastik matte.</span>
-                        </p>
+                        <img src="foto-sekolah.png" alt="Ilustrasi Sekolah" class="w-full h-full object-cover">
                     </div>
                     <p class="text-slate-100 text-sm lg:text-base">Sistem pencatatan kunjungan digital yang aman, cepat, dan terintegrasi.</p>
                 </div>
             </div>
 
-            <!-- Arrow Scroll: Hanya muncul di Mode Mobile, sembunyi di Desktop -->
             <a href="#main-app" class="absolute bottom-8 z-10 text-white opacity-80 hover:opacity-100 transition-opacity flex flex-col items-center gap-2 cursor-pointer lg:hidden">
                 <span class="text-xs font-semibold tracking-widest uppercase text-sekolah-gold">Mulai Kunjungan</span>
                 <svg class="w-8 h-8 animate-bounce-slow text-sekolah-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
             </a>
         </section>
 
-        <!-- ==================== 2. MAIN APPLICATION (Kanan di PC, Bawah di Mobile) ==================== -->
+        <!-- ==================== 2. MAIN APPLICATION ==================== -->
         <main id="main-app" class="min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 bg-gradient-to-br from-blue-100 via-slate-50 to-white flex items-center justify-center p-4 lg:p-8 relative">
             
             <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300 animate-slide-left">
@@ -295,7 +290,6 @@
             e.preventDefault(); 
             showPage('camera'); 
             initCamera(); 
-            // Cek jika mode mobile, scroll otomatis ke kotak aplikasi
             if (window.innerWidth < 1024) {
                 window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
             }
