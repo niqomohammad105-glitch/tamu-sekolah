@@ -14,7 +14,8 @@
                         sekolah: { navy: '#1e3a8a', gold: '#facc15' }
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-left': 'slideLeft 0.6s ease-out forwards',
                         'typewriter': 'typing 2s steps(40, end), blink .75s step-end infinite',
                         'bounce-slow': 'bounce 2s infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -23,6 +24,10 @@
                         fadeIn: {
                             '0%': { opacity: '0', transform: 'translateY(15px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(30px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
                         },
                         typing: {
                             from: { width: '0' },
@@ -60,10 +65,11 @@
             margin: 0 auto;
         }
 
+        /* Konfigurasi Cetak (Print) agar tidak berantakan saat Split-Screen */
         @media print {
-            body { background: white !important; overflow: auto !important; }
+            body { background: white !important; overflow: auto !important; display: block !important; }
             #hero-section, .no-print { display: none !important; }
-            #main-app { min-height: auto !important; background: none !important; padding: 0 !important; }
+            #main-app { height: auto !important; min-height: auto !important; width: 100% !important; background: none !important; padding: 0 !important; display: block !important; }
             #print-page { display: flex !important; position: absolute; left: 0; top: 0; width: 100%; justify-content: center; padding-top: 20px; }
             .print-container { box-shadow: none !important; border: none !important; max-width: none !important; }
         }
@@ -71,199 +77,202 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden">
 
-    <!-- ==================== 1. HERO SECTION ==================== -->
-    <section id="hero-section" class="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sekolah-navy via-blue-900 to-slate-900 overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-20">
-            <div class="absolute -top-24 -right-24 w-96 h-96 bg-sekolah-gold rounded-full blur-3xl"></div>
-            <div class="absolute bottom-10 -left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
-        </div>
-
-        <div class="z-10 text-center px-4 max-w-4xl flex flex-col items-center w-full">
-            <!-- LOGO 1: Hero Section (Diubah ke PNG) -->
-            <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-24 h-24 object-contain mb-6 drop-shadow-xl animate-fade-in" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
-            
-            <div class="inline-block mb-8">
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight typewriter-text animate-typewriter">
-                    Selamat Datang Tamu SMAN 1 Kandangan
-                </h1>
-            </div>
-
-            <div class="glass rounded-2xl p-6 md:p-8 w-full max-w-2xl shadow-2xl animate-fade-in" style="animation-delay: 0.5s;">
-                <div class="w-full h-48 md:h-64 bg-slate-800/50 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/10 shadow-inner">
-                    <p class="text-slate-300 text-sm md:text-base text-center px-4">
-                        [Area Gambar 3D Render]<br>
-                        <span class="text-xs text-slate-400 italic">Ilustrasi gerbang sekolah bergaya 3D toy figure dengan material plastik matte.</span>
-                    </p>
-                </div>
-                <p class="text-slate-100 text-sm md:text-lg">Portal pencatatan kunjungan digital yang aman, cepat, dan terintegrasi.</p>
-            </div>
-        </div>
-
-        <a href="#main-app" class="absolute bottom-10 z-10 text-white opacity-80 hover:opacity-100 transition-opacity flex flex-col items-center gap-2 cursor-pointer">
-            <span class="text-xs font-semibold tracking-widest uppercase text-sekolah-gold">Mulai Kunjungan</span>
-            <svg class="w-8 h-8 animate-bounce-slow text-sekolah-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-        </a>
-    </section>
-
-    <!-- ==================== 2. MAIN APPLICATION ==================== -->
-    <main id="main-app" class="min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-white flex items-center justify-center p-4 py-12 relative">
+    <!-- WRAPPER RESPONSIVE: Mode Kolom (Mobile) / Mode Bersebelahan (PC) -->
+    <div class="flex flex-col lg:flex-row min-h-screen w-full">
         
-        <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300">
-            
-            <!-- Global Header -->
-            <div class="px-6 py-4 flex items-center gap-4 bg-white border-b border-slate-100 no-print z-10 shadow-sm">
-                <!-- LOGO 2: Main App Header (Diubah ke PNG) -->
-                <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain" onerror="this.style.display='none'">
-                <div class="flex flex-col">
-                    <h2 class="font-extrabold text-sekolah-navy text-base leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
-                    <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
-                </div>
+        <!-- ==================== 1. HERO SECTION (Kiri di PC, Atas di Mobile) ==================== -->
+        <section id="hero-section" class="relative min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 flex flex-col items-center justify-center bg-gradient-to-br from-sekolah-navy via-blue-900 to-slate-900 overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-20">
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-sekolah-gold rounded-full blur-3xl"></div>
+                <div class="absolute bottom-10 -left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
             </div>
 
-            <!-- HALAMAN 1: Form Login -->
-            <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
-                    <p class="text-slate-500 text-sm mt-1">Silakan verifikasi identitas Anda</p>
-                </div>
-                <form id="login-form" class="space-y-5">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">ID Petugas</label>
-                        <input type="text" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="Masukkan ID">
-                    </div>
-                    <div class="relative">
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Kata Sandi</label>
-                        <input type="password" id="input-password" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="••••••••">
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-[34px] p-2 text-slate-400 hover:text-slate-600 focus:outline-none">
-                            <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                        </button>
-                    </div>
-                    <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all mt-4">Login & Mulai</button>
-                </form>
-            </div>
-
-            <!-- HALAMAN 2: Kamera -->
-            <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Verifikasi Wajah</h2>
-                        <p class="text-xs text-slate-500">Posisikan wajah di tengah area</p>
-                    </div>
-                </div>
+            <div class="z-10 text-center px-6 max-w-2xl flex flex-col items-center w-full">
+                <!-- LOGO 1 -->
+                <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-20 h-20 lg:w-28 lg:h-28 object-contain mb-6 drop-shadow-xl animate-fade-in" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
                 
-                <div class="relative bg-slate-900 rounded-2xl overflow-hidden w-full aspect-square mb-6 shadow-inner border-4 border-slate-100 flex justify-center items-center">
-                    <video id="video-feed" autoplay playsinline class="w-full h-full object-cover transform scale-x-[-1]"></video>
-                    <canvas id="photo-canvas" class="hidden w-full h-full object-cover transform scale-x-[-1]"></canvas>
-                    <div class="absolute inset-0 border-[40px] border-black/20 pointer-events-none rounded-xl"></div>
+                <div class="inline-block mb-8">
+                    <h1 class="text-3xl lg:text-5xl font-extrabold text-white tracking-tight typewriter-text animate-typewriter">
+                        Portal Tamu SMAN 1
+                    </h1>
                 </div>
 
-                <div class="flex flex-col gap-3 mt-auto">
-                    <button id="btn-capture" type="button" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
-                        <span class="w-4 h-4 bg-white rounded-full animate-pulse-slow"></span> Ambil Foto
-                    </button>
-                    <div class="flex gap-2">
-                        <button id="btn-retake" type="button" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hidden transition-all">Ulangi</button>
-                        <button id="btn-next-form" type="button" class="w-2/3 bg-sekolah-gold hover:bg-yellow-500 text-slate-900 font-bold py-3 rounded-xl shadow-md hidden transition-all">Isi Data Tamu ➔</button>
+                <div class="glass rounded-2xl p-6 lg:p-8 w-full shadow-2xl animate-fade-in" style="animation-delay: 0.5s;">
+                    <div class="w-full h-40 lg:h-56 bg-slate-800/50 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/10 shadow-inner">
+                        <p class="text-slate-300 text-sm text-center px-4">
+                            [Area Gambar 3D Render]<br>
+                            <span class="text-xs text-slate-400 italic">Ilustrasi gerbang sekolah bergaya 3D toy figure dengan material plastik matte.</span>
+                        </p>
                     </div>
+                    <p class="text-slate-100 text-sm lg:text-base">Sistem pencatatan kunjungan digital yang aman, cepat, dan terintegrasi.</p>
                 </div>
             </div>
 
-            <!-- HALAMAN 3: Form Registrasi Tamu -->
-            <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto max-h-[600px]">
-                <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
-                <form id="guest-form" class="space-y-4 flex-1 pb-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Tamu</label>
-                        <input type="text" id="input-nama" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Masukkan nama tamu">
+            <!-- Arrow Scroll: Hanya muncul di Mode Mobile, sembunyi di Desktop -->
+            <a href="#main-app" class="absolute bottom-8 z-10 text-white opacity-80 hover:opacity-100 transition-opacity flex flex-col items-center gap-2 cursor-pointer lg:hidden">
+                <span class="text-xs font-semibold tracking-widest uppercase text-sekolah-gold">Mulai Kunjungan</span>
+                <svg class="w-8 h-8 animate-bounce-slow text-sekolah-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </a>
+        </section>
+
+        <!-- ==================== 2. MAIN APPLICATION (Kanan di PC, Bawah di Mobile) ==================== -->
+        <main id="main-app" class="min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 bg-gradient-to-br from-blue-100 via-slate-50 to-white flex items-center justify-center p-4 lg:p-8 relative">
+            
+            <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300 animate-slide-left">
+                
+                <!-- Global Header -->
+                <div class="px-6 py-4 flex items-center gap-4 bg-white border-b border-slate-100 no-print z-10 shadow-sm">
+                    <!-- LOGO 2 -->
+                    <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain" onerror="this.style.display='none'">
+                    <div class="flex flex-col">
+                        <h2 class="font-extrabold text-sekolah-navy text-base leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
+                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Keperluan di Sekolah</label>
-                        <input type="text" id="input-tujuan" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Rapat Komite, Mengantar Berkas">
+                </div>
+
+                <!-- HALAMAN 1: Form Login -->
+                <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
+                        <p class="text-slate-500 text-sm mt-1">Silakan verifikasi identitas Anda</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Pihak yang Dituju</label>
-                        <input type="text" id="input-dituju" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Bpk. Budi">
+                    <form id="login-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">ID Petugas</label>
+                            <input type="text" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="Masukkan ID">
+                        </div>
+                        <div class="relative">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Kata Sandi</label>
+                            <input type="password" id="input-password" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword()" class="absolute right-3 top-[34px] p-2 text-slate-400 hover:text-slate-600 focus:outline-none">
+                                <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </button>
+                        </div>
+                        <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all mt-4">Login & Mulai</button>
+                    </form>
+                </div>
+
+                <!-- HALAMAN 2: Kamera -->
+                <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Verifikasi Wajah</h2>
+                            <p class="text-xs text-slate-500">Posisikan wajah di tengah area</p>
+                        </div>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="relative bg-slate-900 rounded-2xl overflow-hidden w-full aspect-square mb-6 shadow-inner border-4 border-slate-100 flex justify-center items-center">
+                        <video id="video-feed" autoplay playsinline class="w-full h-full object-cover transform scale-x-[-1]"></video>
+                        <canvas id="photo-canvas" class="hidden w-full h-full object-cover transform scale-x-[-1]"></canvas>
+                        <div class="absolute inset-0 border-[40px] border-black/20 pointer-events-none rounded-xl"></div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <button id="btn-capture" type="button" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                            <span class="w-4 h-4 bg-white rounded-full animate-pulse-slow"></span> Ambil Foto
+                        </button>
+                        <div class="flex gap-2">
+                            <button id="btn-retake" type="button" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hidden transition-all">Ulangi</button>
+                            <button id="btn-next-form" type="button" class="w-2/3 bg-sekolah-gold hover:bg-yellow-500 text-slate-900 font-bold py-3 rounded-xl shadow-md hidden transition-all">Isi Data Tamu ➔</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HALAMAN 3: Form Registrasi Tamu -->
+                <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto max-h-[600px] custom-scrollbar">
+                    <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
+                    <form id="guest-form" class="space-y-4 flex-1 pb-4">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">Tanggal Hadir</label>
-                            <input type="date" id="input-tanggal" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Tamu</label>
+                            <input type="text" id="input-nama" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Masukkan nama tamu">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">Waktu Datang</label>
-                            <input type="time" id="input-waktu" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Keperluan di Sekolah</label>
+                            <input type="text" id="input-tujuan" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Rapat Komite, Mengantar Berkas">
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Berlaku Sampai Jam</label>
-                        <input type="time" id="input-jam-selesai" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg text-red-600 font-bold focus:border-sekolah-navy outline-none">
-                    </div>
-
-                    <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md mt-4 transition-all">Simpan & Terbitkan ID</button>
-                </form>
-            </div>
-
-            <!-- HALAMAN 4: ID Card & Cetak -->
-            <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
-                <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
-                    <div class="bg-sekolah-navy h-20 w-full relative">
-                        <div class="absolute bottom-0 w-full h-2 bg-sekolah-gold"></div>
-                        
-                        <!-- LOGO 3: Pojok Kiri Atas Kartu (Diubah ke PNG) -->
-                        <div class="absolute top-2 left-2 flex flex-col items-center z-10">
-                            <img src="logo saka.png" alt="Logo" class="w-7 h-7 object-contain drop-shadow-md bg-white rounded-full p-[1px]" onerror="this.style.display='none'">
-                            <span class="text-white font-bold text-[6px] mt-1 tracking-widest text-center uppercase leading-none drop-shadow-sm">SMAN 1<br>Kandangan</span>
-                        </div>
-
-                        <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-white rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 overflow-hidden">
-                            <img id="card-photo" src="" alt="Foto" class="w-full h-full object-cover text-[8px] text-center text-slate-400">
-                        </div>
-                    </div>
-                    
-                    <div class="pt-12 pb-4 px-4 text-center mt-2 relative z-0">
-                        <h3 class="font-black text-slate-900 tracking-wider text-xl uppercase">VISITOR</h3>
-                        <div class="bg-slate-50 rounded-lg p-2 mb-3 border border-slate-100">
-                            <p id="card-nama" class="font-bold text-slate-800 text-sm truncate uppercase">NAMA TAMU</p>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Pihak yang Dituju</label>
+                            <input type="text" id="input-dituju" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Bpk. Budi">
                         </div>
                         
-                        <div class="text-left space-y-1.5 px-2">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <p class="text-[9px] text-slate-500 font-bold uppercase">Keperluan:</p>
-                                <p id="card-tujuan" class="text-xs font-semibold text-sekolah-navy leading-tight line-clamp-2">Keperluan Kunjungan</p>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Tanggal Hadir</label>
+                                <input type="date" id="input-tanggal" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
                             </div>
                             <div>
-                                <p class="text-[9px] text-slate-500 font-bold uppercase">Menemui:</p>
-                                <p id="card-dituju" class="text-xs font-semibold text-slate-800 leading-tight">Nama Dituju</p>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Waktu Datang</label>
+                                <input type="time" id="input-waktu" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Berlaku Sampai Jam</label>
+                            <input type="time" id="input-jam-selesai" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg text-red-600 font-bold focus:border-sekolah-navy outline-none">
+                        </div>
+
+                        <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md mt-4 transition-all">Simpan & Terbitkan ID</button>
+                    </form>
+                </div>
+
+                <!-- HALAMAN 4: ID Card & Cetak -->
+                <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
+                    <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
+                        <div class="bg-sekolah-navy h-20 w-full relative">
+                            <div class="absolute bottom-0 w-full h-2 bg-sekolah-gold"></div>
+                            
+                            <!-- LOGO 3: Pojok Kiri Atas Kartu -->
+                            <div class="absolute top-2 left-2 flex flex-col items-center z-10">
+                                <img src="logo saka.png" alt="Logo" class="w-7 h-7 object-contain drop-shadow-md bg-white rounded-full p-[1px]" onerror="this.style.display='none'">
+                                <span class="text-white font-bold text-[6px] mt-1 tracking-widest text-center uppercase leading-none drop-shadow-sm">SMAN 1<br>Kandangan</span>
+                            </div>
+
+                            <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-white rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 overflow-hidden">
+                                <img id="card-photo" src="" alt="Foto" class="w-full h-full object-cover text-[8px] text-center text-slate-400">
+                            </div>
+                        </div>
+                        
+                        <div class="pt-12 pb-4 px-4 text-center mt-2 relative z-0">
+                            <h3 class="font-black text-slate-900 tracking-wider text-xl uppercase">VISITOR</h3>
+                            <div class="bg-slate-50 rounded-lg p-2 mb-3 border border-slate-100">
+                                <p id="card-nama" class="font-bold text-slate-800 text-sm truncate uppercase">NAMA TAMU</p>
                             </div>
                             
-                            <!-- Peringatan Waktu Berdesain Pastel -->
-                            <div class="mt-2 bg-red-50 border border-red-100 rounded p-1.5 text-center shadow-sm">
-                                <p class="text-[9px] text-red-500 font-bold uppercase">Batas Kunjungan:</p>
-                                <p id="card-batas-waktu" class="text-xs font-black text-red-800 tracking-wider">00:00 WIB</p>
+                            <div class="text-left space-y-1.5 px-2">
+                                <div>
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase">Keperluan:</p>
+                                    <p id="card-tujuan" class="text-xs font-semibold text-sekolah-navy leading-tight line-clamp-2">Keperluan Kunjungan</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase">Menemui:</p>
+                                    <p id="card-dituju" class="text-xs font-semibold text-slate-800 leading-tight">Nama Dituju</p>
+                                </div>
+                                
+                                <div class="mt-2 bg-red-50 border border-red-100 rounded p-1.5 text-center shadow-sm">
+                                    <p class="text-[9px] text-red-500 font-bold uppercase">Batas Kunjungan:</p>
+                                    <p id="card-batas-waktu" class="text-xs font-black text-red-800 tracking-wider">00:00 WIB</p>
+                                </div>
                             </div>
                         </div>
+                        <div class="bg-slate-100 px-4 py-2.5 text-center border-t border-slate-200">
+                            <div class="barcode mb-1"></div>
+                            <p id="card-tanggal" class="text-[8px] font-mono text-slate-600 font-bold uppercase tracking-wide">TGL - WAKTU</p>
+                        </div>
                     </div>
-                    <div class="bg-slate-100 px-4 py-2.5 text-center border-t border-slate-200">
-                        <div class="barcode mb-1"></div>
-                        <p id="card-tanggal" class="text-[8px] font-mono text-slate-600 font-bold uppercase tracking-wide">TGL - WAKTU</p>
+                    
+                    <div class="w-full flex flex-col gap-2 mt-8 no-print">
+                        <button onclick="window.print()" type="button" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors">Cetak ID Card</button>
+                        <button onclick="location.reload()" type="button" class="w-full bg-transparent border-2 border-slate-300 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-100 transition-colors">Selesai</button>
                     </div>
-                </div>
-                
-                <div class="w-full flex flex-col gap-2 mt-8 no-print">
-                    <button onclick="window.print()" type="button" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors">Cetak ID Card</button>
-                    <button onclick="location.reload()" type="button" class="w-full bg-transparent border-2 border-slate-300 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-100 transition-colors">Selesai</button>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
-        // Logika Toggle Password
         function togglePassword() {
             const input = document.getElementById('input-password');
             const icon = document.getElementById('eye-icon');
@@ -282,15 +291,16 @@
             pages[pageName].classList.remove('hidden'); pages[pageName].classList.add(pageName === 'login' ? 'block' : 'flex');
         }
 
-        // Login ke Kamera
         document.getElementById('login-form').addEventListener('submit', (e) => { 
             e.preventDefault(); 
             showPage('camera'); 
             initCamera(); 
-            window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
+            // Cek jika mode mobile, scroll otomatis ke kotak aplikasi
+            if (window.innerWidth < 1024) {
+                window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
+            }
         });
 
-        // Logika Kamera
         const video = document.getElementById('video-feed'), canvas = document.getElementById('photo-canvas');
         const btnCapture = document.getElementById('btn-capture'), btnRetake = document.getElementById('btn-retake'), btnNextForm = document.getElementById('btn-next-form');
         let stream, photoDataUrl = '';
@@ -318,7 +328,6 @@
             showPage('form'); 
         });
 
-        // Logika Form Registrasi
         document.getElementById('guest-form').addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -326,7 +335,6 @@
             const tujuan = document.getElementById('input-tujuan').value;
             const dituju = document.getElementById('input-dituju').value;
             
-            // Konversi format tanggal dan waktu input manual
             const tanggalInput = document.getElementById('input-tanggal').value;
             const waktuDatang = document.getElementById('input-waktu').value;
             const batasWaktu = document.getElementById('input-jam-selesai').value;
@@ -344,7 +352,10 @@
             document.getElementById('card-tanggal').textContent = `${tanggalFormat} | MASUK: ${waktuDatang} WIB`;
             
             showPage('print');
-            window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
+            
+            if (window.innerWidth < 1024) {
+                window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
+            }
         });
     </script>
 </body>
