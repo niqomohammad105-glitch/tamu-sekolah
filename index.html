@@ -56,7 +56,6 @@
         .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
         .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 10px; color: #1e293b; }
 
-        /* Scrollbars untuk Admin & Umum */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -65,7 +64,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Animasi Transisi SPA */
         .hidden-transition { opacity: 0; pointer-events: none; transition: all 0.3s ease; transform: scale(0.95); }
         .show-transition { opacity: 1; pointer-events: auto; transform: scale(1); }
 
@@ -82,16 +80,12 @@
 <body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-x-hidden">
 
     <!-- =========================================================================
-                                1. GUEST VIEW (KODE ASLI ANDA)
+                                1. GUEST VIEW (BUKU TAMU)
     ========================================================================== -->
     <div id="view-guest" class="block w-full min-h-screen">
-        
-        <!-- Kontainer Utama (Satu Kolom Penuh untuk PC dan HP) -->
         <div class="flex flex-col w-full min-h-screen">
             
-            <!-- ==================== PRESENTASI BUKU CERITA ==================== -->
             <section id="left-presentation" class="relative w-full flex flex-col bg-sekolah-dark z-0">
-                
                 <svg class="hidden">
                     <defs>
                         <g id="cloud-svg">
@@ -100,7 +94,6 @@
                     </defs>
                 </svg>
 
-                <!-- Slide 1: Hero -->
                 <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden">
                     <div class="z-10 flex flex-col items-center w-full animate-float mt-10 lg:mt-0">
                         <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-24 h-24 lg:w-36 lg:h-36 object-contain mb-6 lg:mb-8 drop-shadow-2xl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
@@ -120,7 +113,6 @@
                     </a>
                 </div>
 
-                <!-- Slide 2A: Profil Sekolah -->
                 <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 lg:p-10 overflow-hidden border-t border-white/10">
                     <div class="absolute -top-10 left-0 w-full flex justify-between opacity-50 pointer-events-none">
                         <svg viewBox="0 0 160 120" class="w-40 lg:w-72 h-28 lg:h-56 animate-float-delayed -ml-10"><use href="#cloud-svg"/></svg>
@@ -141,14 +133,12 @@
                     </div>
                 </div>
 
-                <!-- Slide 2: Galeri Foto -->
                 <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 lg:p-10 overflow-hidden border-t border-white/10">
                     <svg viewBox="0 0 160 120" class="absolute top-10 right-0 lg:right-20 w-40 lg:w-64 h-32 lg:h-48 animate-float opacity-50"><use href="#cloud-svg"/></svg>
                     <svg viewBox="0 0 160 120" class="absolute bottom-10 left-0 lg:left-20 w-48 lg:w-72 h-40 lg:h-56 animate-float-delayed opacity-50"><use href="#cloud-svg"/></svg>
                     <svg viewBox="0 0 160 120" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 lg:w-[40rem] h-48 lg:h-[30rem] animate-float opacity-10"><use href="#cloud-svg"/></svg>
 
                     <div class="w-full relative z-10 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-24 mt-4">
-                        
                         <div class="polaroid w-52 lg:w-72 transform -rotate-3 lg:-translate-y-8 animate-float shrink-0">
                             <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
                                 <img src="foto-sekolah.png" alt="Halaman" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4='">
@@ -166,14 +156,9 @@
                 </div>
             </section>
 
-            <!-- ==================== FORM APLIKASI UTAMA ==================== -->
             <main id="main-app" class="relative w-full min-h-screen flex items-center justify-center p-4 py-16 lg:py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-white z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.3)]">
-                
                 <div class="print-container bg-white w-full max-w-md rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[550px] relative flex flex-col transition-all duration-300">
                     
-                    <!-- ==============================================
-                        HEADER (DENGAN TAMBAHAN TOMBOL ADMIN)
-                    =============================================== -->
                     <div class="px-6 py-4 flex items-center justify-between bg-white border-b border-slate-100 no-print z-10">
                         <div class="flex items-center gap-3">
                             <img src="logo saka.png" alt="Logo" class="w-9 h-9 object-contain" onerror="this.style.display='none'">
@@ -183,14 +168,12 @@
                             </div>
                         </div>
                         
-                        <!-- TOMBOL MENUJU ADMIN VIEW -->
                         <button type="button" onclick="switchView('admin')" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-sekolah-navy border border-slate-200 rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             Admin
                         </button>
                     </div>
 
-                    <!-- 1: Form Login -->
                     <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
                         <div class="text-center mb-8">
                             <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
@@ -212,7 +195,6 @@
                         </form>
                     </div>
 
-                    <!-- 2: Kamera -->
                     <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
@@ -240,7 +222,6 @@
                         </div>
                     </div>
 
-                    <!-- 3: Form Registrasi Tamu -->
                     <div id="form-page" class="p-6 lg:p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto no-scrollbar max-h-[500px]">
                         <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
                         <form id="guest-form" class="space-y-4 flex-1 pb-4">
@@ -277,7 +258,6 @@
                         </form>
                     </div>
 
-                    <!-- 4: ID Card & Cetak -->
                     <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
                         <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
                             <div class="bg-sekolah-navy h-20 w-full relative">
@@ -337,10 +317,8 @@
     ========================================================================== -->
     <div id="view-admin" class="hidden h-screen bg-slate-50 w-full overflow-hidden flex-col lg:flex-row">
         
-        <!-- Overlay Mobile Admin -->
         <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden transition-opacity opacity-0 backdrop-blur-sm" onclick="toggleSidebar()"></div>
 
-        <!-- Sidebar Navigasi -->
         <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-sekolah-dark text-slate-300 transition-transform duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col shadow-2xl lg:shadow-none border-r border-white/5">
             <div class="h-20 flex items-center justify-between px-6 bg-black/20 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3">
@@ -365,14 +343,15 @@
                                 Dashboard
                             </div>
                         </a>
-                        <a href="#" class="flex items-center justify-between px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                        <!-- FITUR DITAMBAHKAN ONCLICK NOTIF -->
+                        <a href="#" onclick="alertFeature('Data Tamu')" class="flex items-center justify-between px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                 Data Tamu
                             </div>
                             <span class="bg-sekolah-gold text-sekolah-navy text-xs font-bold px-2 py-0.5 rounded-full">8</span>
                         </a>
-                        <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                        <a href="#" onclick="alertFeature('Laporan & Rekapitulasi')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             Laporan (Rekap)
                         </a>
@@ -381,7 +360,7 @@
                 <div>
                     <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Sistem</p>
                     <nav class="space-y-1">
-                        <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                        <a href="#" onclick="alertFeature('Pengaturan Website')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             Pengaturan Web
                         </a>
@@ -401,7 +380,6 @@
                             <p class="text-xs text-slate-400">Danru Satpam</p>
                         </div>
                     </div>
-                    <!-- Tombol ini memicu fungsi JS untuk kembali ke Guest View -->
                     <button type="button" onclick="switchView('guest')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors" title="Logout & Kembali ke Portal Tamu">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     </button>
@@ -409,9 +387,7 @@
             </div>
         </aside>
 
-        <!-- Konten Utama Admin -->
         <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full relative">
-            <!-- Header Topbar Admin -->
             <header class="h-20 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between shrink-0 z-20">
                 <div class="flex items-center gap-4">
                     <button onclick="toggleSidebar()" class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 rounded-lg transition-colors">
@@ -428,12 +404,6 @@
                 </div>
 
                 <div class="flex items-center gap-3 lg:gap-6">
-                    <div class="hidden md:block relative">
-                        <input type="text" placeholder="Pencarian cepat (Ctrl+K)" class="w-64 pl-10 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-sekolah-navy focus:ring-2 focus:ring-sekolah-navy/20 rounded-xl text-sm transition-all outline-none">
-                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-
-                    <!-- Notifikasi -->
                     <div class="relative">
                         <button onclick="toggleDropdown('notif-dropdown')" class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
@@ -464,7 +434,6 @@
                 </div>
             </header>
 
-            <!-- Dashboard Konten Utama -->
             <div class="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar relative">
                 <div class="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-fade-in pb-12">
                     
@@ -474,21 +443,18 @@
                             <p class="text-slate-500 text-sm mt-1">Selasa, 3 September 2026</p>
                         </div>
                         <div class="flex gap-2">
-                            <button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold shadow-sm transition-all">
+                            <!-- FITUR EXPORT CSV DIAKTIFKAN -->
+                            <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 Eksport CSV
                             </button>
                         </div>
                     </div>
 
-                    <!-- Kartu Statistik -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
                         <div class="bg-white p-5 lg:p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                             <div class="flex justify-between items-start mb-4">
                                 <div class="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12%
-                                </span>
                             </div>
                             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Total Tamu</p>
                             <h3 class="text-3xl font-black text-slate-800 mt-1">26</h3>
@@ -505,7 +471,6 @@
                         <div class="bg-white p-5 lg:p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                             <div class="flex justify-between items-start mb-4">
                                 <div class="p-3 bg-slate-100 text-slate-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></div>
-                                <span class="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">Aman</span>
                             </div>
                             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Tamu Keluar (Selesai)</p>
                             <h3 class="text-3xl font-black text-slate-800 mt-1">16</h3>
@@ -515,27 +480,24 @@
                             <div class="absolute right-0 top-0 w-1.5 h-full bg-red-500"></div>
                             <div class="flex justify-between items-start mb-4">
                                 <div class="p-3 bg-red-50 text-red-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-lg animate-pulse-slow">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg> Naik
-                                </span>
                             </div>
                             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Terlambat Keluar</p>
                             <h3 class="text-3xl font-black text-red-600 mt-1">2</h3>
                         </div>
                     </div>
 
-                    <!-- Tabel Pemantauan -->
                     <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden flex flex-col">
                         <div class="p-4 lg:p-6 border-b border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-50/50">
                             <div class="flex items-center gap-2">
                                 <button class="px-4 py-2 bg-sekolah-navy text-white text-sm font-bold rounded-lg shadow-sm">Semua</button>
-                                <button class="px-4 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold rounded-lg transition-colors">Di Dalam</button>
-                                <button class="px-4 py-2 bg-white border border-slate-200 text-red-600 hover:bg-red-50 text-sm font-bold rounded-lg transition-colors">Overstay</button>
+                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold rounded-lg transition-colors">Di Dalam</button>
+                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-red-600 hover:bg-red-50 text-sm font-bold rounded-lg transition-colors">Overstay</button>
                             </div>
                             
                             <div class="flex items-center gap-3 w-full md:w-auto">
+                                <!-- FITUR SEARCH DIAKTIFKAN DENGAN onkeyup -->
                                 <div class="relative w-full sm:w-64">
-                                    <input type="text" placeholder="Cari nama atau tujuan..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-navy outline-none text-sm transition-shadow">
+                                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari nama atau tujuan..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-navy outline-none text-sm transition-shadow">
                                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                 </div>
                             </div>
@@ -554,6 +516,7 @@
                                 </thead>
                                 
                                 <tbody class="divide-y divide-slate-200 text-sm bg-white" id="table-body">
+                                    <!-- Baris 1 -->
                                     <tr class="hover:bg-blue-50/50 transition-colors group">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
@@ -599,6 +562,7 @@
                                         </td>
                                     </tr>
 
+                                    <!-- Baris 2 -->
                                     <tr class="bg-red-50/20 hover:bg-red-50 transition-colors group relative">
                                         <td class="absolute left-0 top-0 w-1 h-full bg-red-500 hidden sm:block"></td>
                                         <td class="px-6 py-4">
@@ -644,9 +608,65 @@
                                             </div>
                                         </td>
                                     </tr>
+
+                                    <!-- Baris 3 -->
+                                    <tr class="hover:bg-slate-50 transition-colors opacity-60 grayscale-[50%]">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm shrink-0">
+                                                    <img src="https://ui-avatars.com/api/?name=Agus+Pratama&background=94a3b8&color=fff" alt="Foto" class="w-full h-full object-cover">
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-600 text-base">Agus Pratama</p>
+                                                    <p class="text-xs text-slate-400 font-mono tracking-wide">ID: VST-260903-003</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <p class="font-bold text-slate-500">Perbaikan AC Lab Komputer</p>
+                                            <div class="flex items-center gap-1 mt-1 text-xs text-slate-400 font-medium">
+                                                Teknisi Sekolah
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col gap-1">
+                                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> In: 07:30 WIB
+                                                </div>
+                                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Act: 10:45 WIB
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                                                Keluar Selesai
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex items-center justify-end gap-2">
+                                                <button class="p-2 text-slate-300 hover:text-slate-500 rounded-lg transition-colors cursor-not-allowed" title="Selesai" disabled>
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- PAGINATION (DITAMBAHKAN ONCLICK NOTIF) -->
+                        <div class="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+                            <p>Menampilkan <span class="font-bold text-slate-800">3</span> dari <span class="font-bold text-slate-800">26</span> tamu</p>
+                            <div class="flex gap-1">
+                                <button class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-400 rounded-lg cursor-not-allowed">Prev</button>
+                                <button class="px-3 py-1.5 bg-sekolah-navy border border-sekolah-navy text-white font-bold rounded-lg shadow-sm">1</button>
+                                <button onclick="alertFeature('Halaman 2')" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors">2</button>
+                                <button onclick="alertFeature('Halaman Berikutnya')" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors">Next</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -659,7 +679,7 @@
                 <div class="bg-sekolah-dark p-6 text-white flex items-center justify-between">
                     <div>
                         <h3 class="font-custom-title text-xl tracking-wide">Detail Kunjungan</h3>
-                        <p class="text-xs text-sekolah-gold font-mono tracking-widest mt-1">ID: VST-260903-001</p>
+                        <p class="text-xs text-sekolah-gold font-mono tracking-widest mt-1">ID: VST-260903</p>
                     </div>
                     <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500 hover:text-white transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -668,16 +688,17 @@
                 
                 <div class="p-6 md:p-8 flex flex-col md:flex-row gap-6">
                     <div class="w-32 h-32 md:w-40 md:h-40 shrink-0 bg-slate-100 rounded-2xl border-4 border-slate-200 shadow-inner overflow-hidden mx-auto md:mx-0">
-                        <img id="modal-foto" src="https://ui-avatars.com/api/?name=Budi+Santoso&background=1e3a8a&color=fff&size=200" alt="Foto Tamu" class="w-full h-full object-cover">
+                        <!-- ID Image yang dimanipulasi oleh JS saat modal terbuka -->
+                        <img id="modal-foto" src="" alt="Foto Tamu" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-1 space-y-4">
                         <div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Nama Lengkap</p>
-                            <p class="text-xl font-black text-slate-800" id="modal-nama">Budi Santoso</p>
+                            <p class="text-xl font-black text-slate-800" id="modal-nama">-</p>
                         </div>
                         <div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Tujuan / Keperluan</p>
-                            <p class="text-base font-semibold text-sekolah-navy">Rapat Komite Tahunan</p>
+                            <p class="text-base font-semibold text-sekolah-navy" id="modal-tujuan">-</p>
                         </div>
                     </div>
                 </div>
@@ -708,23 +729,20 @@
             if (viewName === 'admin') {
                 guestView.classList.remove('block');
                 guestView.classList.add('hidden');
-                
                 adminView.classList.remove('hidden');
                 adminView.classList.add('flex'); 
-                
                 window.scrollTo(0, 0); 
             } else if (viewName === 'guest') {
                 adminView.classList.remove('flex');
                 adminView.classList.add('hidden');
-                
                 guestView.classList.remove('hidden');
                 guestView.classList.add('block');
-                
                 window.scrollTo(0, 0); 
             }
         }
 
         // --- 2. GUEST VIEW LOGIC (Kamera, Form, Cetak ID) ---
+        // (Sama seperti sebelumnya, tidak diubah)
         function togglePassword() {
             const input = document.getElementById('input-password');
             const icon = document.getElementById('eye-icon');
@@ -745,15 +763,10 @@
             pages[pageName].classList.add(pageName === 'login' ? 'block' : 'flex');
         }
 
-        function scrollToApp() {
-            window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
-        }
+        function scrollToApp() { window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' }); }
 
         document.getElementById('login-form').addEventListener('submit', (e) => { 
-            e.preventDefault(); 
-            showPage('camera'); 
-            initCamera(); 
-            scrollToApp();
+            e.preventDefault(); showPage('camera'); initCamera(); scrollToApp();
         });
 
         const video = document.getElementById('video-feed'), canvas = document.getElementById('photo-canvas');
@@ -778,11 +791,7 @@
             btnCapture.classList.remove('hidden'); btnRetake.classList.add('hidden'); btnNextForm.classList.add('hidden'); photoDataUrl = '';
         });
         
-        btnNextForm.addEventListener('click', () => { 
-            stopCamera(); 
-            showPage('form'); 
-            scrollToApp();
-        });
+        btnNextForm.addEventListener('click', () => { stopCamera(); showPage('form'); scrollToApp(); });
 
         document.getElementById('guest-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -796,19 +805,54 @@
             document.getElementById('card-batas-waktu').textContent = `${document.getElementById('input-jam-selesai').value} WIB`;
             document.getElementById('card-tanggal').textContent = `${tanggalFormat} | MASUK: ${document.getElementById('input-waktu').value} WIB`;
             
-            showPage('print');
-            scrollToApp();
+            showPage('print'); scrollToApp();
         });
 
-        // --- 3. ADMIN VIEW LOGIC (Dashboard, Sidebar, Modal, Toasts) ---
+
+        // --- 3. ADMIN VIEW LOGIC (Dashboard, Pencarian, Notifikasi) ---
+        
+        // FUNGSI 3A: Pencarian (Live Search Tabel)
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const tbody = document.getElementById("table-body");
+            const tr = tbody.getElementsByTagName("tr");
+
+            for (let i = 0; i < tr.length; i++) {
+                // Ambil semua teks di dalam baris tersebut
+                const rowText = tr[i].textContent || tr[i].innerText;
+                
+                // Jika teks cocok dengan ketikan, tampilkan baris, jika tidak sembunyikan
+                if (rowText.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // FUNGSI 3B: Simulasi Tombol "Dummy"
+        function alertFeature(featureName) {
+            showToast('Informasi Fitur', `Fungsi <b>${featureName}</b> baru akan aktif setelah sistem web dihubungkan ke Database (Backend).`);
+        }
+
+        // FUNGSI 3C: Eksport CSV Dummy
+        function exportCSV() {
+            showToast('Memulai Unduhan', 'Mengekspor data tamu ke format .csv...');
+            // Simulasi delay unduhan
+            setTimeout(() => {
+                showToast('Eksport Berhasil', 'File Data_Tamu_Sman1.csv telah berhasil diunduh ke komputer Anda.');
+            }, 2000);
+        }
+
+        // --- Logika Jam, Dropdown, & Modal ---
         function updateClock() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const adminClock = document.getElementById('realtime-clock');
             if (adminClock) adminClock.textContent = `${timeString} WIB`;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('mobile-overlay');
@@ -848,7 +892,14 @@
         const modalBox = document.getElementById('modal-box');
 
         function openModal(namaTamu) {
+            // Ubah text berdasarkan nama yang diklik
             document.getElementById('modal-nama').textContent = namaTamu;
+            
+            // Ubah foto berdasarkan nama (pakai API UI Avatars)
+            const fotoUrl = `https://ui-avatars.com/api/?name=${namaTamu.replace(' ', '+')}&background=1e3a8a&color=fff&size=200`;
+            document.getElementById('modal-foto').src = fotoUrl;
+
+            // Buka Modal
             modal.classList.remove('hidden-transition');
             modal.classList.add('show-transition');
             setTimeout(() => {
@@ -886,8 +937,8 @@
             
             toast.className = 'bg-slate-800 text-white p-4 rounded-xl shadow-2xl flex items-start gap-3 w-80 animate-slide-in-right pointer-events-auto border border-slate-700';
             toast.innerHTML = `
-                <div class="bg-green-500/20 text-green-400 p-1.5 rounded-lg shrink-0 mt-0.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <div class="bg-sekolah-gold text-sekolah-dark p-1.5 rounded-lg shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div class="flex-1">
                     <h4 class="font-bold text-sm text-slate-100">${title}</h4>
@@ -897,9 +948,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             `;
-            
             container.appendChild(toast);
-
             setTimeout(() => {
                 if (document.body.contains(toast)) {
                     toast.style.opacity = '0';
