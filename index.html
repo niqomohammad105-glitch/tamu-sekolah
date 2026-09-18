@@ -64,10 +64,10 @@
 
 <body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-x-hidden">
 
-    <!-- Kontainer Utama (Satu Kolom Penuh) -->
+    <!-- Kontainer Utama (Satu Kolom Penuh untuk PC dan HP) -->
     <div class="flex flex-col w-full min-h-screen">
         
-        <!-- ==================== PRESENTASI BUKU CERITA (Mengalir ke Bawah) ==================== -->
+        <!-- ==================== PRESENTASI BUKU CERITA ==================== -->
         <section id="left-presentation" class="relative w-full flex flex-col bg-sekolah-dark z-0">
             
             <svg class="hidden">
@@ -144,18 +144,25 @@
             </div>
         </section>
 
-        <!-- ==================== FORM APLIKASI (Paling Bawah) ==================== -->
+        <!-- ==================== FORM APLIKASI UTAMA ==================== -->
         <main id="main-app" class="relative w-full min-h-screen flex items-center justify-center p-4 py-16 lg:py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-white z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.3)]">
             
             <div class="print-container bg-white w-full max-w-md rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[550px] relative flex flex-col transition-all duration-300">
                 
-                <!-- Global Header App -->
-                <div class="px-6 py-4 flex items-center gap-4 bg-white border-b border-slate-100 no-print z-10">
-                    <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain" onerror="this.style.display='none'">
-                    <div class="flex flex-col">
-                        <h2 class="font-extrabold text-sekolah-navy text-base leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
-                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
+                <!-- HEADER GLOBAL + TOMBOL ADMIN (SUDAH DIGABUNGKAN) -->
+                <div class="px-6 py-4 flex items-center justify-between bg-white border-b border-slate-100 no-print z-10">
+                    <div class="flex items-center gap-3">
+                        <img src="logo saka.png" alt="Logo" class="w-9 h-9 object-contain" onerror="this.style.display='none'">
+                        <div class="flex flex-col">
+                            <h2 class="font-extrabold text-sekolah-navy text-sm leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
+                            <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
+                        </div>
                     </div>
+                    
+                    <a href="admin.html" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-sekolah-navy border border-slate-200 rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        Admin
+                    </a>
                 </div>
 
                 <!-- 1: Form Login -->
@@ -317,7 +324,6 @@
             pages[pageName].classList.remove('hidden'); pages[pageName].classList.add(pageName === 'login' ? 'block' : 'flex');
         }
 
-        // Semua perangkat (PC & HP) sekarang akan otomatis scroll ke form
         function scrollToApp() {
             window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
         }
