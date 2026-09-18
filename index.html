@@ -153,9 +153,7 @@
                 </div>
             </section>
 
-            <!-- FORM APLIKASI UTAMA -->
             <main id="main-app" class="relative w-full min-h-screen flex items-center justify-center p-4 py-16 lg:py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-white z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.3)]">
-                
                 <div class="print-container bg-white w-full max-w-md rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[550px] relative flex flex-col transition-all duration-300">
                     
                     <div class="px-6 py-4 flex items-center justify-between bg-white border-b border-slate-100 no-print z-10">
@@ -166,14 +164,13 @@
                                 <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
                             </div>
                         </div>
-                        
                         <button type="button" onclick="switchView('admin')" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-sekolah-navy border border-slate-200 rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             Admin
                         </button>
                     </div>
 
-                    <!-- Page 1: Login -->
+                    <!-- Login Page -->
                     <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
                         <div class="text-center mb-8">
                             <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
@@ -195,7 +192,7 @@
                         </form>
                     </div>
 
-                    <!-- Page 2: Kamera -->
+                    <!-- Camera Page -->
                     <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
@@ -219,16 +216,10 @@
                         </div>
                     </div>
 
-                    <!-- Page 3: Form Registrasi -->
+                    <!-- Form Page -->
                     <div id="form-page" class="p-6 lg:p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto no-scrollbar max-h-[500px]">
                         <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
                         <form id="guest-form" class="space-y-4 flex-1 pb-4">
-                            <!-- Loading overlay untuk submit -->
-                            <div id="loading-overlay" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center rounded-3xl">
-                                <svg class="animate-spin h-10 w-10 text-sekolah-navy mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                                <p class="font-bold text-slate-700">Menyimpan ke Database...</p>
-                            </div>
-
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Tamu</label>
                                 <input type="text" id="input-nama" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
@@ -241,7 +232,6 @@
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Pihak yang Dituju</label>
                                 <input type="text" id="input-dituju" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
                             </div>
-                            
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-sm font-semibold text-slate-700 mb-1">Tanggal Hadir</label>
@@ -252,17 +242,15 @@
                                     <input type="time" id="input-waktu" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
                                 </div>
                             </div>
-
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Berlaku Sampai Jam</label>
                                 <input type="time" id="input-jam-selesai" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg text-red-600 font-bold focus:border-sekolah-navy outline-none">
                             </div>
-
                             <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md mt-4 transition-all">Terbitkan ID</button>
                         </form>
                     </div>
 
-                    <!-- Page 4: Cetak ID Card -->
+                    <!-- Print Page -->
                     <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
                         <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
                             <div class="bg-sekolah-navy h-20 w-full relative">
@@ -275,7 +263,6 @@
                                     <img id="card-photo" src="" alt="Foto" class="w-full h-full object-cover text-[8px] text-center text-slate-400">
                                 </div>
                             </div>
-                            
                             <div class="pt-12 pb-4 px-4 text-center mt-2 relative z-0">
                                 <h3 class="font-black text-slate-900 tracking-wider text-xl uppercase">VISITOR</h3>
                                 <div class="bg-slate-50 rounded-lg p-2 mb-3 border border-slate-100">
@@ -301,7 +288,6 @@
                                 <p id="card-tanggal" class="text-[8px] font-mono text-slate-600 font-bold uppercase tracking-wide">TGL - WAKTU</p>
                             </div>
                         </div>
-                        
                         <div class="w-full flex flex-col gap-2 mt-8 no-print">
                             <button onclick="window.print()" type="button" class="w-full bg-sekolah-navy text-white font-bold py-3.5 rounded-xl shadow-md">Cetak ID Card</button>
                             <button onclick="location.reload()" type="button" class="w-full bg-transparent border-2 border-slate-300 text-slate-600 font-bold py-3 rounded-xl">Selesai</button>
@@ -311,7 +297,6 @@
             </main>
         </div>
     </div>
-
 
     <!-- =========================================================================
                                 2. ADMIN VIEW (DASHBOARD)
@@ -323,7 +308,7 @@
         <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-sekolah-dark text-slate-300 transition-transform duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col shadow-2xl lg:shadow-none border-r border-white/5">
             <div class="h-20 flex items-center justify-between px-6 bg-black/20 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3">
-                    <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-md">
+                    <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-md" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
                     <div>
                         <h1 class="text-white font-extrabold text-sm uppercase tracking-wider">Buku Tamu</h1>
                         <p class="text-sekolah-gold text-[10px] font-bold tracking-widest uppercase">Admin Panel</p>
@@ -335,18 +320,37 @@
             </div>
 
             <div class="flex-1 overflow-y-auto py-6 px-4 space-y-8 custom-scrollbar">
-                <nav class="space-y-1">
-                    <a href="#" onclick="loadDataTamu()" class="flex items-center justify-between px-4 py-3 bg-blue-600/20 text-blue-400 rounded-xl font-semibold transition-colors border border-blue-500/20">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                            Dashboard
-                        </div>
-                    </a>
-                    <a href="#" onclick="loadDataTamu()" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        Refresh Database
-                    </a>
-                </nav>
+                <div>
+                    <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Menu Utama</p>
+                    <nav class="space-y-1">
+                        <a href="#" class="flex items-center justify-between px-4 py-3 bg-blue-600/20 text-blue-400 rounded-xl font-semibold transition-colors border border-blue-500/20">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                                Dashboard
+                            </div>
+                        </a>
+                        <a href="#" onclick="alertFeature('Data Tamu')" class="flex items-center justify-between px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                Data Tamu
+                            </div>
+                            <span class="bg-sekolah-gold text-sekolah-navy text-xs font-bold px-2 py-0.5 rounded-full">8</span>
+                        </a>
+                        <a href="#" onclick="alertFeature('Laporan & Rekapitulasi')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Laporan (Rekap)
+                        </a>
+                    </nav>
+                </div>
+                <div>
+                    <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Sistem</p>
+                    <nav class="space-y-1">
+                        <a href="#" onclick="alertFeature('Pengaturan Website')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Pengaturan Web
+                        </a>
+                    </nav>
+                </div>
             </div>
 
             <div class="p-4 bg-black/30 border-t border-white/5 shrink-0">
@@ -361,14 +365,14 @@
                             <p class="text-xs text-slate-400">Danru Satpam</p>
                         </div>
                     </div>
-                    <button type="button" onclick="switchView('guest')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors">
+                    <button type="button" onclick="switchView('guest')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors" title="Logout & Kembali ke Portal Tamu">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     </button>
                 </div>
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Konten Utama Admin -->
         <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full relative">
             <header class="h-20 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between shrink-0 z-20">
                 <div class="flex items-center gap-4">
@@ -376,7 +380,7 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                     <div>
-                        <h2 class="text-xl lg:text-2xl font-bold text-slate-800 font-custom-title tracking-wide">Database Tamu</h2>
+                        <h2 class="text-xl lg:text-2xl font-bold text-slate-800 font-custom-title tracking-wide">Pusat Kendali</h2>
                         <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500">
                             <span id="db-status-text" class="text-slate-400">Koneksi Database...</span>
                         </div>
@@ -384,10 +388,35 @@
                 </div>
 
                 <div class="flex items-center gap-3 lg:gap-6">
-                    <div class="relative w-full sm:w-64">
-                        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari di tabel..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-navy outline-none text-sm transition-shadow">
+                    <div class="hidden md:block relative">
+                        <input type="text" placeholder="Pencarian cepat (Ctrl+K)" class="w-64 pl-10 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-sekolah-navy focus:ring-2 focus:ring-sekolah-navy/20 rounded-xl text-sm transition-all outline-none">
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
+
+                    <!-- Notifikasi -->
+                    <div class="relative">
+                        <button onclick="toggleDropdown('notif-dropdown')" class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+                        </button>
+                        <div id="notif-dropdown" class="hidden-transition absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+                            <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                                <h3 class="font-bold text-slate-800">Notifikasi</h3>
+                                <button class="text-xs text-sekolah-navy font-semibold hover:underline">Tandai dibaca</button>
+                            </div>
+                            <div class="max-h-80 overflow-y-auto">
+                                <div class="px-4 py-3 border-b border-slate-50 hover:bg-slate-50 cursor-pointer flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-800">Peringatan: Siti Aminah</p>
+                                        <p class="text-xs text-slate-500 mt-0.5">Tamu overstay lebih dari 30 menit dari jadwal keluar.</p>
+                                        <p class="text-[10px] text-slate-400 mt-1">2 menit yang lalu</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-xl border border-slate-200">
                         <svg class="w-4 h-4 text-sekolah-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span id="realtime-clock" class="font-bold text-sm text-slate-700 font-mono tracking-tight">00:00:00 WIB</span>
@@ -398,6 +427,19 @@
             <div class="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar relative">
                 <div class="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-fade-in pb-12">
                     
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Ringkasan Hari Ini</h3>
+                            <p class="text-slate-500 text-sm mt-1">Selasa, 3 September 2026</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Eksport CSV
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                             <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Total Tamu Database</p>
@@ -413,8 +455,22 @@
                         </div>
                     </div>
 
-                    <!-- Tabel Pemantauan -->
                     <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden flex flex-col">
+                        <div class="p-4 lg:p-6 border-b border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-50/50">
+                            <div class="flex items-center gap-2">
+                                <button class="px-4 py-2 bg-sekolah-navy text-white text-sm font-bold rounded-lg shadow-sm">Semua</button>
+                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold rounded-lg transition-colors">Di Dalam</button>
+                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-red-600 hover:bg-red-50 text-sm font-bold rounded-lg transition-colors">Overstay</button>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 w-full md:w-auto">
+                                <div class="relative w-full sm:w-64">
+                                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari di tabel..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-navy outline-none text-sm transition-shadow">
+                                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="overflow-x-auto custom-scrollbar">
                             <table class="w-full text-left border-collapse min-w-[900px]">
                                 <thead>
@@ -427,7 +483,6 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-200 text-sm bg-white" id="table-body">
-                                    <!-- Baris Tabel akan di-Render disini oleh JS -->
                                     <tr>
                                         <td colspan="5" class="px-6 py-8 text-center text-slate-500">
                                             Memuat data dari database... Jika tabel kosong, pastikan Anda telah memasukkan kunci API Supabase.
@@ -436,8 +491,18 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                        
+                        <!-- Pagination Bawah -->
+                        <div class="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+                            <p>Menampilkan seluruh data dari Database.</p>
+                            <div class="flex gap-1">
+                                <button class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-400 rounded-lg cursor-not-allowed">Prev</button>
+                                <button class="px-3 py-1.5 bg-sekolah-navy border border-sekolah-navy text-white font-bold rounded-lg shadow-sm">1</button>
+                                <button class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-400 rounded-lg cursor-not-allowed">Next</button>
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </main>
@@ -485,339 +550,7 @@
         <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-3 pointer-events-none"></div>
     </div>
 
-
-    <!-- =========================================================================
-                      3. JAVASCRIPT GLOBAL & INTEGRASI SUPABASE
-    ========================================================================== -->
-    <script>
-        // ==========================================
-        // KONFIGURASI SUPABASE (WAJIB DIISI)
-        // ==========================================
-        const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co/rest/v1/';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
-        
-        let _supabase = null;
-        let isDbConnected = false;
-
-        // Cek apakah user sudah mengisi API Key
-        if (SUPABASE_URL.includes('ISI_DENGAN')) {
-            console.warn("SUPABASE BELUM DIKONFIGURASI! Menggunakan mode Dummy Data.");
-        } else {
-            // Inisialisasi Supabase
-            _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            isDbConnected = true;
-            document.getElementById('db-status-text').innerHTML = '<span class="text-green-500 font-bold tracking-widest uppercase">Database Terhubung</span>';
-        }
-
-        // ==========================================
-        // LOGIKA SINGLE PAGE APP (SPA)
-        // ==========================================
-        function switchView(viewName) {
-            const guestView = document.getElementById('view-guest');
-            const adminView = document.getElementById('view-admin');
-
-            if (viewName === 'admin') {
-                guestView.classList.remove('block');
-                guestView.classList.add('hidden');
-                adminView.classList.remove('hidden');
-                adminView.classList.add('flex'); 
-                window.scrollTo(0, 0); 
-                loadDataTamu(); // Load tabel database saat buka admin
-            } else if (viewName === 'guest') {
-                adminView.classList.remove('flex');
-                adminView.classList.add('hidden');
-                guestView.classList.remove('hidden');
-                guestView.classList.add('block');
-                window.scrollTo(0, 0); 
-            }
-        }
-
-        // ==========================================
-        // LOGIKA DATABASE (SUPABASE INTEGRATION)
-        // ==========================================
-        
-        // 1. Simpan Data ke Tabel
-        async function insertDataKeSupabase(payload) {
-            if (!isDbConnected) {
-                showToast("Mode Demo", "Simulasi data tersimpan. Hubungkan Supabase untuk simpan permanen.");
-                return;
-            }
-
-            document.getElementById('loading-overlay').classList.remove('hidden');
-
-            const { data, error } = await _supabase
-                .from('tamu')
-                .insert([
-                    {
-                        nama: payload.nama,
-                        tujuan: payload.tujuan,
-                        dituju: payload.dituju,
-                        tanggal: payload.tanggal,
-                        waktu_masuk: payload.waktu_masuk,
-                        batas_waktu: payload.batas_waktu,
-                        foto_url: payload.foto_url,
-                        status: 'Di Dalam'
-                    }
-                ]);
-
-            document.getElementById('loading-overlay').classList.add('hidden');
-
-            if (error) {
-                console.error(error);
-                showToast("Gagal Tersimpan", "Terdapat masalah pada koneksi database.");
-            } else {
-                showToast("Sukses", "Data tamu berhasil masuk ke database!");
-            }
-        }
-
-        // 2. Baca Data dari Tabel
-        async function loadDataTamu() {
-            if (!isDbConnected) {
-                renderDummyData();
-                return;
-            }
-
-            const { data: daftarTamu, error } = await _supabase
-                .from('tamu')
-                .select('*')
-                .order('id', { ascending: false });
-
-            if (error) {
-                console.error("Gagal menarik data:", error);
-                return;
-            }
-
-            renderTabel(daftarTamu);
-        }
-
-        // 3. Update Status (Selesaikan)
-        async function selesaikanKunjunganDB(id) {
-            if (!isDbConnected) return;
-
-            const { data, error } = await _supabase
-                .from('tamu')
-                .update({ status: 'Selesai' })
-                .eq('id', id);
-
-            if (error) {
-                showToast("Gagal", "Tidak dapat memperbarui status.");
-            } else {
-                showToast("Sukses", `Kunjungan Tamu ID-${id} diselesaikan.`);
-                loadDataTamu(); // Reload tabel otomatis
-            }
-        }
-
-        // ==========================================
-        // RENDER UI TABEL
-        // ==========================================
-        function renderTabel(dataArray) {
-            const tbody = document.getElementById("table-body");
-            tbody.innerHTML = "";
-
-            let aktifCount = 0;
-            let selesaiCount = 0;
-
-            if(dataArray.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 font-bold">Belum ada data tamu di database.</td></tr>`;
-                return;
-            }
-
-            dataArray.forEach(item => {
-                const isSelesai = item.status === 'Selesai';
-                
-                if (isSelesai) selesaiCount++;
-                else aktifCount++;
-
-                const rowHtml = `
-                    <tr class="${isSelesai ? 'hover:bg-slate-50 opacity-60 grayscale-[50%]' : 'hover:bg-blue-50/50 group'} transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm shrink-0">
-                                    <img src="${item.foto_url ? item.foto_url : `https://ui-avatars.com/api/?name=${item.nama}&background=1e3a8a&color=fff`}" alt="Foto" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <p class="font-bold text-slate-800 text-base ${!isSelesai ? 'group-hover:text-sekolah-navy cursor-pointer' : ''}" onclick="openModal('${item.nama}', '${item.tujuan}', '${item.dituju}', '${item.id}', '${item.foto_url}')">${item.nama}</p>
-                                    <p class="text-xs text-slate-500 font-mono tracking-wide">ID: VST-${item.id}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class="font-bold text-slate-700">${item.tujuan}</p>
-                            <div class="flex items-center gap-1 mt-1 text-xs text-slate-500 font-medium">
-                                Menemui: ${item.dituju}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex flex-col gap-1">
-                                <div class="flex items-center gap-2 text-xs font-bold text-slate-600">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> In: ${item.waktu_masuk}
-                                </div>
-                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-400">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> Out: ${item.batas_waktu}
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold ${isSelesai ? 'bg-slate-100 text-slate-500 border border-slate-200' : 'bg-green-50 text-green-700 border border-green-200 shadow-sm'}">
-                                ${!isSelesai ? '<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>' : ''} 
-                                ${isSelesai ? 'Telah Keluar' : 'Di Dalam Area'}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button onclick="openModal('${item.nama}', '${item.tujuan}', '${item.dituju}', '${item.id}', '${item.foto_url}')" class="p-2 text-slate-400 hover:text-sekolah-navy hover:bg-slate-100 rounded-lg transition-colors" title="Lihat Detail">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
-                                ${!isSelesai ? `
-                                <button onclick="selesaikanKunjunganDB('${item.id}')" class="px-3 py-1.5 bg-white border-2 border-sekolah-navy text-sekolah-navy hover:bg-sekolah-navy hover:text-white font-bold text-xs rounded-lg transition-colors">
-                                    Selesaikan
-                                </button>` : `
-                                <button class="p-2 text-slate-300 cursor-not-allowed rounded-lg" disabled>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                </button>
-                                `}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', rowHtml);
-            });
-
-            // Update Statistik Angka
-            document.getElementById('stat-total').textContent = dataArray.length;
-            document.getElementById('stat-aktif').textContent = aktifCount;
-            document.getElementById('stat-selesai').textContent = selesaiCount;
-        }
-
-        // ==========================================
-        // LISTENER FORM TAMU (WAKTU SUBMIT)
-        // ==========================================
-        document.getElementById('guest-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const payload = {
-                nama: document.getElementById('input-nama').value,
-                tujuan: document.getElementById('input-tujuan').value,
-                dituju: document.getElementById('input-dituju').value,
-                tanggal: document.getElementById('input-tanggal').value,
-                waktu_masuk: document.getElementById('input-waktu').value,
-                batas_waktu: document.getElementById('input-jam-selesai').value,
-                foto_url: photoDataUrl // Foto hasil canvas kamera
-            };
-
-            // Masukkan ke Supabase
-            await insertDataKeSupabase(payload);
-
-            // Tampilkan di ID Card Cetak
-            const dateObj = new Date(payload.tanggal);
-            const tanggalFormat = dateObj.toLocaleDateString('id-ID', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-            
-            document.getElementById('card-photo').src = payload.foto_url;
-            document.getElementById('card-nama').textContent = payload.nama;
-            document.getElementById('card-tujuan').textContent = payload.tujuan;
-            document.getElementById('card-dituju').textContent = payload.dituju;
-            document.getElementById('card-batas-waktu').textContent = `${payload.batas_waktu} WIB`;
-            document.getElementById('card-tanggal').textContent = `${tanggalFormat} | MASUK: ${payload.waktu_masuk} WIB`;
-            
-            showPage('print');
-            window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
-        });
-
-
-        // ==========================================
-        // FITUR-FITUR PENDUKUNG LAINNYA
-        // ==========================================
-        
-        // Fitur Pencarian Tabel
-        function searchTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase();
-            const tbody = document.getElementById("table-body");
-            const tr = tbody.getElementsByTagName("tr");
-
-            for (let i = 0; i < tr.length; i++) {
-                const rowText = tr[i].textContent || tr[i].innerText;
-                tr[i].style.display = rowText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-
-        // Jam Realtime
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            const adminClock = document.getElementById('realtime-clock');
-            if (adminClock) adminClock.textContent = `${timeString} WIB`;
-        }
-        setInterval(updateClock, 1000); updateClock();
-
-        // Menu Sidebar Mobile
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobile-overlay');
-        function toggleSidebar() {
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.remove('opacity-100');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            }
-        }
-
-        // Modal Pop-Up
-        const modal = document.getElementById('detail-modal');
-        const modalBox = document.getElementById('modal-box');
-        function openModal(namaTamu, tujuan, dituju, id, fotoUrl) {
-            document.getElementById('modal-nama').textContent = namaTamu;
-            document.getElementById('modal-tujuan').textContent = tujuan;
-            document.getElementById('modal-dituju').textContent = dituju;
-            document.getElementById('modal-id').textContent = `ID: VST-${id}`;
-            document.getElementById('modal-foto').src = fotoUrl && fotoUrl !== 'undefined' ? fotoUrl : `https://ui-avatars.com/api/?name=${namaTamu}&background=1e3a8a&color=fff`;
-
-            modal.classList.remove('hidden-transition');
-            modal.classList.add('show-transition');
-            setTimeout(() => { modalBox.classList.remove('scale-95'); modalBox.classList.add('scale-100'); }, 10);
-        }
-        function closeModal() {
-            modalBox.classList.remove('scale-100');
-            modalBox.classList.add('scale-95');
-            setTimeout(() => { modal.classList.remove('show-transition'); modal.classList.add('hidden-transition'); }, 200);
-        }
-
-        // Notifikasi (Toast)
-        function showToast(title, message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'bg-slate-800 text-white p-4 rounded-xl shadow-2xl flex items-start gap-3 w-80 animate-slide-in-right pointer-events-auto border border-slate-700';
-            toast.innerHTML = `
-                <div class="bg-green-500/20 text-green-400 p-1.5 rounded-lg shrink-0 mt-0.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <div class="flex-1">
-                    <h4 class="font-bold text-sm text-slate-100">${title}</h4>
-                    <p class="text-xs text-slate-400 mt-1 leading-snug">${message}</p>
-                </div>
-            `;
-            container.appendChild(toast);
-            setTimeout(() => {
-                if (document.body.contains(toast)) {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(10px)';
-                    toast.style.transition = 'all 0.3s ease';
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, 4000);
-        }
-
-        // Data Dummy (Jika tidak pakai Supabase)
-        function renderDummyData() {
-            const dummyData = [
-                { id: '101', nama: 'Budi Santoso', tujuan: 'Rapat Komite', dituju: 'Kepsek', waktu_masuk: '08:00', batas_waktu: '12:00', status: 'Di Dalam', foto_url: '' },
-                { id: '102', nama: 'Agus Pratama', tujuan: 'Perbaikan AC', dituju: 'Teknisi', waktu_masuk: '07:30', batas_waktu: '09:00', status: 'Selesai', foto_url: '' }
-            ];
-            renderTabel(dummyData);
-        }
-    </script>
+    <!-- MENGHUBUNGKAN KE FILE JAVASCRIPT -->
+    <script src="app.js" defer></script>
 </body>
 </html>
