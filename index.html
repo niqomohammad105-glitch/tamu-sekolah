@@ -32,12 +32,12 @@
     </script>
     
     <style>
+        /* Memanggil Font Childer */
         @font-face {
             font-family: 'Childer';
             src: url('Childer.otf') format('opentype');
             font-weight: normal; font-style: normal;
         }
-
         .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; }
         
         .barcode {
@@ -46,7 +46,7 @@
             height: 24px; width: 80%; margin: 0 auto;
         }
 
-        /* Desain Polaroid Custom */
+        /* Desain Polaroid */
         .polaroid {
             background: #ffffff;
             padding: 12px 12px 40px 12px;
@@ -56,7 +56,7 @@
         .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
         .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 15px; color: #1e293b; line-height: 1.2; }
 
-        /* Sembunyikan scrollbar tapi tetap bisa di-scroll */
+        /* Sembunyikan scrollbar di panel kiri saat PC */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -69,14 +69,16 @@
         }
     </style>
 </head>
-<body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-hidden">
 
-    <div class="flex flex-col lg:flex-row h-screen w-full">
+<!-- PERBAIKAN: Di mobile bisa scroll biasa, di PC dikunci (lg:overflow-hidden) agar Split-Screen -->
+<body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-x-hidden lg:overflow-hidden">
+
+    <div class="flex flex-col lg:flex-row min-h-screen lg:h-screen w-full">
         
-        <!-- ==================== BAGIAN KIRI: PRESENTASI UI/UX BARU (Scrollable) ==================== -->
-        <section id="left-presentation" class="relative w-full lg:w-1/2 h-screen overflow-y-auto no-scrollbar snap-y snap-mandatory bg-sekolah-dark">
+        <!-- ==================== BAGIAN PRESENTASI UI/UX BARU (Kiri PC / Atas Mobile) ==================== -->
+        <section id="left-presentation" class="relative w-full lg:w-1/2 flex flex-col lg:h-screen lg:overflow-y-auto no-scrollbar lg:snap-y lg:snap-mandatory bg-sekolah-dark z-0">
             
-            <!-- SVGs Awan sebagai dekorasi global -->
+            <!-- SVGs Awan Global -->
             <svg class="hidden">
                 <defs>
                     <g id="cloud-svg">
@@ -86,8 +88,8 @@
             </svg>
 
             <!-- HALAMAN 1: HERO SECTION -->
-            <div class="h-screen w-full snap-start relative flex flex-col items-center justify-center p-6 overflow-hidden">
-                <div class="z-10 text-center flex flex-col items-center w-full animate-float">
+            <div class="min-h-screen lg:h-screen w-full lg:snap-start relative flex flex-col items-center justify-center p-6 overflow-hidden shrink-0">
+                <div class="z-10 text-center flex flex-col items-center w-full animate-float mt-10 lg:mt-0">
                     <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-24 h-24 lg:w-32 lg:h-32 object-contain mb-8 drop-shadow-2xl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
                     <h1 class="font-custom-title text-3xl lg:text-5xl text-white tracking-widest leading-tight text-center drop-shadow-md">
                         Selamat Datang Tamu<br>SMAN 1 Kandangan
@@ -95,33 +97,33 @@
                 </div>
                 <!-- Ornamen Awan Bawah -->
                 <div class="absolute -bottom-10 left-0 w-full flex justify-between opacity-80 pointer-events-none">
-                    <svg viewBox="0 0 160 120" class="w-64 h-48 animate-float -ml-10"><use href="#cloud-svg"/></svg>
-                    <svg viewBox="0 0 160 120" class="w-80 h-56 animate-float-delayed -mr-16 mb-4 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-48 lg:w-64 h-36 lg:h-48 animate-float -ml-5 lg:-ml-10"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-64 lg:w-80 h-48 lg:h-56 animate-float-delayed -mr-10 lg:-mr-16 mb-4 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
                 </div>
                 <!-- Panah Scroll ke bawah -->
-                <div class="absolute bottom-6 z-20 text-white flex flex-col items-center animate-bounce-slow opacity-60">
-                    <span class="text-[10px] uppercase tracking-widest mb-1">Scroll</span>
+                <a href="#main-app" class="absolute bottom-6 z-20 text-white flex flex-col items-center animate-bounce-slow opacity-60 hover:opacity-100 lg:hidden cursor-pointer">
+                    <span class="text-[10px] uppercase tracking-widest mb-1">Mulai Kunjungan</span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                </div>
+                </a>
             </div>
 
             <!-- HALAMAN 2A: PROFIL SEKOLAH -->
-            <div class="h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 overflow-hidden">
+            <div class="min-h-screen lg:h-screen w-full lg:snap-start relative flex flex-col items-center justify-center p-8 overflow-hidden shrink-0 py-20 lg:py-0 border-t border-white/5 lg:border-none">
                 <!-- Awan Atas -->
                 <div class="absolute -top-10 left-0 w-full flex justify-between opacity-70 pointer-events-none">
-                    <svg viewBox="0 0 160 120" class="w-56 h-40 animate-float-delayed -ml-10"><use href="#cloud-svg"/></svg>
-                    <svg viewBox="0 0 160 120" class="w-72 h-48 animate-float -mr-10 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-40 lg:w-56 h-28 lg:h-40 animate-float-delayed -ml-5 lg:-ml-10"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-56 lg:w-72 h-40 lg:h-48 animate-float -mr-5 lg:-mr-10 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
                 </div>
 
-                <h1 class="font-custom-title text-4xl lg:text-6xl text-white mb-12 z-10 drop-shadow-md text-center">Profil Sekolah</h1>
+                <h1 class="font-custom-title text-4xl lg:text-6xl text-white mb-10 lg:mb-12 z-10 drop-shadow-md text-center">Profil Sekolah</h1>
                 
-                <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full max-w-3xl z-10">
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-12 w-full max-w-3xl z-10">
                     <!-- Frame Polaroid Kosong -->
-                    <div class="polaroid w-48 h-56 lg:w-64 lg:h-72 transform -rotate-2 animate-polaroid-tilt">
+                    <div class="polaroid w-56 h-64 lg:w-64 lg:h-72 transform -rotate-2 animate-polaroid-tilt shrink-0">
                         <div class="w-full h-full bg-sekolah-dark border-4 border-slate-200/20 shadow-inner"></div>
                     </div>
                     <!-- Teks Sejarah -->
-                    <div class="flex-1 text-center lg:text-left">
+                    <div class="flex-1 text-center lg:text-left px-4 lg:px-0">
                         <p class="text-white text-lg lg:text-2xl font-bold leading-relaxed drop-shadow-sm">
                             SMAN 1 Kandangan berdiri di Kecamatan Kandangan, Desa Kandangan, Jln. Hayam Wuruk 96 didirikan pada tahun 1994
                         </p>
@@ -130,25 +132,24 @@
             </div>
 
             <!-- HALAMAN 2: GALERI FOTO -->
-            <div class="h-screen w-full snap-start relative flex flex-col p-8 overflow-hidden">
+            <div class="min-h-screen lg:h-screen w-full lg:snap-start relative flex flex-col p-8 overflow-hidden shrink-0 py-20 lg:py-8 border-t border-white/5 lg:border-none">
                 <!-- Awan Menyebar -->
-                <svg viewBox="0 0 160 120" class="absolute top-10 right-10 w-48 h-32 animate-float opacity-70"><use href="#cloud-svg"/></svg>
-                <svg viewBox="0 0 160 120" class="absolute bottom-10 left-10 w-64 h-48 animate-float-delayed opacity-60"><use href="#cloud-svg"/></svg>
-                <svg viewBox="0 0 160 120" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-64 animate-float opacity-30"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="absolute top-10 right-0 lg:right-10 w-40 lg:w-48 h-28 lg:h-32 animate-float opacity-70"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="absolute bottom-10 left-0 lg:left-10 w-56 lg:w-64 h-40 lg:h-48 animate-float-delayed opacity-60"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-64 animate-float opacity-20"><use href="#cloud-svg"/></svg>
 
-                <div class="w-full h-full relative z-10 mt-12">
-                    <!-- Polaroid 1: Halaman Sekolah (Kiri Atas) -->
-                    <div class="polaroid absolute top-0 left-0 lg:left-10 w-48 lg:w-60 transform -rotate-3 animate-float">
+                <div class="w-full h-full relative z-10 mt-10 lg:mt-12 flex flex-col lg:block items-center justify-center gap-12">
+                    <!-- Polaroid 1: Halaman Sekolah -->
+                    <div class="polaroid w-56 lg:w-60 lg:absolute lg:top-0 lg:left-10 transform -rotate-3 animate-float shrink-0">
                         <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
                             <img src="foto-sekolah.png" alt="Halaman" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4='">
                         </div>
                         <p class="polaroid-text text-sm lg:text-base">Foto Halaman<br>Sekolah</p>
                     </div>
 
-                    <!-- Polaroid 2: Kegiatan Sekolah (Kanan Bawah) -->
-                    <div class="polaroid absolute bottom-20 right-0 lg:right-10 w-48 lg:w-60 transform rotate-3 animate-float-delayed">
+                    <!-- Polaroid 2: Kegiatan Sekolah -->
+                    <div class="polaroid w-56 lg:w-60 lg:absolute lg:bottom-20 lg:right-10 transform rotate-3 animate-float-delayed shrink-0">
                         <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
-                            <!-- Ganti kegiatan.png dengan foto asli kegiatan sekolah Anda nantinya -->
                             <img src="kegiatan.png" alt="Kegiatan" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYmQ1ZTEiLz48L3N2Zz4='">
                         </div>
                         <p class="polaroid-text text-sm lg:text-base">Foto Kegiatan<br>Sekolah</p>
@@ -158,10 +159,10 @@
             
         </section>
 
-        <!-- ==================== BAGIAN KANAN: MAIN APPLICATION (Tetap Diam) ==================== -->
-        <main id="main-app" class="h-screen w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-slate-50 to-white flex items-center justify-center p-4 lg:p-8 relative lg:border-l-4 lg:border-sekolah-gold shadow-2xl z-20">
+        <!-- ==================== BAGIAN MAIN APPLICATION (Kanan PC / Bawah Mobile) ==================== -->
+        <main id="main-app" class="min-h-screen lg:h-screen w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-slate-50 to-white flex items-center justify-center p-4 py-16 lg:p-8 relative lg:border-l-4 lg:border-sekolah-gold shadow-2xl z-20 lg:overflow-y-auto shrink-0">
             
-            <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300">
+            <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300 my-auto lg:animate-slide-left">
                 
                 <!-- Global Header App -->
                 <div class="px-6 py-4 flex items-center gap-4 bg-white border-b border-slate-100 no-print z-10 shadow-sm">
@@ -224,7 +225,7 @@
                 </div>
 
                 <!-- 3: Form Registrasi Tamu -->
-                <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto max-h-[600px] no-scrollbar">
+                <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto lg:max-h-[600px] no-scrollbar">
                     <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
                     <form id="guest-form" class="space-y-4 flex-1 pb-4">
                         <div>
