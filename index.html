@@ -11,32 +11,20 @@
             theme: {
                 extend: {
                     colors: {
-                        sekolah: { navy: '#1e3a8a', gold: '#facc15' }
+                        sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' }
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.6s ease-out forwards',
                         'slide-left': 'slideLeft 0.6s ease-out forwards',
-                        'typewriter': 'typing 2s steps(40, end), blink .75s step-end infinite',
-                        'bounce-slow': 'bounce 2s infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 7s ease-in-out infinite 2s',
+                        'polaroid-tilt': 'polaroidTilt 4s ease-in-out infinite',
                     },
                     keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(15px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        slideLeft: {
-                            '0%': { opacity: '0', transform: 'translateX(30px)' },
-                            '100%': { opacity: '1', transform: 'translateX(0)' },
-                        },
-                        typing: {
-                            from: { width: '0' },
-                            to: { width: '100%' }
-                        },
-                        blink: {
-                            'from, to': { borderColor: 'transparent' },
-                            '50%': { borderColor: '#facc15' }
-                        }
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(15px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        slideLeft: { '0%': { opacity: '0', transform: 'translateX(30px)' }, '100%': { opacity: '1', transform: 'translateX(0)' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
+                        polaroidTilt: { '0%, 100%': { transform: 'rotate(-2deg)' }, '50%': { transform: 'rotate(2deg)' } }
                     }
                 }
             }
@@ -44,83 +32,139 @@
     </script>
     
     <style>
-        /* ========================================================
-           MEMANGGIL FONT KUSTOM "CHILDER" YANG ANDA DOWNLOAD 
-           Pastikan file Childer.otf ada di folder yang sama!
-        ======================================================== */
         @font-face {
             font-family: 'Childer';
             src: url('Childer.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
 
-        /* Terapkan font Childer secara khusus ke class judul ini */
-        .font-custom-title {
-            font-family: 'Childer', sans-serif;
-            letter-spacing: 2px;
-        }
-
+        .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; }
+        
         .barcode {
             font-family: 'Libre Barcode 39', monospace;
-            letter-spacing: 2px;
-            background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px);
+            letter-spacing: 2px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px);
             height: 24px; width: 80%; margin: 0 auto;
         }
-        
-        .typewriter-text {
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: .15em solid #facc15;
-            margin: 0 auto;
+
+        /* Desain Polaroid Custom */
+        .polaroid {
+            background: #ffffff;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
         }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
+        .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 15px; color: #1e293b; line-height: 1.2; }
+
+        /* Sembunyikan scrollbar tapi tetap bisa di-scroll */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         @media print {
             body { background: white !important; overflow: auto !important; display: block !important; }
-            #hero-section, .no-print { display: none !important; }
+            #left-presentation, .no-print { display: none !important; }
             #main-app { height: auto !important; min-height: auto !important; width: 100% !important; background: none !important; padding: 0 !important; display: block !important; }
             #print-page { display: flex !important; position: absolute; left: 0; top: 0; width: 100%; justify-content: center; padding-top: 20px; }
             .print-container { box-shadow: none !important; border: none !important; max-width: none !important; }
         }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden">
+<body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-hidden">
 
-    <div class="flex flex-col lg:flex-row min-h-screen w-full">
+    <div class="flex flex-col lg:flex-row h-screen w-full">
         
-        <!-- ==================== 1. HERO SECTION ==================== -->
-        <section id="hero-section" class="relative min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 flex flex-col items-center justify-center bg-gradient-to-br from-sekolah-navy via-blue-900 to-slate-900 overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-20">
-                <div class="absolute -top-24 -right-24 w-96 h-96 bg-sekolah-gold rounded-full blur-3xl"></div>
-                <div class="absolute bottom-10 -left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl"></div>
-            </div>
+        <!-- ==================== BAGIAN KIRI: PRESENTASI UI/UX BARU (Scrollable) ==================== -->
+        <section id="left-presentation" class="relative w-full lg:w-1/2 h-screen overflow-y-auto no-scrollbar snap-y snap-mandatory bg-sekolah-dark">
+            
+            <!-- SVGs Awan sebagai dekorasi global -->
+            <svg class="hidden">
+                <defs>
+                    <g id="cloud-svg">
+                        <path d="M 20 60 A 20 20 0 0 1 40 40 A 30 30 0 0 1 95 45 A 25 25 0 0 1 140 60 A 20 20 0 0 1 120 95 L 25 95 A 15 15 0 0 1 20 60 Z" fill="#ffffff" opacity="0.9" filter="drop-shadow(0px 10px 10px rgba(0,0,0,0.1))"/>
+                    </g>
+                </defs>
+            </svg>
 
-            <div class="z-10 text-center px-6 max-w-2xl flex flex-col items-center w-full">
-                <!-- LOGO 1 -->
-                <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-20 h-20 lg:w-32 lg:h-32 object-contain mb-8 drop-shadow-xl animate-fade-in" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
-                
-                <div class="inline-block mb-8">
-                    <!-- FONT CUSTOM "CHILDER" DITERAPKAN DI SINI -->
-                    <h1 class="font-custom-title text-3xl lg:text-5xl font-extrabold text-white tracking-tight typewriter-text animate-typewriter">
-                        Selamat Datang Tamu SMAN 1 Kandangan
+            <!-- HALAMAN 1: HERO SECTION -->
+            <div class="h-screen w-full snap-start relative flex flex-col items-center justify-center p-6 overflow-hidden">
+                <div class="z-10 text-center flex flex-col items-center w-full animate-float">
+                    <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-24 h-24 lg:w-32 lg:h-32 object-contain mb-8 drop-shadow-2xl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
+                    <h1 class="font-custom-title text-3xl lg:text-5xl text-white tracking-widest leading-tight text-center drop-shadow-md">
+                        Selamat Datang Tamu<br>SMAN 1 Kandangan
                     </h1>
+                </div>
+                <!-- Ornamen Awan Bawah -->
+                <div class="absolute -bottom-10 left-0 w-full flex justify-between opacity-80 pointer-events-none">
+                    <svg viewBox="0 0 160 120" class="w-64 h-48 animate-float -ml-10"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-80 h-56 animate-float-delayed -mr-16 mb-4 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+                </div>
+                <!-- Panah Scroll ke bawah -->
+                <div class="absolute bottom-6 z-20 text-white flex flex-col items-center animate-bounce-slow opacity-60">
+                    <span class="text-[10px] uppercase tracking-widest mb-1">Scroll</span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </div>
             </div>
 
-            <a href="#main-app" class="absolute bottom-8 z-10 text-white opacity-80 hover:opacity-100 transition-opacity flex flex-col items-center gap-2 cursor-pointer lg:hidden">
-                <span class="text-xs font-semibold tracking-widest uppercase text-sekolah-gold">Mulai Kunjungan</span>
-                <svg class="w-8 h-8 animate-bounce-slow text-sekolah-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-            </a>
+            <!-- HALAMAN 2A: PROFIL SEKOLAH -->
+            <div class="h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 overflow-hidden">
+                <!-- Awan Atas -->
+                <div class="absolute -top-10 left-0 w-full flex justify-between opacity-70 pointer-events-none">
+                    <svg viewBox="0 0 160 120" class="w-56 h-40 animate-float-delayed -ml-10"><use href="#cloud-svg"/></svg>
+                    <svg viewBox="0 0 160 120" class="w-72 h-48 animate-float -mr-10 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+                </div>
+
+                <h1 class="font-custom-title text-4xl lg:text-6xl text-white mb-12 z-10 drop-shadow-md text-center">Profil Sekolah</h1>
+                
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full max-w-3xl z-10">
+                    <!-- Frame Polaroid Kosong -->
+                    <div class="polaroid w-48 h-56 lg:w-64 lg:h-72 transform -rotate-2 animate-polaroid-tilt">
+                        <div class="w-full h-full bg-sekolah-dark border-4 border-slate-200/20 shadow-inner"></div>
+                    </div>
+                    <!-- Teks Sejarah -->
+                    <div class="flex-1 text-center lg:text-left">
+                        <p class="text-white text-lg lg:text-2xl font-bold leading-relaxed drop-shadow-sm">
+                            SMAN 1 Kandangan berdiri di Kecamatan Kandangan, Desa Kandangan, Jln. Hayam Wuruk 96 didirikan pada tahun 1994
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HALAMAN 2: GALERI FOTO -->
+            <div class="h-screen w-full snap-start relative flex flex-col p-8 overflow-hidden">
+                <!-- Awan Menyebar -->
+                <svg viewBox="0 0 160 120" class="absolute top-10 right-10 w-48 h-32 animate-float opacity-70"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="absolute bottom-10 left-10 w-64 h-48 animate-float-delayed opacity-60"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-64 animate-float opacity-30"><use href="#cloud-svg"/></svg>
+
+                <div class="w-full h-full relative z-10 mt-12">
+                    <!-- Polaroid 1: Halaman Sekolah (Kiri Atas) -->
+                    <div class="polaroid absolute top-0 left-0 lg:left-10 w-48 lg:w-60 transform -rotate-3 animate-float">
+                        <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
+                            <img src="foto-sekolah.png" alt="Halaman" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4='">
+                        </div>
+                        <p class="polaroid-text text-sm lg:text-base">Foto Halaman<br>Sekolah</p>
+                    </div>
+
+                    <!-- Polaroid 2: Kegiatan Sekolah (Kanan Bawah) -->
+                    <div class="polaroid absolute bottom-20 right-0 lg:right-10 w-48 lg:w-60 transform rotate-3 animate-float-delayed">
+                        <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
+                            <!-- Ganti kegiatan.png dengan foto asli kegiatan sekolah Anda nantinya -->
+                            <img src="kegiatan.png" alt="Kegiatan" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYmQ1ZTEiLz48L3N2Zz4='">
+                        </div>
+                        <p class="polaroid-text text-sm lg:text-base">Foto Kegiatan<br>Sekolah</p>
+                    </div>
+                </div>
+            </div>
+            
         </section>
 
-        <!-- ==================== 2. MAIN APPLICATION ==================== -->
-        <main id="main-app" class="min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 bg-gradient-to-br from-blue-100 via-slate-50 to-white flex items-center justify-center p-4 lg:p-8 relative">
+        <!-- ==================== BAGIAN KANAN: MAIN APPLICATION (Tetap Diam) ==================== -->
+        <main id="main-app" class="h-screen w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-slate-50 to-white flex items-center justify-center p-4 lg:p-8 relative lg:border-l-4 lg:border-sekolah-gold shadow-2xl z-20">
             
-            <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300 animate-slide-left">
+            <div class="print-container bg-white w-full max-w-md rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 overflow-hidden min-h-[600px] relative flex flex-col transition-all duration-300">
                 
-                <!-- Global Header -->
+                <!-- Global Header App -->
                 <div class="px-6 py-4 flex items-center gap-4 bg-white border-b border-slate-100 no-print z-10 shadow-sm">
-                    <!-- LOGO 2 -->
                     <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain" onerror="this.style.display='none'">
                     <div class="flex flex-col">
                         <h2 class="font-extrabold text-sekolah-navy text-base leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
@@ -128,7 +172,7 @@
                     </div>
                 </div>
 
-                <!-- HALAMAN 1: Form Login -->
+                <!-- 1: Form Login -->
                 <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
                     <div class="text-center mb-8">
                         <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
@@ -150,7 +194,7 @@
                     </form>
                 </div>
 
-                <!-- HALAMAN 2: Kamera -->
+                <!-- 2: Kamera -->
                 <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
@@ -179,8 +223,8 @@
                     </div>
                 </div>
 
-                <!-- HALAMAN 3: Form Registrasi Tamu -->
-                <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto max-h-[600px] custom-scrollbar">
+                <!-- 3: Form Registrasi Tamu -->
+                <div id="form-page" class="p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto max-h-[600px] no-scrollbar">
                     <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
                     <form id="guest-form" class="space-y-4 flex-1 pb-4">
                         <div>
@@ -189,7 +233,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Keperluan di Sekolah</label>
-                            <input type="text" id="input-tujuan" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Rapat Komite, Mengantar Berkas">
+                            <input type="text" id="input-tujuan" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none" placeholder="Contoh: Rapat Komite">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Pihak yang Dituju</label>
@@ -216,13 +260,12 @@
                     </form>
                 </div>
 
-                <!-- HALAMAN 4: ID Card & Cetak -->
+                <!-- 4: ID Card & Cetak -->
                 <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
                     <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
                         <div class="bg-sekolah-navy h-20 w-full relative">
                             <div class="absolute bottom-0 w-full h-2 bg-sekolah-gold"></div>
                             
-                            <!-- LOGO 3: Pojok Kiri Atas Kartu -->
                             <div class="absolute top-2 left-2 flex flex-col items-center z-10">
                                 <img src="logo saka.png" alt="Logo" class="w-7 h-7 object-contain drop-shadow-md bg-white rounded-full p-[1px]" onerror="this.style.display='none'">
                                 <span class="text-white font-bold text-[6px] mt-1 tracking-widest text-center uppercase leading-none drop-shadow-sm">SMAN 1<br>Kandangan</span>
@@ -293,9 +336,7 @@
             e.preventDefault(); 
             showPage('camera'); 
             initCamera(); 
-            if (window.innerWidth < 1024) {
-                window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
-            }
+            if (window.innerWidth < 1024) { window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' }); }
         });
 
         const video = document.getElementById('video-feed'), canvas = document.getElementById('photo-canvas');
@@ -320,39 +361,22 @@
             btnCapture.classList.remove('hidden'); btnRetake.classList.add('hidden'); btnNextForm.classList.add('hidden'); photoDataUrl = '';
         });
         
-        btnNextForm.addEventListener('click', () => { 
-            stopCamera(); 
-            showPage('form'); 
-        });
+        btnNextForm.addEventListener('click', () => { stopCamera(); showPage('form'); });
 
         document.getElementById('guest-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const nama = document.getElementById('input-nama').value;
-            const tujuan = document.getElementById('input-tujuan').value;
-            const dituju = document.getElementById('input-dituju').value;
-            
-            const tanggalInput = document.getElementById('input-tanggal').value;
-            const waktuDatang = document.getElementById('input-waktu').value;
-            const batasWaktu = document.getElementById('input-jam-selesai').value;
-
-            const dateObj = new Date(tanggalInput);
-            const opsiFormat = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            const tanggalFormat = dateObj.toLocaleDateString('id-ID', opsiFormat);
+            const dateObj = new Date(document.getElementById('input-tanggal').value);
+            const tanggalFormat = dateObj.toLocaleDateString('id-ID', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
 
             document.getElementById('card-photo').src = photoDataUrl;
-            document.getElementById('card-nama').textContent = nama;
-            document.getElementById('card-tujuan').textContent = tujuan;
-            document.getElementById('card-dituju').textContent = dituju;
-            
-            document.getElementById('card-batas-waktu').textContent = `${batasWaktu} WIB`;
-            document.getElementById('card-tanggal').textContent = `${tanggalFormat} | MASUK: ${waktuDatang} WIB`;
+            document.getElementById('card-nama').textContent = document.getElementById('input-nama').value;
+            document.getElementById('card-tujuan').textContent = document.getElementById('input-tujuan').value;
+            document.getElementById('card-dituju').textContent = document.getElementById('input-dituju').value;
+            document.getElementById('card-batas-waktu').textContent = `${document.getElementById('input-jam-selesai').value} WIB`;
+            document.getElementById('card-tanggal').textContent = `${tanggalFormat} | MASUK: ${document.getElementById('input-waktu').value} WIB`;
             
             showPage('print');
-            
-            if (window.innerWidth < 1024) {
-                window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' });
-            }
+            if (window.innerWidth < 1024) { window.scrollTo({ top: document.getElementById('main-app').offsetTop, behavior: 'smooth' }); }
         });
     </script>
 </body>
