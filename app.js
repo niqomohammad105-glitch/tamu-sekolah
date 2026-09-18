@@ -1,7 +1,7 @@
 // ==========================================
 // KONFIGURASI SUPABASE (ANTI-CRASH)
 // ==========================================
-const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
 
 let _supabase = null;
