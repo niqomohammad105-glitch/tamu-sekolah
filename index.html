@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Penerimaan Tamu & Admin - SMAN 1 Kandangan</title>
+    <title>Buku Tamu - SMAN 1 Kandangan</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- SCRIPT CDN SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -18,18 +17,21 @@
                         slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' }
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'float': 'float 6s ease-in-out infinite',
                         'float-delayed': 'float 7s ease-in-out infinite 2s',
                         'polaroid-tilt': 'polaroidTilt 4s ease-in-out infinite',
                         'slide-in-right': 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                     },
                     keyframes: {
-                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(15px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        /* Mengubah translateY menjadi negatif agar animasi turun dari atas ke bawah */
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(-30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
                         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
                         polaroidTilt: { '0%, 100%': { transform: 'rotate(-2deg)' }, '50%': { transform: 'rotate(2deg)' } },
-                        slideInRight: { '0%': { opacity: '0', transform: 'translateX(100%)' }, '100%': { opacity: '1', transform: 'translateX(0)' } }
+                        slideInRight: { '0%': { opacity: '0', transform: 'translateX(100%)' }, '100%': { opacity: '1', transform: 'translateX(0)' } },
+                        popIn: { '0%': { opacity: '0', transform: 'scale(0.85)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
                     }
                 }
             }
@@ -37,520 +39,264 @@
     </script>
     
     <style>
-        @font-face {
-            font-family: 'Childer';
-            src: url('Childer.otf') format('opentype');
-            font-weight: normal; font-style: normal;
-        }
+        @font-face { font-family: 'Childer'; src: url('Childer.otf') format('opentype'); font-weight: normal; font-style: normal; }
         .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; line-height: 1.2; }
-        
-        .barcode {
-            font-family: 'Libre Barcode 39', monospace;
-            letter-spacing: 2px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px);
-            height: 24px; width: 80%; margin: 0 auto;
-        }
-
-        .polaroid {
-            background: #ffffff;
-            padding: 10px 10px 35px 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-        .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
+        .barcode { font-family: 'Libre Barcode 39', monospace; letter-spacing: 2px; height: 24px; width: 80%; margin: 0 auto; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px); }
+        .polaroid { background: #ffffff; padding: 10px 10px 35px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .polaroid:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 20; }
         .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 10px; color: #1e293b; }
-
+        
+        .id-card-shine { position: relative; overflow: hidden; }
+        /* Animasi kilap hologram menyapu dari atas ke bawah */
+        .id-card-shine::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%); animation: shine 3s infinite; pointer-events: none; z-index: 50; }
+        @keyframes shine { 0% { top: -100%; } 20% { top: 200%; } 100% { top: 200%; } }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        .hidden-transition { opacity: 0; pointer-events: none; transition: all 0.3s ease; transform: scale(0.95); }
-        .show-transition { opacity: 1; pointer-events: auto; transform: scale(1); }
-
+        .hidden-transition { opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(0.95) translateY(-10px); }
+        .show-transition { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+        button, a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        button:active, a:active { transform: scale(0.95); }
         @media print {
             body { background: white !important; overflow: auto !important; display: block !important; }
             #left-presentation, .no-print, #view-admin { display: none !important; }
-            #main-app { height: auto !important; min-height: auto !important; width: 100% !important; background: none !important; padding: 0 !important; display: block !important; border: none !important; box-shadow: none !important; }
+            #main-app { height: auto !important; width: 100% !important; background: none !important; padding: 0 !important; display: block !important; }
             #print-page { display: flex !important; position: absolute; left: 0; top: 0; width: 100%; justify-content: center; padding-top: 20px; }
-            .print-container { box-shadow: none !important; border: none !important; max-width: none !important; }
+            .id-card-shine::after { display: none !important; }
         }
     </style>
 </head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased h-screen overflow-hidden flex selection:bg-sekolah-gold selection:text-sekolah-navy">
 
-<body class="bg-sekolah-dark font-sans text-slate-800 antialiased overflow-x-hidden">
+    <!-- CETAKAN SVG AWAN & BALON -->
+    <svg class="hidden">
+        <defs>
+            <g id="cloud-svg"><path d="M 20 60 A 20 20 0 0 1 40 40 A 30 30 0 0 1 95 45 A 25 25 0 0 1 140 60 A 20 20 0 0 1 120 95 L 25 95 A 15 15 0 0 1 20 60 Z" fill="#ffffff" opacity="0.9" filter="drop-shadow(0px 8px 8px rgba(0,0,0,0.15))"/></g>
+            <g id="balloon-svg">
+                <path d="M47 85 L35 105 M53 85 L65 105" stroke="#cbd5e1" stroke-width="2" opacity="0.8"/>
+                <rect x="30" y="105" width="40" height="22" rx="3" fill="#facc15" filter="drop-shadow(0px 4px 4px rgba(0,0,0,0.1))"/>
+                <rect x="30" y="105" width="40" height="5" fill="#ca8a04" rx="1" />
+                <line x1="30" y1="115" x2="70" y2="115" stroke="#ca8a04" stroke-width="1" opacity="0.5"/>
+                <path d="M50 5 C20 5 5 35 20 70 C30 90 70 90 80 70 C95 35 80 5 50 5 Z" fill="#ffffff" filter="drop-shadow(0px 8px 8px rgba(0,0,0,0.15))"/>
+                <path d="M50 5 C35 5 25 35 35 70 C40 82 60 82 65 70 C75 35 65 5 50 5 Z" fill="#1e3a8a" opacity="0.1"/>
+                <path d="M50 5 C45 5 40 35 45 70 C48 78 52 78 55 70 C60 35 55 5 50 5 Z" fill="#facc15"/>
+            </g>
+        </defs>
+    </svg>
 
-    <!-- =========================================================================
-                                1. GUEST VIEW (BUKU TAMU)
-    ========================================================================== -->
-    <div id="view-guest" class="block w-full min-h-screen">
-        <div class="flex flex-col w-full min-h-screen">
+    <!-- KIRI: PRESENTASI VISUAL -->
+    <section id="left-presentation" class="hidden lg:flex flex-col w-1/2 h-full overflow-y-auto no-scrollbar bg-sekolah-dark relative z-0">
+        <!-- Hero Section -->
+        <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden">
+            <div class="z-10 flex flex-col items-center w-full animate-float">
+                <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-36 h-36 object-contain mb-8 drop-shadow-2xl">
+                <h1 class="font-custom-title text-6xl text-white text-center drop-shadow-lg">Selamat Datang Tamu<br>SMAN 1 Kandangan</h1>
+            </div>
             
-            <section id="left-presentation" class="relative w-full flex flex-col bg-sekolah-dark z-0">
-                <svg class="hidden">
-                    <defs>
-                        <g id="cloud-svg">
-                            <path d="M 20 60 A 20 20 0 0 1 40 40 A 30 30 0 0 1 95 45 A 25 25 0 0 1 140 60 A 20 20 0 0 1 120 95 L 25 95 A 15 15 0 0 1 20 60 Z" fill="#ffffff" opacity="0.9" filter="drop-shadow(0px 8px 8px rgba(0,0,0,0.15))"/>
-                        </g>
-                    </defs>
-                </svg>
-
-                <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden">
-                    <div class="z-10 flex flex-col items-center w-full animate-float mt-10 lg:mt-0">
-                        <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" class="w-24 h-24 lg:w-36 lg:h-36 object-contain mb-6 lg:mb-8 drop-shadow-2xl" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
-                        <h1 class="font-custom-title text-4xl lg:text-6xl text-white text-center drop-shadow-lg">
-                            Selamat Datang Tamu<br>SMAN 1 Kandangan
-                        </h1>
-                    </div>
-                    <div class="absolute -bottom-5 lg:-bottom-10 left-0 w-full flex justify-between opacity-80 pointer-events-none">
-                        <svg viewBox="0 0 160 120" class="w-48 lg:w-96 h-36 lg:h-72 animate-float -ml-10"><use href="#cloud-svg"/></svg>
-                        <svg viewBox="0 0 160 120" class="w-64 lg:w-[30rem] h-48 lg:h-80 animate-float-delayed -mr-16 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
-                    </div>
-                    <a href="#main-app" class="absolute bottom-6 z-20 text-white flex flex-col items-center animate-bounce-slow opacity-60 hover:opacity-100 cursor-pointer">
-                        <span class="text-xs lg:text-sm font-semibold tracking-widest uppercase text-sekolah-gold mb-1">Mulai Kunjungan</span>
-                        <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                    </a>
-                </div>
-
-                <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 lg:p-10 overflow-hidden border-t border-white/10">
-                    <div class="absolute -top-10 left-0 w-full flex justify-between opacity-50 pointer-events-none">
-                        <svg viewBox="0 0 160 120" class="w-40 lg:w-72 h-28 lg:h-56 animate-float-delayed -ml-10"><use href="#cloud-svg"/></svg>
-                        <svg viewBox="0 0 160 120" class="w-48 lg:w-80 h-36 lg:h-64 animate-float -mr-10 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
-                    </div>
-                    <h1 class="font-custom-title text-4xl lg:text-6xl text-white mb-10 lg:mb-16 z-10 drop-shadow-md text-center">Profil Sekolah</h1>
-                    <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 w-full max-w-4xl z-10">
-                        <div class="polaroid w-48 lg:w-64 aspect-[3/4] transform -rotate-2 animate-polaroid-tilt shrink-0">
-                            <div class="w-full h-full bg-sekolah-dark border-4 border-slate-200/20 shadow-inner"></div>
-                        </div>
-                        <div class="flex-1 text-center lg:text-left px-4 lg:px-0">
-                            <p class="text-white text-lg lg:text-3xl font-medium leading-relaxed drop-shadow-sm">
-                                SMAN 1 Kandangan berdiri di Kecamatan Kandangan, Desa Kandangan, Jln. Hayam Wuruk 96 didirikan pada tahun 1994
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-6 lg:p-10 overflow-hidden border-t border-white/10">
-                    <svg viewBox="0 0 160 120" class="absolute top-10 right-0 lg:right-20 w-40 lg:w-64 h-32 lg:h-48 animate-float opacity-50"><use href="#cloud-svg"/></svg>
-                    <svg viewBox="0 0 160 120" class="absolute bottom-10 left-0 lg:left-20 w-48 lg:w-72 h-40 lg:h-56 animate-float-delayed opacity-50"><use href="#cloud-svg"/></svg>
-                    <svg viewBox="0 0 160 120" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 lg:w-[40rem] h-48 lg:h-[30rem] animate-float opacity-10"><use href="#cloud-svg"/></svg>
-                    <div class="w-full relative z-10 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-24 mt-4">
-                        <div class="polaroid w-52 lg:w-72 transform -rotate-3 lg:-translate-y-8 animate-float shrink-0">
-                            <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
-                                <img src="foto-sekolah.png" alt="Halaman" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4='">
-                            </div>
-                            <p class="polaroid-text text-sm lg:text-xl">Foto Halaman<br>Sekolah</p>
-                        </div>
-                        <div class="polaroid w-52 lg:w-72 transform rotate-3 lg:translate-y-8 animate-float-delayed shrink-0">
-                            <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
-                                <img src="kegiatan.png" alt="Kegiatan" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYmQ1ZTEiLz48L3N2Zz4='">
-                            </div>
-                            <p class="polaroid-text text-sm lg:text-xl">Foto Kegiatan<br>Sekolah</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <main id="main-app" class="relative w-full min-h-screen flex items-center justify-center p-4 py-16 lg:py-24 bg-gradient-to-br from-blue-50 via-slate-50 to-white z-20 shadow-[0_-15px_30px_rgba(0,0,0,0.3)]">
-                <div class="print-container bg-white w-full max-w-md rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[550px] relative flex flex-col transition-all duration-300">
-                    
-                    <div class="px-6 py-4 flex items-center justify-between bg-white border-b border-slate-100 no-print z-10">
-                        <div class="flex items-center gap-3">
-                            <img src="logo saka.png" alt="Logo" class="w-9 h-9 object-contain" onerror="this.style.display='none'">
-                            <div class="flex flex-col">
-                                <h2 class="font-extrabold text-sekolah-navy text-sm leading-tight uppercase tracking-wide">SMAN 1 Kandangan</h2>
-                                <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase">Portal Buku Tamu</span>
-                            </div>
-                        </div>
-                        <button type="button" onclick="switchView('admin')" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-sekolah-navy border border-slate-200 rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                            Admin
-                        </button>
-                    </div>
-
-                    <!-- Login Page -->
-                    <div id="login-page" class="p-8 animate-fade-in flex-1 flex flex-col justify-center block">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-bold text-slate-900">Otorisasi Petugas</h2>
-                            <p class="text-slate-500 text-sm mt-1">Silakan verifikasi identitas Anda</p>
-                        </div>
-                        <form id="login-form" class="space-y-5">
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">ID Petugas</label>
-                                <input type="text" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="Masukkan ID">
-                            </div>
-                            <div class="relative">
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">Kata Sandi</label>
-                                <input type="password" id="input-password" required class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:border-sekolah-navy focus:ring-0 outline-none transition-all" placeholder="••••••••">
-                                <button type="button" onclick="togglePassword()" class="absolute right-3 top-[34px] p-2 text-slate-400 hover:text-slate-600 focus:outline-none">
-                                    <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
-                            </div>
-                            <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all mt-4">Login & Mulai</button>
-                        </form>
-                    </div>
-
-                    <!-- Camera Page -->
-                    <div id="camera-page" class="p-8 hidden flex-col flex-1 animate-fade-in">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="bg-amber-100 p-2 rounded-lg text-amber-600 shadow-sm">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            </div>
-                            <div><h2 class="text-lg font-bold text-slate-900">Verifikasi Wajah</h2></div>
-                        </div>
-                        <div class="relative bg-slate-900 rounded-2xl overflow-hidden w-full aspect-square mb-6 shadow-inner border-4 border-slate-100 flex justify-center items-center">
-                            <video id="video-feed" autoplay playsinline class="w-full h-full object-cover transform scale-x-[-1]"></video>
-                            <canvas id="photo-canvas" class="hidden w-full h-full object-cover transform scale-x-[-1]"></canvas>
-                            <div class="absolute inset-0 border-[30px] border-black/20 pointer-events-none rounded-xl"></div>
-                        </div>
-                        <div class="flex flex-col gap-3 mt-auto">
-                            <button id="btn-capture" type="button" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
-                                <span class="w-4 h-4 bg-white rounded-full animate-pulse-slow"></span> Ambil Foto
-                            </button>
-                            <div class="flex gap-2">
-                                <button id="btn-retake" type="button" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hidden transition-all">Ulangi</button>
-                                <button id="btn-next-form" type="button" class="w-2/3 bg-sekolah-gold hover:bg-yellow-500 text-slate-900 font-bold py-3 rounded-xl shadow-md hidden transition-all">Isi Data ➔</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form Page -->
-                    <div id="form-page" class="p-6 lg:p-8 hidden flex-1 flex-col animate-fade-in overflow-y-auto no-scrollbar max-h-[500px]">
-                        <h2 class="text-xl font-bold text-slate-900 mb-5 border-b-2 pb-3">Registrasi Tamu</h2>
-                        <form id="guest-form" class="space-y-4 flex-1 pb-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Tamu</label>
-                                <input type="text" id="input-nama" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">Keperluan di Sekolah</label>
-                                <input type="text" id="input-tujuan" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">Pihak yang Dituju</label>
-                                <input type="text" id="input-dituju" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-1">Tanggal Hadir</label>
-                                    <input type="date" id="input-tanggal" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-1">Waktu Datang</label>
-                                    <input type="time" id="input-waktu" required class="w-full px-3 py-2.5 border-2 border-slate-200 rounded-lg focus:border-sekolah-navy outline-none">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-slate-700 mb-1">Berlaku Sampai Jam</label>
-                                <input type="time" id="input-jam-selesai" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg text-red-600 font-bold focus:border-sekolah-navy outline-none">
-                            </div>
-                            <button type="submit" class="w-full bg-sekolah-navy hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md mt-4 transition-all">Terbitkan ID</button>
-                        </form>
-                    </div>
-
-                    <!-- Print Page -->
-                    <div id="print-page" class="p-8 hidden flex-1 flex-col items-center animate-fade-in bg-slate-50">
-                        <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative" style="print-color-adjust: exact; -webkit-print-color-adjust: exact;">
-                            <div class="bg-sekolah-navy h-20 w-full relative">
-                                <div class="absolute bottom-0 w-full h-2 bg-sekolah-gold"></div>
-                                <div class="absolute top-2 left-2 flex flex-col items-center z-10">
-                                    <img src="logo saka.png" alt="Logo" class="w-7 h-7 object-contain drop-shadow-md bg-white rounded-full p-[1px]" onerror="this.style.display='none'">
-                                    <span class="text-white font-bold text-[6px] mt-1 tracking-widest text-center uppercase leading-none drop-shadow-sm">SMAN 1<br>Kandangan</span>
-                                </div>
-                                <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-white rounded-full border-4 border-white shadow-sm flex items-center justify-center z-10 overflow-hidden">
-                                    <img id="card-photo" src="" alt="Foto" class="w-full h-full object-cover text-[8px] text-center text-slate-400">
-                                </div>
-                            </div>
-                            <div class="pt-12 pb-4 px-4 text-center mt-2 relative z-0">
-                                <h3 class="font-black text-slate-900 tracking-wider text-xl uppercase">VISITOR</h3>
-                                <div class="bg-slate-50 rounded-lg p-2 mb-3 border border-slate-100">
-                                    <p id="card-nama" class="font-bold text-slate-800 text-sm truncate uppercase">NAMA TAMU</p>
-                                </div>
-                                <div class="text-left space-y-1.5 px-2">
-                                    <div>
-                                        <p class="text-[9px] text-slate-500 font-bold uppercase">Keperluan:</p>
-                                        <p id="card-tujuan" class="text-xs font-semibold text-sekolah-navy leading-tight line-clamp-2">Keperluan Kunjungan</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[9px] text-slate-500 font-bold uppercase">Menemui:</p>
-                                        <p id="card-dituju" class="text-xs font-semibold text-slate-800 leading-tight">Nama Dituju</p>
-                                    </div>
-                                    <div class="mt-2 bg-red-50 border border-red-100 rounded p-1.5 text-center shadow-sm">
-                                        <p class="text-[9px] text-red-500 font-bold uppercase">Batas Kunjungan:</p>
-                                        <p id="card-batas-waktu" class="text-xs font-black text-red-800 tracking-wider">00:00 WIB</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-slate-100 px-4 py-2.5 text-center border-t border-slate-200">
-                                <div class="barcode mb-1"></div>
-                                <p id="card-tanggal" class="text-[8px] font-mono text-slate-600 font-bold uppercase tracking-wide">TGL - WAKTU</p>
-                            </div>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 mt-8 no-print">
-                            <button onclick="window.print()" type="button" class="w-full bg-sekolah-navy text-white font-bold py-3.5 rounded-xl shadow-md">Cetak ID Card</button>
-                            <button onclick="location.reload()" type="button" class="w-full bg-transparent border-2 border-slate-300 text-slate-600 font-bold py-3 rounded-xl">Selesai</button>
-                        </div>
-                    </div>
-                </div>
-            </main>
+            <div class="absolute -bottom-10 left-0 w-full flex justify-between opacity-80 pointer-events-none z-0">
+                <svg viewBox="0 0 160 120" class="w-96 h-72 animate-float -ml-10"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 100 140" class="absolute bottom-32 left-[30%] w-28 h-36 animate-float-delayed opacity-90"><use href="#balloon-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="w-[30rem] h-80 animate-float -mr-16 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+            </div>
+            <svg viewBox="0 0 100 140" class="absolute top-20 right-32 w-20 h-28 animate-float opacity-70 transform scale-x-[-1]"><use href="#balloon-svg"/></svg>
         </div>
-    </div>
 
-    <!-- =========================================================================
-                                2. ADMIN VIEW (DASHBOARD)
-    ========================================================================== -->
-    <div id="view-admin" class="hidden h-screen bg-slate-50 w-full overflow-hidden flex-col lg:flex-row">
-        <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden transition-opacity opacity-0 backdrop-blur-sm" onclick="toggleSidebar()"></div>
+        <!-- Profil Sekolah -->
+        <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-10 overflow-hidden border-t border-white/10">
+            <div class="absolute -top-10 left-0 w-full flex justify-between opacity-50 pointer-events-none z-0">
+                <svg viewBox="0 0 160 120" class="w-72 h-56 animate-float-delayed -ml-10"><use href="#cloud-svg"/></svg>
+                <svg viewBox="0 0 160 120" class="w-80 h-64 animate-float -mr-10 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
+            </div>
+            <svg viewBox="0 0 100 140" class="absolute bottom-40 left-24 w-16 h-20 animate-float-delayed opacity-60"><use href="#balloon-svg"/></svg>
 
-        <!-- Sidebar -->
-        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-sekolah-dark text-slate-300 transition-transform duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col shadow-2xl lg:shadow-none border-r border-white/5">
-            <div class="h-20 flex items-center justify-between px-6 bg-black/20 border-b border-white/10 shrink-0">
-                <div class="flex items-center gap-3">
-                    <img src="logo saka.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-md" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZhY2MxNSIvPjwvc3ZnPg=='">
+            <h1 class="font-custom-title text-6xl text-white mb-16 z-10 drop-shadow-md text-center">Profil Sekolah</h1>
+            <div class="flex flex-row items-center justify-center gap-16 w-full max-w-4xl z-10">
+                <div class="polaroid w-64 aspect-[3/4] transform -rotate-2 animate-polaroid-tilt shrink-0">
+                    <div class="w-full h-full bg-sekolah-dark border-4 border-slate-200/20 shadow-inner"></div>
+                </div>
+                <div class="flex-1 text-left">
+                    <p class="text-white text-3xl font-medium leading-relaxed drop-shadow-sm">SMAN 1 Kandangan berdiri di Kecamatan Kandangan, Desa Kandangan, Jln. Hayam Wuruk 96 didirikan pada tahun 1994.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Foto Sekolah -->
+        <div class="relative w-full min-h-screen flex flex-col items-center justify-center p-10 overflow-hidden border-t border-white/10">
+            <svg viewBox="0 0 160 120" class="absolute top-10 right-20 w-64 h-48 animate-float opacity-50"><use href="#cloud-svg"/></svg>
+            <svg viewBox="0 0 160 120" class="absolute bottom-10 left-20 w-72 h-56 animate-float-delayed opacity-50"><use href="#cloud-svg"/></svg>
+            <svg viewBox="0 0 100 140" class="absolute top-32 left-[60%] w-14 h-20 animate-float opacity-40"><use href="#balloon-svg"/></svg>
+
+            <div class="w-full relative z-10 flex flex-row items-center justify-center gap-24 mt-4">
+                <div class="polaroid w-72 transform -rotate-3 -translate-y-8 animate-float shrink-0">
+                    <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
+                        <img src="foto-sekolah.png" alt="Halaman" class="w-full h-full object-cover">
+                    </div>
+                    <p class="polaroid-text text-xl">Foto Halaman<br>Sekolah</p>
+                </div>
+                <div class="polaroid w-72 transform rotate-3 translate-y-8 animate-float-delayed shrink-0">
+                    <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
+                        <img src="kegiatan.png" alt="Kegiatan" class="w-full h-full object-cover">
+                    </div>
+                    <p class="polaroid-text text-xl">Foto Kegiatan<br>Sekolah</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KANAN: APLIKASI BUKU TAMU -->
+    <main id="main-app" class="w-full lg:w-1/2 h-full overflow-y-auto custom-scrollbar bg-slate-50 relative">
+        <button onclick="toggleAdmin()" class="no-print absolute top-6 right-6 p-3 bg-white/80 backdrop-blur border border-slate-200 rounded-xl text-slate-400 hover:text-sekolah-navy hover:shadow-lg transition-all z-50">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        </button>
+
+        <!-- View: Guest Flow -->
+        <div id="view-guest" class="w-full min-h-full p-6 lg:p-12 flex flex-col items-center justify-center relative">
+            
+            <!-- Step 1: Login Dummy -->
+            <div id="step-login" class="w-full max-w-md bg-white rounded-3xl p-8 shadow-xl border border-slate-100 show-transition absolute">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-sekolah-navy text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-900/20"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg></div>
+                    <h2 class="text-2xl font-bold text-slate-800">Akses Sistem</h2>
+                    <p class="text-sm text-slate-500 mt-1">Masukkan kredensial penjaga piket</p>
+                </div>
+                <form onsubmit="event.preventDefault(); nextStep('step-camera');" class="space-y-5">
                     <div>
-                        <h1 class="text-white font-extrabold text-sm uppercase tracking-wider">Buku Tamu</h1>
-                        <p class="text-sekolah-gold text-[10px] font-bold tracking-widest uppercase">Admin Panel</p>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">ID Petugas</label>
+                        <input type="text" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy focus:border-sekolah-navy transition-all" placeholder="Masukkan ID">
                     </div>
-                </div>
-                <button class="lg:hidden text-slate-400 hover:text-white" onclick="toggleSidebar()">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-
-            <div class="flex-1 overflow-y-auto py-6 px-4 space-y-8 custom-scrollbar">
-                <div>
-                    <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Menu Utama</p>
-                    <nav class="space-y-1">
-                        <a href="#" class="flex items-center justify-between px-4 py-3 bg-blue-600/20 text-blue-400 rounded-xl font-semibold transition-colors border border-blue-500/20">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                                Dashboard
-                            </div>
-                        </a>
-                        <a href="#" onclick="alertFeature('Data Tamu')" class="flex items-center justify-between px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                Data Tamu
-                            </div>
-                            <span class="bg-sekolah-gold text-sekolah-navy text-xs font-bold px-2 py-0.5 rounded-full">8</span>
-                        </a>
-                        <a href="#" onclick="alertFeature('Laporan & Rekapitulasi')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Laporan (Rekap)
-                        </a>
-                    </nav>
-                </div>
-                <div>
-                    <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Sistem</p>
-                    <nav class="space-y-1">
-                        <a href="#" onclick="alertFeature('Pengaturan Website')" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-semibold transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            Pengaturan Web
-                        </a>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="p-4 bg-black/30 border-t border-white/5 shrink-0">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-sekolah-gold flex items-center justify-center border-2 border-sekolah-dark relative">
-                            <span class="text-sekolah-navy font-black">A</span>
-                            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-sekolah-dark rounded-full"></div>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-white">Bpk. Supriyanto</p>
-                            <p class="text-xs text-slate-400">Danru Satpam</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="switchView('guest')" class="p-2 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors" title="Logout & Kembali ke Portal Tamu">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Konten Utama Admin -->
-        <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full relative">
-            <header class="h-20 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between shrink-0 z-20">
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 rounded-lg transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
                     <div>
-                        <h2 class="text-xl lg:text-2xl font-bold text-slate-800 font-custom-title tracking-wide">Pusat Kendali</h2>
-                        <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500">
-                            <span id="db-status-text" class="text-slate-400">Koneksi Database...</span>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Kata Sandi</label>
+                        <input type="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy focus:border-sekolah-navy transition-all" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 bg-sekolah-navy text-white font-bold rounded-xl hover:bg-blue-900 hover:shadow-lg transition-all mt-4">Login & Mulai</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Kamera & Form -->
+            <div id="step-camera" class="w-full max-w-md bg-white rounded-3xl p-8 shadow-xl border border-slate-100 hidden-transition absolute">
+                <button type="button" onclick="nextStep('step-login')" class="mb-6 flex items-center text-sm font-semibold text-slate-400 hover:text-sekolah-navy transition-colors"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Kembali</button>
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800">Verifikasi Tamu</h2>
+                    <p class="text-sm text-slate-500 mt-1">Silakan ambil foto dan isi data diri.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="w-40 h-40 mx-auto bg-slate-100 rounded-full overflow-hidden border-4 border-slate-50 shadow-inner relative group">
+                        <video id="kamera" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                        <canvas id="kanvas" class="hidden"></canvas>
+                        <img id="hasilFoto" class="w-full h-full object-cover hidden">
+                        <div id="placeholderFoto" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
+                            <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
+                    </div>
+                    <div class="flex justify-center gap-3 mt-4">
+                        <button type="button" id="btnBukaKamera" onclick="bukaKamera()" class="px-4 py-2 bg-slate-100 text-slate-600 font-semibold rounded-lg hover:bg-slate-200 transition-colors text-sm">Buka Kamera</button>
+                        <button type="button" id="btnAmbilFoto" onclick="ambilFoto()" class="hidden px-4 py-2 bg-sekolah-gold text-sekolah-dark font-bold rounded-lg hover:bg-yellow-500 transition-colors text-sm shadow-md">Jepret Foto</button>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 lg:gap-6">
-                    <div class="hidden md:block relative">
-                        <input type="text" placeholder="Pencarian cepat (Ctrl+K)" class="w-64 pl-10 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-sekolah-navy focus:ring-2 focus:ring-sekolah-navy/20 rounded-xl text-sm transition-all outline-none">
-                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <form onsubmit="event.preventDefault(); submitTamu();" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                        <input type="text" id="inputNama" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sekolah-navy transition-all">
                     </div>
-
-                    <!-- Notifikasi -->
-                    <div class="relative">
-                        <button onclick="toggleDropdown('notif-dropdown')" class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                            <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
-                        </button>
-                        <div id="notif-dropdown" class="hidden-transition absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-                                <h3 class="font-bold text-slate-800">Notifikasi</h3>
-                                <button class="text-xs text-sekolah-navy font-semibold hover:underline">Tandai dibaca</button>
-                            </div>
-                            <div class="max-h-80 overflow-y-auto">
-                                <div class="px-4 py-3 border-b border-slate-50 hover:bg-slate-50 cursor-pointer flex gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                    <div>
-                                        <p class="text-sm font-semibold text-slate-800">Peringatan: Siti Aminah</p>
-                                        <p class="text-xs text-slate-500 mt-0.5">Tamu overstay lebih dari 30 menit dari jadwal keluar.</p>
-                                        <p class="text-[10px] text-slate-400 mt-1">2 menit yang lalu</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Keperluan / Tujuan</label>
+                        <input type="text" id="inputTujuan" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sekolah-navy transition-all">
                     </div>
-
-                    <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-xl border border-slate-200">
-                        <svg class="w-4 h-4 text-sekolah-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span id="realtime-clock" class="font-bold text-sm text-slate-700 font-mono tracking-tight">00:00:00 WIB</span>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Menemui (Nama/Jabatan)</label>
+                        <input type="text" id="inputDituju" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sekolah-navy transition-all">
                     </div>
-                </div>
-            </header>
+                    <button type="submit" id="btnSubmit" class="w-full py-3.5 bg-sekolah-navy text-white font-bold rounded-xl hover:bg-blue-900 transition-all mt-6 shadow-lg flex justify-center items-center gap-2">
+                        <span>Terbitkan ID Card</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </form>
+            </div>
 
-            <div class="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar relative">
-                <div class="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-fade-in pb-12">
-                    
-                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                        <div>
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Ringkasan Hari Ini</h3>
-                            <p class="text-slate-500 text-sm mt-1">Selasa, 3 September 2026</p>
+            <!-- Step 3: Print ID Card -->
+            <div id="step-print" class="w-full flex-col items-center justify-center hidden-transition absolute">
+                <button type="button" onclick="resetForm()" class="no-print mb-8 flex items-center px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-full hover:bg-slate-300 transition-colors"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Tamu Baru</button>
+                
+                <div id="print-page" class="flex justify-center">
+                    <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl relative id-card-shine">
+                        <div class="bg-sekolah-navy h-16 w-full relative">
+                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 12px 12px;"></div>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                Eksport CSV
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                            <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Total Tamu Database</p>
-                            <h3 id="stat-total" class="text-3xl font-black text-slate-800 mt-1">-</h3>
-                        </div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                            <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Sedang Di Dalam</p>
-                            <h3 id="stat-aktif" class="text-3xl font-black text-green-600 mt-1">-</h3>
-                        </div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                            <p class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Selesai (Checkout)</p>
-                            <h3 id="stat-selesai" class="text-3xl font-black text-slate-600 mt-1">-</h3>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden flex flex-col">
-                        <div class="p-4 lg:p-6 border-b border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-50/50">
-                            <div class="flex items-center gap-2">
-                                <button class="px-4 py-2 bg-sekolah-navy text-white text-sm font-bold rounded-lg shadow-sm">Semua</button>
-                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold rounded-lg transition-colors">Di Dalam</button>
-                                <button onclick="alertFeature('Filter Data')" class="px-4 py-2 bg-white border border-slate-200 text-red-600 hover:bg-red-50 text-sm font-bold rounded-lg transition-colors">Overstay</button>
+                        <div class="flex flex-col items-center -mt-10 px-4 pb-6 relative z-10">
+                            <img src="logo saka.png" class="w-12 h-12 mb-2 p-1 bg-white rounded-full shadow-sm">
+                            <h3 class="text-xs font-bold text-slate-800 tracking-widest uppercase">Visitor Pass</h3>
+                            <p class="text-[10px] text-slate-500 mb-4">SMAN 1 KANDANGAN</p>
+                            
+                            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-50 shadow-md mb-4 bg-slate-100">
+                                <img id="idCardFoto" src="" class="w-full h-full object-cover">
                             </div>
                             
-                            <div class="flex items-center gap-3 w-full md:w-auto">
-                                <div class="relative w-full sm:w-64">
-                                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari di tabel..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sekolah-navy outline-none text-sm transition-shadow">
-                                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <h2 id="idCardNama" class="text-lg font-black text-slate-800 text-center leading-tight mb-1">NAMA TAMU</h2>
+                            <p id="idCardTujuan" class="text-xs text-sekolah-navy font-bold text-center mb-1 bg-blue-50 px-3 py-1 rounded-full">TUJUAN</p>
+                            <p class="text-[10px] text-slate-500 text-center mb-4">Menemui: <span id="idCardDituju" class="font-bold text-slate-700"></span></p>
+                            
+                            <div class="w-full border-t border-dashed border-slate-200 pt-4 mt-1 mb-3">
+                                <div class="flex justify-between text-[10px]">
+                                    <span class="text-slate-500">Masuk:</span>
+                                    <span id="idCardWaktu" class="font-bold text-slate-800">00:00</span>
+                                </div>
+                                <div class="flex justify-between text-[10px] mt-1">
+                                    <span class="text-slate-500">Berlaku s/d:</span>
+                                    <span id="idCardBatas" class="font-bold text-red-600">00:00</span>
                                 </div>
                             </div>
+                            <div class="barcode w-full opacity-60"></div>
+                            <p class="text-[8px] text-slate-400 mt-1 font-mono tracking-widest text-center" id="idCardNomor">VST-0000</p>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="overflow-x-auto custom-scrollbar">
-                            <table class="w-full text-left border-collapse min-w-[900px]">
-                                <thead>
-                                    <tr class="bg-slate-100 border-b border-slate-200">
-                                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Tamu & ID</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Keperluan & Pihak Dituju</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Log Waktu</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Status Area</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Tindakan</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-200 text-sm bg-white" id="table-body">
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-8 text-center text-slate-500">
-                                            Memuat data dari database... Jika tabel kosong, pastikan Anda telah memasukkan kunci API Supabase.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- Pagination Bawah -->
-                        <div class="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-                            <p>Menampilkan seluruh data dari Database.</p>
-                            <div class="flex gap-1">
-                                <button class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-400 rounded-lg cursor-not-allowed">Prev</button>
-                                <button class="px-3 py-1.5 bg-sekolah-navy border border-sekolah-navy text-white font-bold rounded-lg shadow-sm">1</button>
-                                <button class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-400 rounded-lg cursor-not-allowed">Next</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modal Detail -->
-        <div id="detail-modal" class="hidden-transition fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
-            <div class="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300 scale-95" id="modal-box">
-                <div class="bg-sekolah-dark p-6 text-white flex items-center justify-between">
-                    <div>
-                        <h3 class="font-custom-title text-xl tracking-wide">Detail Kunjungan</h3>
-                        <p id="modal-id" class="text-xs text-sekolah-gold font-mono tracking-widest mt-1">ID: VST-</p>
-                    </div>
-                    <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500 hover:text-white transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-                <div class="p-6 md:p-8 flex flex-col md:flex-row gap-6">
-                    <div class="w-32 h-32 md:w-40 md:h-40 shrink-0 bg-slate-100 rounded-2xl border-4 border-slate-200 shadow-inner overflow-hidden mx-auto md:mx-0">
-                        <img id="modal-foto" src="" alt="Foto Tamu" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1 space-y-4">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Nama Lengkap</p>
-                            <p class="text-xl font-black text-slate-800" id="modal-nama">-</p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Tujuan</p>
-                            <p class="text-base font-semibold text-sekolah-navy" id="modal-tujuan">-</p>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Menemui</p>
-                            <p class="text-base font-semibold text-slate-700" id="modal-dituju">-</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                    <div class="barcode w-48 opacity-60"></div>
-                    <button onclick="closeModal()" class="px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm rounded-xl shadow-sm">Tutup</button>
-                </div>
+                <button type="button" onclick="window.print()" class="no-print mt-8 px-6 py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-500 transition-all shadow-lg flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Cetak ID Card
+                </button>
             </div>
         </div>
 
-        <!-- Toast Notifications -->
-        <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-3 pointer-events-none"></div>
-    </div>
-
-    <!-- MENGHUBUNGKAN KE FILE JAVASCRIPT -->
+        <!-- View: Admin Dashboard -->
+        <div id="view-admin" class="w-full min-h-full bg-slate-50 hidden-transition absolute inset-0 z-40 flex flex-col">
+            <div class="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center sticky top-0 z-20">
+                <div>
+                    <h2 class="text-2xl font-black text-sekolah-navy">Sistem Pengawasan</h2>
+                    <p class="text-sm text-slate-500 font-medium" id="adminTanggal">Hari ini</p>
+                </div>
+                <button onclick="toggleAdmin()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Tutup
+                </button>
+            </div>
+            
+            <div class="p-8 flex-1 overflow-y-auto">
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 uppercase bg-slate-50/80 border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-4 font-bold tracking-wider">Profil Tamu</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Keperluan</th>
+                                <th class="px-6 py-4 font-bold tracking-wider">Waktu</th>
+                                <th class="px-6 py-4 font-bold tracking-wider text-center">Status</th>
+                                <th class="px-6 py-4 font-bold tracking-wider text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelAdmin" class="divide-y divide-slate-100">
+                            <!-- Data akan dimuat melalui app.js -->
+                            <tr><td colspan="5" class="px-6 py-10 text-center text-slate-500">Memuat data secara realtime...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
     <script src="app.js" defer></script>
 </body>
 </html>
