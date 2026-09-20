@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Tamu - SMAN 1 Kandangan</title>
-    <!-- Mesin Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,14 +17,12 @@
             }
         }
     </script>
-    <!-- Database Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     
     <style>
         @font-face { font-family: 'Childer'; src: url('Childer.otf') format('opentype'); font-weight: normal; font-style: normal; }
         .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; line-height: 1.2; }
         
-        /* 1. ANIMASI SEDERHANA YANG 100% AMAN (TIDAK MENYEMBUNYIKAN ELEMEN) */
         @keyframes heroMuncul { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         .animasi-muncul { animation: heroMuncul 0.8s ease-out forwards; }
         
@@ -39,29 +36,28 @@
         @keyframes cahayaDenyut { 0%, 100% { opacity: 1; box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); } 50% { opacity: 0.6; box-shadow: 0 0 30px rgba(250, 204, 21, 0.8); } }
         .animasi-cahaya { animation: cahayaDenyut 2s infinite; }
 
-        /* Animasi kilap ID Card */
+        @keyframes panahLoncat { 0%, 100% { transform: translateY(-15%); } 50% { transform: translateY(0); } }
+        .animasi-panah { animation: panahLoncat 2s infinite; }
+
         .id-card-shine { position: relative; overflow: hidden; }
         .id-card-shine::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%); animation: shine 3s infinite; pointer-events: none; z-index: 50; }
         @keyframes shine { 0% { top: -100%; } 20% { top: 200%; } 100% { top: 200%; } }
 
-        /* Transisi Form Buku Tamu */
         .hidden-transition { opacity: 0; pointer-events: none; transition: all 0.4s ease; transform: translateY(-20px); position: absolute; z-index: 0; }
         .show-transition { opacity: 1; pointer-events: auto; transition: all 0.4s ease; transform: translateY(0); position: relative; z-index: 10; }
 
-        /* 2. GAYA KARTU & FOTO */
         .polaroid { background: #ffffff; padding: 10px 10px 35px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.3s ease; }
         .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 30; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 10px; color: #1e293b; letter-spacing: 1px; }
         .barcode { font-family: 'Libre Barcode 39', monospace; letter-spacing: 2px; height: 24px; width: 80%; margin: 0 auto; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px); }
         
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         
         @media print {
             body { background: white !important; overflow: visible !important; display: block !important; }
-            .no-print, #hero-section, #profile-section, #gallery-section, #view-admin { display: none !important; }
+            .no-print, #hero-section, #profile-section, #gallery-section { display: none !important; }
             #app-section { min-h-0 !important; background: none !important; padding: 0 !important; border: none !important; }
             #step-print { position: relative !important; display: flex !important; justify-content: center; transform: none !important; opacity: 1 !important; margin-top: 0 !important; }
             .id-card-shine::after { display: none !important; }
@@ -70,7 +66,6 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
 
-    <!-- CETAKAN SVG AWAN & BALON -->
     <svg class="hidden">
         <defs>
             <g id="cloud-svg"><path d="M 20 60 A 20 20 0 0 1 40 40 A 30 30 0 0 1 95 45 A 25 25 0 0 1 140 60 A 20 20 0 0 1 120 95 L 25 95 A 15 15 0 0 1 20 60 Z" fill="#ffffff" opacity="0.9" filter="drop-shadow(0px 8px 8px rgba(0,0,0,0.15))"/></g>
@@ -86,49 +81,35 @@
         </defs>
     </svg>
 
-    <!-- TOMBOL ADMIN MELAYANG -->
-    <button onclick="toggleAdmin()" class="no-print fixed top-4 right-4 lg:top-6 lg:right-6 p-3 bg-white/90 backdrop-blur border border-slate-200 rounded-xl text-slate-500 hover:text-sekolah-navy hover:shadow-lg transition-all z-50">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-    </button>
+    <a href="admin.html" class="no-print fixed top-4 right-4 lg:top-6 lg:right-6 p-3 bg-white/90 backdrop-blur border-2 border-sekolah-navy/10 rounded-xl text-slate-500 hover:text-sekolah-navy hover:shadow-xl hover:-translate-y-1 transition-all z-50 shadow-md group flex items-center justify-center">
+        <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+    </a>
 
-    <!-- ============================================== -->
-    <!-- 1. HERO SECTION -->
-    <!-- ============================================== -->
-    <section id="hero-section" class="relative w-full min-h-screen bg-sekolah-dark flex flex-col items-center justify-center p-6 overflow-hidden">
-        
-        <!-- Ornamen Latar -->
+    <section id="hero-section" class="relative w-full min-h-[100svh] bg-sekolah-dark flex flex-col items-center justify-center p-6 overflow-hidden">
         <svg viewBox="0 0 160 120" class="absolute top-[10%] left-[-5%] lg:left-[5%] w-48 lg:w-80 h-36 lg:h-60 animasi-melayang opacity-40"><use href="#cloud-svg"/></svg>
         <svg viewBox="0 0 160 120" class="absolute bottom-[5%] right-[-10%] lg:right-[10%] w-64 lg:w-[32rem] h-48 lg:h-[24rem] animasi-melayang-lambat opacity-30 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
-        
         <svg viewBox="0 0 100 140" class="absolute top-[15%] right-[5%] lg:right-[20%] w-20 lg:w-32 h-28 lg:h-44 animasi-melayang opacity-90"><use href="#balloon-svg"/></svg>
         <svg viewBox="0 0 100 140" class="absolute bottom-[15%] left-[5%] lg:left-[20%] w-16 lg:w-24 h-24 lg:h-36 animasi-melayang-lambat opacity-80 transform scale-x-[-1]"><use href="#balloon-svg"/></svg>
 
-        <!-- Konten Utama -->
         <div class="z-10 flex flex-col items-center w-full max-w-2xl animasi-muncul">
             <div class="relative mb-6 lg:mb-8">
                 <div class="absolute inset-0 bg-sekolah-gold rounded-full blur-xl opacity-50 animasi-cahaya"></div>
-                <!-- Gambar dengan Fallback -->
                 <img src="logo saka.png" alt="Logo SMAN 1 Kandangan" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="relative w-28 h-28 lg:w-40 lg:h-40 object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
             </div>
-            
             <h1 class="font-custom-title text-4xl lg:text-7xl text-white text-center drop-shadow-xl leading-tight">
                 Selamat Datang<br><span class="text-sekolah-gold">SMAN 1 Kandangan</span>
             </h1>
             <p class="text-slate-300 mt-4 text-[10px] lg:text-sm tracking-[0.2em] uppercase font-bold text-center">Portal Buku Tamu Terintegrasi</p>
         </div>
 
-        <a href="#profile-section" class="absolute bottom-8 z-20 text-white flex flex-col items-center opacity-80 hover:opacity-100 cursor-pointer">
-            <span class="text-[10px] font-bold tracking-[0.2em] uppercase mb-1">Jelajahi</span>
+        <a href="#app-section" class="absolute bottom-8 z-20 text-white flex flex-col items-center animasi-panah opacity-80 hover:opacity-100 cursor-pointer">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 text-sekolah-gold">Mulai Kunjungan</span>
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </a>
     </section>
 
-    <!-- ============================================== -->
-    <!-- 2. PROFIL SEKOLAH (Langsung Terlihat!) -->
-    <!-- ============================================== -->
     <section id="profile-section" class="relative w-full py-20 lg:py-32 bg-sekolah-navy flex flex-col items-center overflow-hidden border-t-4 border-sekolah-gold">
         <h2 class="font-custom-title text-3xl lg:text-5xl text-sekolah-gold mb-12 lg:mb-20 z-10 drop-shadow-lg text-center">Profil Sekolah</h2>
-        
         <div class="flex flex-col lg:flex-row items-center justify-center gap-10 w-full max-w-5xl z-10 px-6">
             <div class="polaroid w-56 lg:w-72 aspect-[3/4] animasi-polaroid shrink-0">
                 <div class="w-full h-full bg-sekolah-dark border-4 lg:border-8 border-slate-200/20 shadow-inner overflow-hidden">
@@ -148,15 +129,11 @@
         </div>
     </section>
 
-    <!-- ============================================== -->
-    <!-- 3. GALERI SEKOLAH (Langsung Terlihat!) -->
-    <!-- ============================================== -->
     <section id="gallery-section" class="relative w-full py-20 lg:py-32 bg-slate-800 flex flex-col items-center overflow-hidden">
         <div class="text-center mb-12 lg:mb-20 z-10">
             <h2 class="font-custom-title text-3xl lg:text-5xl text-white drop-shadow-lg">Galeri Kegiatan</h2>
             <p class="text-slate-400 mt-2 text-xs font-semibold uppercase tracking-widest">Momen Terbaik Kami</p>
         </div>
-
         <div class="w-full relative z-10 flex flex-col lg:flex-row items-center justify-center gap-12 px-6">
             <div class="polaroid w-60 lg:w-72 transform -rotate-2">
                 <div class="w-full aspect-square bg-slate-200 overflow-hidden shadow-inner">
@@ -173,19 +150,13 @@
         </div>
     </section>
 
-    <!-- ============================================== -->
-    <!-- 4. APLIKASI BUKU TAMU (Langsung Terlihat!) -->
-    <!-- ============================================== -->
     <section id="app-section" class="relative w-full py-20 lg:py-32 bg-slate-100 flex flex-col items-center justify-center px-4 lg:px-12 border-t-8 border-sekolah-navy z-20">
-        
         <div class="text-center mb-10">
             <h2 class="font-custom-title text-3xl lg:text-5xl text-sekolah-navy drop-shadow-sm">Registrasi Tamu</h2>
             <p class="text-slate-500 mt-2 text-xs lg:text-sm font-medium">Silakan lakukan pendataan untuk mendapatkan ID Card</p>
         </div>
 
         <div id="view-guest" class="w-full relative flex items-center justify-center min-h-[450px]">
-            
-            <!-- Step 1: Login Asli SMAN 1 Kandangan -->
             <div id="step-login" class="w-full max-w-md bg-white rounded-2xl p-6 lg:p-10 shadow-xl border-b-4 border-sekolah-navy show-transition">
                 <div class="flex items-center gap-3 lg:gap-4 mb-8 border-b border-slate-100 pb-5">
                     <img src="logo saka.png" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="w-10 h-10 lg:w-12 lg:h-12 object-contain">
@@ -214,7 +185,6 @@
                 </form>
             </div>
 
-            <!-- Step 2: Kamera & Form Tamu -->
             <div id="step-camera" class="w-full max-w-md bg-white rounded-2xl p-6 lg:p-8 shadow-xl border-b-4 border-sekolah-gold hidden-transition">
                 <button type="button" onclick="nextStep('step-login')" class="mb-4 flex items-center text-[10px] lg:text-xs font-bold text-slate-400 hover:text-sekolah-navy uppercase tracking-wider transition-colors"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Kembali</button>
                 
@@ -247,4 +217,12 @@
                     <div>
                         <input type="text" id="inputDituju" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Menemui (Nama/Jabatan)">
                     </div>
-                    <button type="submit" id="btnSubmit" class="w-full py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-400 transition-all shadow-lg active:scale-95 flex 
+                    <button type="submit" id="btnSubmit" class="w-full py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-400 transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 mt-2 text-sm">
+                        <span>Terbitkan ID Card</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    </button>
+                </form>
+            </div>
+
+            <div id="step-print" class="w-full hidden-transition flex-col items-center justify-center">
+                <button type="button" onclick="resetForm()" class="no-print mb-6 flex items-center px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs lg:text-sm rounded-full hover:bg-slate-50 transition-all shadow-sm"><svg class="w-4 h-4 mr-2 text-sekolah-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><pat
