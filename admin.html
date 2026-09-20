@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - SMAN 1 Kandangan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' } }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @font-face { font-family: 'Childer'; src: url('Childer.otf') format('opentype'); font-weight: normal; font-style: normal; }
+        .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased h-screen flex flex-col overflow-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
+
+    <div class="bg-white border-b border-slate-200 px-6 lg:px-10 py-5 flex justify-between items-center shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-sekolah-navy rounded-xl flex items-center justify-center shadow-md">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            </div>
+            <div>
+                <h2 class="text-xl lg:text-2xl font-black text-sekolah-navy">Sistem Pengawasan Terpusat</h2>
+                <p class="text-xs lg:text-sm text-slate-500 font-bold tracking-wide" id="adminTanggal">Memuat tanggal...</p>
+            </div>
+        </div>
+        <a href="index.html" class="px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 font-bold text-sm rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> 
+            Keluar Admin
+        </a>
+    </div>
+    
+    <div class="p-6 lg:p-10 flex-1 overflow-y-auto">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-7xl mx-auto">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left min-w-[900px]">
+                    <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b-2 border-slate-200">
+                        <tr>
+                            <th class="px-8 py-5 font-black tracking-wider">Identitas Tamu</th>
+                            <th class="px-8 py-5 font-black tracking-wider">Keperluan & Tujuan</th>
+                            <th class="px-8 py-5 font-black tracking-wider">Log Waktu</th>
+                            <th class="px-8 py-5 font-black tracking-wider text-center">Status</th>
+                            <th class="px-8 py-5 font-black tracking-wider text-right">Otorisasi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelAdmin" class="divide-y divide-slate-100">
+                        <tr><td colspan="5" class="px-8 py-16 text-center text-slate-400 font-bold animate-pulse text-lg">Sinkronisasi Database Aktif...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kunci Supabase Anda (SUDAH VALID)
+        const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Jalankan saat halaman dibuka
+        document.addEventListener('DOMContentLoaded', () => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('adminTanggal').textContent = new Date().toLocaleDateString('id-ID', options);
+            fetchDataAdmin();
+            
+            // Auto-refresh tabel setiap 10 detik agar realtime
+            setInterval(fetchDataAdmin, 10000); 
+        });
+
+        // Fungsi Ambil Data dari Supabase
+        async function fetchDataAdmin() {
+            try {
