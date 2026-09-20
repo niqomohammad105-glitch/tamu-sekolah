@@ -7,11 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' } }
-                }
-            }
+            theme: { extend: { colors: { sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' } } } }
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -25,6 +21,7 @@
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased h-screen flex flex-col overflow-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
 
+    <!-- HEADER ADMIN -->
     <div class="bg-white border-b border-slate-200 px-6 lg:px-10 py-5 flex justify-between items-center shrink-0 shadow-sm z-10">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-sekolah-navy rounded-xl flex items-center justify-center shadow-md">
@@ -41,6 +38,7 @@
         </a>
     </div>
     
+    <!-- AREA TABEL -->
     <div class="p-6 lg:p-10 flex-1 overflow-y-auto">
         <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-7xl mx-auto">
             <div class="overflow-x-auto">
@@ -55,29 +53,105 @@
                         </tr>
                     </thead>
                     <tbody id="tabelAdmin" class="divide-y divide-slate-100">
-                        <tr><td colspan="5" class="px-8 py-16 text-center text-slate-400 font-bold animate-pulse text-lg">Sinkronisasi Database Aktif...</td></tr>
+                        <tr><td colspan="5" class="px-8 py-16 text-center text-slate-400 font-bold animate-pulse text-lg">Menghubungkan ke Database...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- LOGIKA DATABASE ADMIN -->
     <script>
-        // Kunci Supabase Anda (SUDAH VALID)
         const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Jalankan saat halaman dibuka
         document.addEventListener('DOMContentLoaded', () => {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('adminTanggal').textContent = new Date().toLocaleDateString('id-ID', options);
             fetchDataAdmin();
-            
-            // Auto-refresh tabel setiap 10 detik agar realtime
             setInterval(fetchDataAdmin, 10000); 
         });
 
-        // Fungsi Ambil Data dari Supabase
         async function fetchDataAdmin() {
             try {
+                const { data, error } = await _supabase.from('tamu').select('*').order('id', { ascending: false });
+                
+                const tbody = document.getElementById('tabelAdmin');
+                
+                if (error) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-10 text-center text-red-600 font-black text-lg">Error Database: ${error.message}</td></tr>`;
+                    return;
+                }
+
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-16 text-center text-slate-500 font-bold">Belum ada tamu terdaftar.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                renderTabelHTML(data, tbody);
+            } catch (error) {
+                document.getElementById('tabelAdmin').innerHTML = `<tr><td colspan="5" class="px-8 py-10 text-center text-red-600 font-bold">Koneksi terputus.</td></tr>`;
+            }
+        }
+
+        function renderTabelHTML(dataArray, tbody) {
+            dataArray.forEach((item) => {
+                const isSelesai = item.status === 'Selesai';
+                const rowHtml = `
+                    <tr class="hover:bg-blue-50/50 transition-colors ${isSelesai ? 'opacity-60 bg-slate-50 grayscale-[30%]' : ''}">
+                        <td class="px-8 py-5">
+                            <div class="flex items-center gap-4">
+                                <img src="${item.foto_url && item.foto_url.length > 50 ? item.foto_url : `https://ui-avatars.com/api/?name=${encodeURIComponent(item.nama)}&background=1e3a8a&color=fff`}" class="w-12 h-12 rounded-full object-cover shadow-sm border-2 border-white">
+                                <div>
+                                    <p class="font-black text-slate-800 text-base">${item.nama}</p>
+                                    <p class="text-xs text-slate-500 font-mono tracking-widest mt-0.5">VST-${item.id}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-5">
+                            <p class="font-bold text-slate-700">${item.tujuan}</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Menemui: <span class="font-bold text-slate-600">${item.dituju}</span></p>
+                        </td>
+                        <td class="px-8 py-5">
+                            <div class="flex flex-col gap-1.5 text-xs font-bold text-slate-600">
+                                <div><span class="text-green-500 mr-2 tracking-wider">IN:</span>${item.waktu_masuk}</div>
+                                <div><span class="text-red-500 mr-2 tracking-wider">OUT:</span>${item.batas_waktu}</div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-5 text-center">
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isSelesai ? 'bg-slate-200 text-slate-500' : 'bg-green-100 text-green-700 shadow-sm'}">
+                                ${!isSelesai ? '<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse mr-2"></span>' : ''}
+                                ${isSelesai ? 'Selesai' : 'Di Dalam Area'}
+                            </span>
+                        </td>
+                        <td class="px-8 py-5 text-right">
+                            ${!isSelesai ? 
+                            `<button onclick="selesaikanKunjunganDB('${item.id}', this)" class="px-5 py-2.5 bg-sekolah-navy text-white font-bold text-xs rounded-xl hover:bg-blue-800 transition-all shadow-md active:scale-95">Selesaikan</button>` 
+                            : 
+                            `<button disabled class="px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border-2 border-transparent">Selesai</button>`}
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', rowHtml);
+            });
+        }
+
+        async function selesaikanKunjunganDB(id, btnElement) {
+            btnElement.innerHTML = "Memproses...";
+            btnElement.disabled = true;
+            try {
+                const { error } = await _supabase.from('tamu').update({ status: 'Selesai' }).eq('id', id);
+                if (error) throw error;
+                fetchDataAdmin(); 
+            } catch (error) {
+                alert("Gagal memperbarui status.");
+                btnElement.innerHTML = "Selesaikan";
+                btnElement.disabled = false;
+            }
+        }
+    </script>
+</body>
+                        </html>
+        
