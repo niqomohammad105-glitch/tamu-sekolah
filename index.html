@@ -66,6 +66,7 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
 
+    <!-- CETAKAN SVG AWAN & BALON -->
     <svg class="hidden">
         <defs>
             <g id="cloud-svg"><path d="M 20 60 A 20 20 0 0 1 40 40 A 30 30 0 0 1 95 45 A 25 25 0 0 1 140 60 A 20 20 0 0 1 120 95 L 25 95 A 15 15 0 0 1 20 60 Z" fill="#ffffff" opacity="0.9" filter="drop-shadow(0px 8px 8px rgba(0,0,0,0.15))"/></g>
@@ -81,10 +82,14 @@
         </defs>
     </svg>
 
-    <a href="admin.html" class="no-print fixed top-4 right-4 lg:top-6 lg:right-6 p-3 bg-white/90 backdrop-blur border-2 border-sekolah-navy/10 rounded-xl text-slate-500 hover:text-sekolah-navy hover:shadow-xl hover:-translate-y-1 transition-all z-50 shadow-md group flex items-center justify-center">
-        <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-    </a>
+    <!-- TOMBOL ADMIN MELAYANG (Area Sentuh Diperbesar & Diperkuat) -->
+    <button type="button" onclick="window.location.href='admin.html'" class="no-print fixed top-4 right-4 lg:top-6 lg:right-6 p-4 bg-white/95 backdrop-blur border-2 border-sekolah-navy/10 rounded-xl text-slate-600 hover:text-sekolah-navy hover:shadow-xl transition-all z-50 shadow-md group flex items-center justify-center cursor-pointer">
+        <svg class="w-7 h-7 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+    </button>
 
+    <!-- ============================================== -->
+    <!-- 1. HERO SECTION -->
+    <!-- ============================================== -->
     <section id="hero-section" class="relative w-full min-h-[100svh] bg-sekolah-dark flex flex-col items-center justify-center p-6 overflow-hidden">
         <svg viewBox="0 0 160 120" class="absolute top-[10%] left-[-5%] lg:left-[5%] w-48 lg:w-80 h-36 lg:h-60 animasi-melayang opacity-40"><use href="#cloud-svg"/></svg>
         <svg viewBox="0 0 160 120" class="absolute bottom-[5%] right-[-10%] lg:right-[10%] w-64 lg:w-[32rem] h-48 lg:h-[24rem] animasi-melayang-lambat opacity-30 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
@@ -102,12 +107,15 @@
             <p class="text-slate-300 mt-4 text-[10px] lg:text-sm tracking-[0.2em] uppercase font-bold text-center">Portal Buku Tamu Terintegrasi</p>
         </div>
 
-        <a href="#app-section" class="absolute bottom-8 z-20 text-white flex flex-col items-center animasi-panah opacity-80 hover:opacity-100 cursor-pointer">
+        <button onclick="document.getElementById('app-section').scrollIntoView({behavior: 'smooth'})" class="absolute bottom-8 z-20 text-white flex flex-col items-center animasi-panah opacity-80 hover:opacity-100 cursor-pointer bg-transparent border-none">
             <span class="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 text-sekolah-gold">Mulai Kunjungan</span>
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-        </a>
+        </button>
     </section>
 
+    <!-- ============================================== -->
+    <!-- 2. PROFIL SEKOLAH -->
+    <!-- ============================================== -->
     <section id="profile-section" class="relative w-full py-20 lg:py-32 bg-sekolah-navy flex flex-col items-center overflow-hidden border-t-4 border-sekolah-gold">
         <h2 class="font-custom-title text-3xl lg:text-5xl text-sekolah-gold mb-12 lg:mb-20 z-10 drop-shadow-lg text-center">Profil Sekolah</h2>
         <div class="flex flex-col lg:flex-row items-center justify-center gap-10 w-full max-w-5xl z-10 px-6">
@@ -129,6 +137,9 @@
         </div>
     </section>
 
+    <!-- ============================================== -->
+    <!-- 3. GALERI SEKOLAH -->
+    <!-- ============================================== -->
     <section id="gallery-section" class="relative w-full py-20 lg:py-32 bg-slate-800 flex flex-col items-center overflow-hidden">
         <div class="text-center mb-12 lg:mb-20 z-10">
             <h2 class="font-custom-title text-3xl lg:text-5xl text-white drop-shadow-lg">Galeri Kegiatan</h2>
@@ -150,6 +161,9 @@
         </div>
     </section>
 
+    <!-- ============================================== -->
+    <!-- 4. APLIKASI BUKU TAMU (FORM LOGIN ANTI MACET) -->
+    <!-- ============================================== -->
     <section id="app-section" class="relative w-full py-20 lg:py-32 bg-slate-100 flex flex-col items-center justify-center px-4 lg:px-12 border-t-8 border-sekolah-navy z-20">
         <div class="text-center mb-10">
             <h2 class="font-custom-title text-3xl lg:text-5xl text-sekolah-navy drop-shadow-sm">Registrasi Tamu</h2>
@@ -157,6 +171,7 @@
         </div>
 
         <div id="view-guest" class="w-full relative flex items-center justify-center min-h-[450px]">
+            <!-- Step 1: Login Asli SMAN 1 Kandangan -->
             <div id="step-login" class="w-full max-w-md bg-white rounded-2xl p-6 lg:p-10 shadow-xl border-b-4 border-sekolah-navy show-transition">
                 <div class="flex items-center gap-3 lg:gap-4 mb-8 border-b border-slate-100 pb-5">
                     <img src="logo saka.png" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="w-10 h-10 lg:w-12 lg:h-12 object-contain">
@@ -169,22 +184,26 @@
                     <h2 class="text-xl lg:text-2xl font-black text-slate-800">Akses Masuk</h2>
                     <p class="text-xs lg:text-sm text-slate-500 mt-1 font-medium">Masukkan kredensial penjaga piket</p>
                 </div>
-                <form onsubmit="event.preventDefault(); nextStep('step-camera');" class="space-y-4">
+                
+                <!-- Diubah dari <form> menjadi <div> agar tombol tidak macet -->
+                <div class="space-y-4">
                     <div>
                         <label class="block text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 lg:mb-2">ID Petugas</label>
-                        <input type="text" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold transition-all text-sm font-medium" placeholder="Masukkan ID">
+                        <input type="text" id="dummyID" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold transition-all text-sm font-medium" placeholder="Masukkan ID">
                     </div>
                     <div>
                         <label class="block text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 lg:mb-2">Kata Sandi</label>
-                        <input type="password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold transition-all text-sm font-medium" placeholder="••••••••">
+                        <input type="password" id="dummyPass" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold transition-all text-sm font-medium" placeholder="••••••••">
                     </div>
-                    <button type="submit" class="w-full py-3 lg:py-4 bg-sekolah-navy text-white font-black rounded-xl hover:bg-blue-900 transition-all mt-2 shadow-lg active:scale-95 flex items-center justify-center gap-2 text-sm">
+                    <!-- Diubah dari type="submit" menjadi type="button" murni -->
+                    <button type="button" onclick="nextStep('step-camera')" class="w-full py-3 lg:py-4 bg-sekolah-navy text-white font-black rounded-xl hover:bg-blue-900 transition-all mt-2 shadow-lg active:scale-95 flex items-center justify-center gap-2 text-sm">
                         Masuk ke Sistem
                         <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
-                </form>
+                </div>
             </div>
 
+            <!-- Step 2: Kamera & Form Tamu -->
             <div id="step-camera" class="w-full max-w-md bg-white rounded-2xl p-6 lg:p-8 shadow-xl border-b-4 border-sekolah-gold hidden-transition">
                 <button type="button" onclick="nextStep('step-login')" class="mb-4 flex items-center text-[10px] lg:text-xs font-bold text-slate-400 hover:text-sekolah-navy uppercase tracking-wider transition-colors"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Kembali</button>
                 
@@ -207,22 +226,15 @@
                     </div>
                 </div>
 
-                <form onsubmit="event.preventDefault(); submitTamu();" class="space-y-3">
+                <!-- Diubah dari <form> menjadi <div> agar tombol tidak macet -->
+                <div class="space-y-3">
                     <div>
-                        <input type="text" id="inputNama" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Nama Lengkap">
+                        <input type="text" id="inputNama" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Nama Lengkap">
                     </div>
                     <div>
-                        <input type="text" id="inputTujuan" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Keperluan / Tujuan">
+                        <input type="text" id="inputTujuan" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Keperluan / Tujuan">
                     </div>
                     <div>
-                        <input type="text" id="inputDituju" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Menemui (Nama/Jabatan)">
+                        <input type="text" id="inputDituju" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-navy transition-all font-medium text-xs lg:text-sm placeholder-slate-400" placeholder="Menemui (Nama/Jabatan)">
                     </div>
-                    <button type="submit" id="btnSubmit" class="w-full py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-400 transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2 mt-2 text-sm">
-                        <span>Terbitkan ID Card</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    </button>
-                </form>
-            </div>
-
-            <div id="step-print" class="w-full hidden-transition flex-col items-center justify-center">
-                <button type="button" onclick="resetForm()" class="no-print mb-6 flex items-center px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs lg:text-sm rounded-full hover:bg-slate-50 transition-all shadow-sm"><svg class="w-4 h-4 mr-2 text-sekolah-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><pat
+                    <!--
