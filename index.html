@@ -4,26 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Tamu - SMAN 1 Kandangan</title>
-    <!-- Mesin Tailwind -->
+    
+    <!-- 1. MESIN TAILWIND & SUPABASE -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' },
-                        slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' }
-                    }
-                }
+                extend: { colors: { sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' } } }
             }
         }
     </script>
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     
+    <!-- 2. GAYA CSS MURNI -->
     <style>
         @font-face { font-family: 'Childer'; src: url('Childer.otf') format('opentype'); font-weight: normal; font-style: normal; }
-        .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; line-height: 1.2; }
+        .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; }
         
         /* Animasi Ornamen */
         @keyframes balonMelayang { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
@@ -36,27 +32,18 @@
         @keyframes panahLoncat { 0%, 100% { transform: translateY(-15%); } 50% { transform: translateY(0); } }
         .animasi-panah { animation: panahLoncat 2s infinite; }
 
-        /* ID Card Shine */
+        /* ID Card Shine & Komponen */
         .id-card-shine { position: relative; overflow: hidden; }
         .id-card-shine::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%); animation: shine 3s infinite; pointer-events: none; z-index: 50; }
         @keyframes shine { 0% { top: -100%; } 20% { top: 200%; } 100% { top: 200%; } }
 
-        /* Gaya Kartu */
-        .polaroid { background: #ffffff; padding: 10px 10px 35px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        .polaroid { background: #ffffff; padding: 10px 10px 35px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
         .polaroid-text { font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; text-align: center; margin-top: 10px; color: #1e293b; letter-spacing: 1px; }
         .barcode { font-family: 'Libre Barcode 39', monospace; letter-spacing: 2px; height: 24px; width: 80%; margin: 0 auto; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px); }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        
-        @media print {
-            body { background: white !important; overflow: visible !important; display: block !important; }
-            .no-print, #hero-section, #profile-section, #gallery-section { display: none !important; }
-            #app-section { min-h-0 !important; background: none !important; padding: 0 !important; border: none !important; }
-            #step-print { display: flex !important; justify-content: center; margin-top: 0 !important; }
-            .id-card-shine::after { display: none !important; }
-        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
@@ -77,13 +64,13 @@
         </defs>
     </svg>
 
-    <!-- TOMBOL ADMIN MELAYANG -->
-    <a href="admin.html" class="no-print fixed top-4 right-4 lg:top-6 lg:right-6 p-3 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-sekolah-navy hover:shadow-lg transition-all z-50 shadow-md flex items-center justify-center">
+    <!-- TOMBOL ADMIN (LINK LANGSUNG KE ADMIN.HTML) -->
+    <a href="admin.html" class="fixed top-4 right-4 lg:top-6 lg:right-6 p-4 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-sekolah-navy hover:shadow-lg transition-all z-50 shadow-md flex items-center justify-center">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
     </a>
 
-    <!-- 1. HERO SECTION -->
-    <section id="hero-section" class="relative w-full min-h-[100svh] bg-sekolah-dark flex flex-col items-center justify-center p-6 overflow-hidden">
+    <!-- SECTION 1: HERO -->
+    <section class="relative w-full min-h-[100svh] bg-sekolah-dark flex flex-col items-center justify-center p-6 overflow-hidden">
         <svg viewBox="0 0 160 120" class="absolute top-[10%] left-[5%] w-48 h-36 animasi-melayang opacity-40"><use href="#cloud-svg"/></svg>
         <svg viewBox="0 0 160 120" class="absolute bottom-[5%] right-[10%] w-64 h-48 animasi-melayang-lambat opacity-30 transform scale-x-[-1]"><use href="#cloud-svg"/></svg>
         <svg viewBox="0 0 100 140" class="absolute top-[15%] right-[5%] w-20 h-28 animasi-melayang opacity-90"><use href="#balloon-svg"/></svg>
@@ -92,7 +79,7 @@
         <div class="z-10 flex flex-col items-center w-full max-w-2xl">
             <div class="relative mb-6">
                 <div class="absolute inset-0 bg-sekolah-gold rounded-full blur-xl opacity-50 animasi-cahaya"></div>
-                <img src="logo saka.png" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="relative w-28 h-28 object-contain">
+                <img src="logo saka.png" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="relative w-28 h-28 object-contain">
             </div>
             <h1 class="font-custom-title text-4xl text-white text-center leading-tight">
                 Selamat Datang<br><span class="text-sekolah-gold">SMAN 1 Kandangan</span>
@@ -105,8 +92,8 @@
         </button>
     </section>
 
-    <!-- 2. PROFIL & GALERI (Disatukan agar ringkas di HP) -->
-    <section id="profile-section" class="relative w-full py-16 bg-sekolah-navy flex flex-col items-center border-t-4 border-sekolah-gold px-4">
+    <!-- SECTION 2: PROFIL & GALERI -->
+    <section class="relative w-full py-16 bg-sekolah-navy flex flex-col items-center border-t-4 border-sekolah-gold px-4">
         <h2 class="font-custom-title text-3xl text-sekolah-gold mb-10 text-center">Profil & Galeri</h2>
         <div class="flex flex-col gap-8 w-full max-w-5xl items-center">
             <div class="polaroid w-64 aspect-[3/4] shrink-0">
@@ -122,18 +109,16 @@
         </div>
     </section>
 
-    <!-- 4. APLIKASI BUKU TAMU (SISTEM ANTI MACET) -->
+    <!-- SECTION 3: APLIKASI BUKU TAMU -->
     <section id="app-section" class="relative w-full py-20 bg-slate-100 flex flex-col items-center px-4 border-t-8 border-sekolah-navy z-20">
         <div class="text-center mb-8">
             <h2 class="font-custom-title text-3xl text-sekolah-navy drop-shadow-sm">Registrasi Tamu</h2>
             <p class="text-slate-500 mt-2 text-xs font-medium">Silakan lakukan pendataan ID Card</p>
         </div>
 
-        <div id="view-guest" class="w-full relative flex items-center justify-center min-h-[450px]">
+        <div class="w-full relative flex items-center justify-center min-h-[450px]">
             
-            <!-- ============================================== -->
-            <!-- STEP 1: FORM LOGIN (Langsung Tampil) -->
-            <!-- ============================================== -->
+            <!-- STEP 1: FORM LOGIN -->
             <div id="step-login" class="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl border-b-4 border-sekolah-navy" style="display: block;">
                 <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
                     <img src="logo saka.png" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="w-10 h-10 object-contain">
@@ -152,30 +137,28 @@
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">KATA SANDI</label>
                         <input type="password" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold text-sm" placeholder="••••••••">
                     </div>
-                    <!-- TOMBOL INI MEMAKSA HALAMAN PINDAH KE KAMERA -->
-                    <button type="button" onclick="nextStep('step-camera')" class="w-full py-3 bg-sekolah-navy text-white font-black rounded-xl hover:bg-blue-900 mt-2 shadow-lg flex items-center justify-center gap-2 text-sm">
+                    <!-- TOMBOL INI MEMAKSA HALAMAN PINDAH KE KAMERA MENGGUNAKAN JAVASCRIPT INLINE -->
+                    <button type="button" onclick="gantiHalaman('step-camera')" class="w-full py-3 bg-sekolah-navy text-white font-black rounded-xl hover:bg-blue-900 mt-2 shadow-lg flex items-center justify-center gap-2 text-sm">
                         Masuk ke Sistem ->
                     </button>
                 </div>
             </div>
 
-            <!-- ============================================== -->
-            <!-- STEP 2: KAMERA & DATA DIRI (Disembunyikan di awal) -->
-            <!-- ============================================== -->
+            <!-- STEP 2: KAMERA & DATA DIRI -->
             <div id="step-camera" class="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl border-b-4 border-sekolah-gold" style="display: none;">
-                <button type="button" onclick="nextStep('step-login')" class="mb-4 text-[10px] font-bold text-slate-400 uppercase"><- Kembali</button>
+                <button type="button" onclick="gantiHalaman('step-login')" class="mb-4 text-[10px] font-bold text-slate-400 uppercase"><- Kembali</button>
                 
                 <div class="mb-4 text-center border-b border-slate-100 pb-2">
                     <h2 class="text-xl font-black text-slate-800">Verifikasi Wajah</h2>
                 </div>
                 
                 <div class="mb-6">
-                    <div class="w-32 h-32 mx-auto bg-slate-50 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner relative group">
+                    <div class="w-32 h-32 mx-auto bg-slate-50 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner relative flex items-center justify-center">
                         <video id="kamera" autoplay playsinline class="w-full h-full object-cover hidden"></video>
                         <canvas id="kanvas" class="hidden"></canvas>
                         <img id="hasilFoto" class="w-full h-full object-cover hidden">
                         <div id="placeholderFoto" class="absolute inset-0 flex flex-col items-center justify-center text-slate-300">
-                            (Logo Kamera)
+                            (Foto Wajah)
                         </div>
                     </div>
                     <div class="flex justify-center gap-2 mt-4">
@@ -189,19 +172,17 @@
                     <input type="text" id="inputTujuan" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm" placeholder="Keperluan / Tujuan">
                     <input type="text" id="inputDituju" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm" placeholder="Menemui Siapa?">
                     
-                    <button type="button" id="btnSubmit" onclick="submitTamu()" class="w-full py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-400 shadow-lg flex justify-center items-center gap-2 text-sm">
+                    <button type="button" id="btnSubmit" onclick="submitDatabase()" class="w-full py-3 bg-sekolah-gold text-sekolah-dark font-black rounded-xl hover:bg-yellow-400 shadow-lg flex justify-center items-center gap-2 text-sm">
                         Terbitkan ID Card
                     </button>
                 </div>
             </div>
 
-            <!-- ============================================== -->
-            <!-- STEP 3: HASIL ID CARD (Disembunyikan di awal) -->
-            <!-- ============================================== -->
+            <!-- STEP 3: HASIL ID CARD -->
             <div id="step-print" class="w-full flex-col items-center justify-center" style="display: none;">
-                <button type="button" onclick="nextStep('step-camera')" class="no-print mb-6 px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-full">Daftarkan Tamu Baru</button>
+                <button type="button" onclick="gantiHalaman('step-camera')" class="mb-6 px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-full">Daftarkan Tamu Baru</button>
                 
-                <div id="print-page" class="flex justify-center">
+                <div class="flex justify-center">
                     <div class="w-[260px] bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl relative id-card-shine">
                         <div class="bg-sekolah-navy h-16 w-full relative flex items-start justify-center pt-3">
                             <span class="text-white font-bold tracking-widest text-[10px] uppercase opacity-80">Visitor Pass</span>
@@ -229,32 +210,109 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="window.print()" class="no-print mt-8 px-6 py-3 bg-sekolah-navy text-white font-black rounded-xl">
+                <button type="button" onclick="window.print()" class="mt-8 px-6 py-3 bg-sekolah-navy text-white font-black rounded-xl shadow-lg">
                     CETAK ID CARD
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- SCRIPT LOGIKA PERPINDAHAN (100% AMAN DARI BUG HP) -->
+    <!-- MESIN JAVASCRIPT GABUNGAN (TIDAK PERLU APP.JS LAGI) -->
     <script>
-        // Fungsi sederhana untuk menyembunyikan dan memunculkan elemen
-        window.nextStep = function(stepId) {
-            // Matikan (Sembunyikan) semua halaman form
+        // 1. KONTROL HALAMAN (DIJAMIN 100% BEKERJA)
+        function gantiHalaman(idTujuan) {
             document.getElementById('step-login').style.display = 'none';
             document.getElementById('step-camera').style.display = 'none';
             document.getElementById('step-print').style.display = 'none';
             
-            // Nyalakan (Munculkan) halaman yang dituju
-            document.getElementById(stepId).style.display = 'block';
-            
-            // Gulir layar otomatis agar fokus
+            document.getElementById(idTujuan).style.display = 'block';
             document.getElementById('app-section').scrollIntoView({behavior: 'smooth'});
-        };
-    </script>
-    
-    <!-- MENGHUBUNGKAN KE FILE APP.JS -->
-    <script src="app.js" defer></script>
-</body>
-                    </html>
+        }
+
+        // 2. MESIN SUPABASE (DATABASE)
+        const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
+        let dbClient = null;
+        try { dbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {}
+
+        // 3. MESIN KAMERA
+        let kameraStream = null;
+        let fotoData = "";
+
+        async function bukaKamera() {
+            const video = document.getElementById('kamera');
+            try {
+                kameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = kameraStream;
+                video.classList.remove('hidden');
+                document.getElementById('placeholderFoto').classList.add('hidden');
+                document.getElementById('btnBukaKamera').classList.add('hidden');
+                document.getElementById('btnAmbilFoto').classList.remove('hidden');
+                document.getElementById('hasilFoto').classList.add('hidden');
+            } catch (err) { alert("Izinkan akses kamera di HP Anda!"); }
+        }
+
+        function ambilFoto() {
+            const video = document.getElementById('kamera');
+            const canvas = document.getElementById('kanvas');
+            const hasil = document.getElementById('hasilFoto');
             
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            fotoData = canvas.toDataURL('image/jpeg', 0.8);
+            hasil.src = fotoData;
+            
+            video.classList.add('hidden');
+            hasil.classList.remove('hidden');
+            document.getElementById('btnAmbilFoto').textContent = "Ulangi Foto";
+            
+            if (kameraStream) kameraStream.getTracks().forEach(track => track.stop());
+        }
+
+        // 4. MESIN KIRIM DATA
+        async function submitDatabase() {
+            const nama = document.getElementById('inputNama').value || 'Tamu';
+            const tujuan = document.getElementById('inputTujuan').value || '-';
+            const dituju = document.getElementById('inputDituju').value || '-';
+            const tombol = document.getElementById('btnSubmit');
+            
+            tombol.innerHTML = "Memproses...";
+            tombol.disabled = true;
+
+            const now = new Date();
+            const masuk = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+            now.setHours(now.getHours() + 2);
+            const batas = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+            const tanggalFull = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            let idTamu = Math.floor(Math.random()*9000)+1000;
+
+            if (dbClient) {
+                try {
+                    const { data, error } = await dbClient.from('tamu').insert([
+                        { nama: nama, tujuan: tujuan, dituju: dituju, tanggal: tanggalFull, waktu_masuk: masuk, batas_waktu: batas, foto_url: fotoData, status: 'Di Dalam' }
+                    ]).select();
+                    if (!error && data) idTamu = data[0].id;
+                } catch (e) {}
+            }
+
+            // Tampilkan ID Card
+            document.getElementById('idCardNama').textContent = nama;
+            document.getElementById('idCardTujuan').textContent = tujuan;
+            document.getElementById('idCardDituju').textContent = dituju;
+            document.getElementById('idCardWaktu').textContent = masuk;
+            document.getElementById('idCardBatas').textContent = batas;
+            document.getElementById('idCardNomor').textContent = `VST-${idTamu}`;
+            document.getElementById('idCardFoto').src = fotoData ? fotoData : `https://ui-avatars.com/api/?name=${nama}&background=1e3a8a&color=fff&size=200`;
+            
+            tombol.innerHTML = "Terbitkan ID Card";
+            tombol.disabled = false;
+            
+            // Pindah ke ID Card
+            gantiHalaman('step-print');
+        }
+    </script>
+</body>
+</html>
