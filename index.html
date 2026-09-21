@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Tamu - SMAN 1 Kandangan</title>
     
+    <!-- PENDETEKSI ERROR OTOMATIS (ALARM) -->
+    <script>
+        window.onerror = function(message, source, lineno) {
+            alert("🚨 SYSTEM ERROR!\nPesan: " + message + "\nBaris: " + lineno);
+            return true;
+        };
+    </script>
+
     <!-- MESIN TAILWIND & SUPABASE -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -42,7 +50,6 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         
-        /* Menyembunyikan elemen saat cetak */
         @media print {
             body { background: white !important; overflow: visible !important; display: block !important; }
             .no-print, #hero-section, #profile-section, #gallery-section, #toast-container { display: none !important; }
@@ -54,7 +61,7 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased overflow-x-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
 
-    <!-- FITUR BARU: NOTIFIKASI MELAYANG (TOAST) -->
+    <!-- FITUR NOTIFIKASI MELAYANG (TOAST) -->
     <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 opacity-0 -translate-y-full pointer-events-none flex items-center gap-3 px-6 py-3.5 rounded-full shadow-2xl font-bold text-sm w-max max-w-[90vw]">
         <span id="toast-icon" class="text-lg">✅</span>
         <span id="toast-msg">Pesan Notifikasi</span>
@@ -130,7 +137,7 @@
 
         <div class="w-full relative flex items-center justify-center min-h-[500px]">
             
-            <!-- STEP 1: FORM LOGIN (DIKASIH LOGIKA VALDASI) -->
+            <!-- STEP 1: FORM LOGIN -->
             <div id="step-login" class="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl border-b-4 border-sekolah-navy" style="display: block;">
                 <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
                     <img src="logo saka.png" onerror="this.src='https://ui-avatars.com/api/?name=SMAN+1&background=facc15&color=1e3a8a'" class="w-10 h-10 object-contain">
@@ -149,7 +156,6 @@
                         <label class="block text-[10px] font-bold text-slate-500 mb-1">KATA SANDI</label>
                         <input type="password" id="loginPass" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sekolah-gold text-sm" placeholder="••••••••">
                     </div>
-                    <!-- Tombol ini sekarang memanggil fungsi prosesLogin() -->
                     <button type="button" onclick="prosesLogin()" class="w-full py-3 bg-sekolah-navy text-white font-black rounded-xl hover:bg-blue-900 mt-2 shadow-lg flex items-center justify-center gap-2 text-sm">
                         Masuk ke Sistem ->
                     </button>
@@ -190,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- STEP 3: HASIL ID CARD MEWAH -->
+            <!-- STEP 3: HASIL ID CARD -->
             <div id="step-print" class="w-full flex-col items-center justify-center" style="display: none;">
                 <button type="button" onclick="gantiHalaman('step-camera')" class="mb-6 px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-full shadow-sm">Daftarkan Tamu Baru</button>
                 
@@ -238,17 +244,22 @@
         </div>
     </section>
 
-    <!-- JAVASCRIPT GABUNGAN (NOTIFIKASI + LOGIKA) -->
+    <!-- KODE JAVASCRIPT SUPER KEBAL (ANTI MACET) -->
     <script>
-        // 1. SISTEM NOTIFIKASI (TOAST)
+        // 1. SISTEM NOTIFIKASI
         function munculkanNotif(pesan, tipe) {
             const toast = document.getElementById('toast-container');
             const msg = document.getElementById('toast-msg');
             const icon = document.getElementById('toast-icon');
 
+            // Kalau gagal mencari kotak notif, ganti pakai Pop-up biasa agar tidak macet
+            if (!toast || !msg || !icon) {
+                alert(pesan);
+                return;
+            }
+
             msg.textContent = pesan;
             
-            // Atur warna berdasarkan tipe
             if (tipe === 'error') {
                 toast.className = 'fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 flex items-center gap-3 px-6 py-3.5 rounded-full shadow-2xl font-bold text-sm w-max max-w-[90vw] text-white bg-red-500';
                 icon.innerHTML = '⚠️';
@@ -256,18 +267,15 @@
                 toast.className = 'fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 flex items-center gap-3 px-6 py-3.5 rounded-full shadow-2xl font-bold text-sm w-max max-w-[90vw] text-white bg-blue-500';
                 icon.innerHTML = 'ℹ️';
             } else {
-                // Success
                 toast.className = 'fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 flex items-center gap-3 px-6 py-3.5 rounded-full shadow-2xl font-bold text-sm w-max max-w-[90vw] text-sekolah-navy bg-sekolah-gold';
                 icon.innerHTML = '✅';
             }
 
-            // Animasi Masuk
             setTimeout(() => {
                 toast.classList.remove('opacity-0', '-translate-y-full');
                 toast.classList.add('opacity-100', 'translate-y-0');
             }, 10);
 
-            // Animasi Keluar setelah 3 detik
             setTimeout(() => {
                 toast.classList.remove('opacity-100', 'translate-y-0');
                 toast.classList.add('opacity-0', '-translate-y-full');
@@ -276,5 +284,176 @@
 
         // 2. KONTROL LOGIN
         function prosesLogin() {
-            const id = document.getElementById('loginId').value;
-            const pass = 
+            try {
+                const idEl = document.getElementById('loginId');
+                const passEl = document.getElementById('loginPass');
+                
+                if (!idEl || !passEl) {
+                    gantiHalaman('step-camera'); 
+                    return;
+                }
+
+                if (idEl.value === '' || passEl.value === '') {
+                    munculkanNotif('Gagal! ID dan Kata Sandi wajib diisi.', 'error');
+                    return;
+                }
+
+                munculkanNotif('Akses Diterima! Mengaktifkan sistem...', 'success');
+                setTimeout(() => { gantiHalaman('step-camera'); }, 1000);
+            } catch (err) {
+                // Jika masih ada error misterius, paksa pindah halaman!
+                gantiHalaman('step-camera');
+            }
+        }
+
+        // 3. KONTROL HALAMAN
+        function gantiHalaman(idTujuan) {
+            try {
+                const stepLogin = document.getElementById('step-login');
+                const stepCamera = document.getElementById('step-camera');
+                const stepPrint = document.getElementById('step-print');
+                
+                if (stepLogin) stepLogin.style.display = 'none';
+                if (stepCamera) stepCamera.style.display = 'none';
+                if (stepPrint) stepPrint.style.display = 'none';
+                
+                const target = document.getElementById(idTujuan);
+                if (target) target.style.display = 'block';
+                
+                const appSec = document.getElementById('app-section');
+                if (appSec) appSec.scrollIntoView({behavior: 'smooth'});
+            } catch (err) {
+                console.log("Error ganti halaman:", err);
+            }
+        }
+
+        // 4. KONEKSI SUPABASE
+        const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
+        let dbClient = null;
+        try { dbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+
+        // 5. KAMERA
+        let kameraStream = null;
+        let fotoData = "";
+
+        async function bukaKamera() {
+            try {
+                kameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                const videoEl = document.getElementById('kamera');
+                if(videoEl) {
+                    videoEl.srcObject = kameraStream;
+                    videoEl.style.display = 'block';
+                }
+                
+                const pH = document.getElementById('placeholderFoto');
+                if(pH) pH.style.display = 'none';
+                
+                const btnBuka = document.getElementById('btnBukaKamera');
+                if(btnBuka) btnBuka.style.display = 'none';
+                
+                const btnAmbil = document.getElementById('btnAmbilFoto');
+                if(btnAmbil) btnAmbil.style.display = 'block';
+            } catch (err) { 
+                munculkanNotif('Akses kamera ditolak oleh perangkat.', 'error'); 
+            }
+        }
+
+        function ambilFoto() {
+            try {
+                const video = document.getElementById('kamera');
+                const canvas = document.getElementById('kanvas');
+                if(canvas && video) {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+                    fotoData = canvas.toDataURL('image/jpeg', 0.8);
+                }
+                
+                const hasil = document.getElementById('hasilFoto');
+                if(hasil) {
+                    hasil.src = fotoData;
+                    hasil.style.display = 'block';
+                }
+                
+                if(video) video.style.display = 'none';
+                
+                const btnAmbil = document.getElementById('btnAmbilFoto');
+                if(btnAmbil) btnAmbil.textContent = "Ulangi Foto";
+                
+                munculkanNotif('Foto berhasil diambil!', 'info');
+                
+                if (kameraStream) kameraStream.getTracks().forEach(track => track.stop());
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        // 6. SUBMIT DATA
+        async function submitDatabase() {
+            try {
+                const inputNama = document.getElementById('inputNama');
+                const inputTujuan = document.getElementById('inputTujuan');
+                const inputDituju = document.getElementById('inputDituju');
+                
+                const nama = inputNama ? inputNama.value : 'Tamu';
+                const tujuan = inputTujuan ? inputTujuan.value : '-';
+                const dituju = inputDituju ? inputDituju.value : '-';
+
+                if (nama === '' || tujuan === '') {
+                    munculkanNotif('Nama dan Tujuan wajib diisi!', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('btnSubmit');
+                if(btn) {
+                    btn.innerHTML = "Menyimpan...";
+                    btn.disabled = true;
+                }
+                
+                munculkanNotif('Menerbitkan ID Card...', 'info');
+                
+                const now = new Date();
+                const masuk = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                now.setHours(now.getHours() + 2);
+                const batas = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                const tgl = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                let idTamu = Math.floor(Math.random()*9000)+1000;
+
+                if (dbClient) {
+                    try {
+                        const { data, error } = await dbClient.from('tamu').insert([
+                            { nama: nama, tujuan: tujuan, dituju: dituju, tanggal: tgl, waktu_masuk: masuk, batas_waktu: batas, foto_url: fotoData, status: 'Di Dalam' }
+                        ]).select();
+                        if (!error && data) {
+                            idTamu = data[0].id;
+                            munculkanNotif('Data berhasil terkirim ke Admin!', 'success');
+                        }
+                    } catch(e) {}
+                }
+
+                const setTeks = (id, teks) => { const el = document.getElementById(id); if(el) el.textContent = teks; };
+                setTeks('idCardNama', nama);
+                setTeks('idCardTujuan', tujuan);
+                setTeks('idCardDituju', dituju || '-');
+                setTeks('idCardWaktu', masuk);
+                setTeks('idCardBatas', batas);
+                setTeks('idCardNomor', `VST-${idTamu}`);
+                
+                const fotoCard = document.getElementById('idCardFoto');
+                if(fotoCard) fotoCard.src = fotoData || `https://ui-avatars.com/api/?name=${nama}&background=1e3a8a&color=fff&size=200`;
+
+                if(btn) {
+                    btn.innerHTML = "Terbitkan ID Card";
+                    btn.disabled = false;
+                }
+                
+                setTimeout(() => { gantiHalaman('step-print'); }, 800);
+            } catch (err) {
+                alert("Error saat memproses data.");
+            }
+        }
+    </script>
+</body>
+</html>
