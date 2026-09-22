@@ -3,155 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - SMAN 1 Kandangan</title>
+    <title>Buku Catatan Tamu & Delegasi — SMAN 1 Kandangan</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { colors: { sekolah: { navy: '#1e3a8a', gold: '#facc15', dark: '#11285e' } } } }
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { ink: '#101114', navy: '#152026', line: '#e4e6e8', mint: '#55b69b' } } } };
+    </script>
     <style>
-        @font-face { font-family: 'Childer'; src: url('Childer.otf') format('opentype'); font-weight: normal; font-style: normal; }
-        .font-custom-title { font-family: 'Childer', sans-serif; letter-spacing: 2px; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        body { background: #f7f8f8; color: #17191c; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+        .grid-paper { background-image: linear-gradient(#eef0f1 1px, transparent 1px), linear-gradient(90deg, #eef0f1 1px, transparent 1px); background-size: 24px 24px; }
+        .table-wrap::-webkit-scrollbar { height: 8px; }
+        .table-wrap::-webkit-scrollbar-thumb { background: #c8cccf; border-radius: 99px; }
+        .spin { animation: spin .8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .fade { animation: fade .2s ease-out; }
+        @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 antialiased h-screen flex flex-col overflow-hidden selection:bg-sekolah-gold selection:text-sekolah-navy">
-
-    <!-- HEADER ADMIN -->
-    <div class="bg-white border-b border-slate-200 px-6 lg:px-10 py-5 flex justify-between items-center shrink-0 shadow-sm z-10">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-sekolah-navy rounded-xl flex items-center justify-center shadow-md">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+<body class="min-h-screen">
+    <header class="bg-[#111315] text-white shadow-sm">
+        <div class="mx-auto flex min-h-[62px] max-w-[1500px] items-center justify-between gap-3 px-4 py-2 sm:px-6">
+            <div class="flex min-w-0 items-center gap-3">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white p-1">
+                    <img src="logo saka.png" onerror="this.src='https://ui-avatars.com/api/?name=SK&background=ffffff&color=111315'" class="h-full w-full object-contain" alt="Logo sekolah">
+                </div>
+                <div class="min-w-0 leading-tight">
+                    <p class="mono truncate text-[8px] font-bold tracking-[.14em] text-[#aeb5b8]">PORTAL ADMINISTRASI KEHADIRAN • v2.4</p>
+                    <p class="truncate text-[12px] font-black sm:text-[13px]">SMAN 1 Kandangan <span class="font-normal text-[#899195]">| Kabupaten Hulu Sungai Selatan</span></p>
+                </div>
+                <span class="hidden rounded-full border border-emerald-700/60 bg-emerald-950/60 px-2 py-1 text-[9px] font-bold text-emerald-300 sm:inline-flex">● Sistem Aktif</span>
             </div>
-            <div>
-                <h2 class="text-xl lg:text-2xl font-black text-sekolah-navy">Sistem Pengawasan Terpusat</h2>
-                <p class="text-xs lg:text-sm text-slate-500 font-bold tracking-wide" id="adminTanggal">Memuat tanggal...</p>
-            </div>
-        </div>
-        <a href="index.html" class="px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 font-bold text-sm rounded-xl transition-all flex items-center gap-2 shadow-sm active:scale-95">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> 
-            Keluar Admin
-        </a>
-    </div>
-    
-    <!-- AREA TABEL -->
-    <div class="p-6 lg:p-10 flex-1 overflow-y-auto">
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-7xl mx-auto">
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left min-w-[900px]">
-                    <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b-2 border-slate-200">
-                        <tr>
-                            <th class="px-8 py-5 font-black tracking-wider">Identitas Tamu</th>
-                            <th class="px-8 py-5 font-black tracking-wider">Keperluan & Tujuan</th>
-                            <th class="px-8 py-5 font-black tracking-wider">Log Waktu</th>
-                            <th class="px-8 py-5 font-black tracking-wider text-center">Status</th>
-                            <th class="px-8 py-5 font-black tracking-wider text-right">Otorisasi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelAdmin" class="divide-y divide-slate-100">
-                        <tr><td colspan="5" class="px-8 py-16 text-center text-slate-400 font-bold animate-pulse text-lg">Menghubungkan ke Database...</td></tr>
-                    </tbody>
-                </table>
+            <div class="flex shrink-0 items-center gap-3">
+                <div class="hidden text-right leading-tight sm:block"><p id="clock" class="mono text-[12px] font-black">--:--:-- WITA</p><p id="dateNow" class="text-[9px] text-[#aeb5b8]">--</p></div>
+                <a href="index.html" class="hidden items-center gap-1.5 rounded-md border border-[#3c4144] px-2.5 py-1.5 text-[10px] font-bold hover:bg-white/10 sm:inline-flex">↗ Layar Kiosk Tamu</a>
+                <div class="flex items-center gap-2 border-l border-[#3c4144] pl-2"><div class="flex h-7 w-7 items-center justify-center rounded-full bg-[#34383c] text-[9px] font-black">PR</div><div class="hidden leading-tight lg:block"><p class="text-[10px] font-bold">Petugas Resepsionis</p><p class="text-[9px] text-[#969da1]">Prediksi Gedung Utama</p></div></div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- LOGIKA DATABASE ADMIN -->
+    <main class="grid-paper min-h-[calc(100vh-62px)]">
+        <div class="mx-auto max-w-[1500px] space-y-4 px-3 py-5 sm:px-6 lg:px-8">
+            <section class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                <div><p class="mono text-[9px] font-bold tracking-[.14em] text-[#8a9093]">RINGKASAN KUNJUNGAN HARIAN</p><h1 class="text-[23px] font-black tracking-tight leading-none">Buku Catatan Tamu & Delegasi</h1><p class="mt-1 text-[10px] text-[#7a8185]">Pencatatan real-time tamu, wali murid, supervisi, serta mitra kerja sekolah.</p></div>
+                <div class="flex flex-wrap gap-2"><button id="btnRefresh" class="inline-flex items-center gap-2 rounded-md border border-[#d8dcde] bg-white px-3 py-2 text-[10px] font-bold shadow-sm hover:bg-[#f4f5f5]">↻ <span>Muat Ulang Data</span></button><button id="btnPrint" class="inline-flex items-center gap-2 rounded-md border border-[#d8dcde] bg-white px-3 py-2 text-[10px] font-bold shadow-sm hover:bg-[#f4f5f5]">♧ Cetak Laporan</button><a href="index.html" class="inline-flex items-center gap-2 rounded-md bg-[#111315] px-3 py-2 text-[10px] font-bold text-white shadow-sm hover:bg-[#2b3033]">+ Registrasi Tamu Manual</a></div>
+            </section>
+
+            <div id="errorBox" class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-800"></div>
+
+            <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                <article class="rounded-lg border border-[#dfe2e3] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,.03)]"><div class="flex items-start justify-between"><p class="mono text-[9px] font-bold tracking-widest text-[#70777b]">TOTAL TAMU HARI INI</p><span class="text-sm text-[#8d9497]">♙</span></div><div class="mt-2 flex items-end gap-2"><strong id="totalCount" class="text-2xl font-black">0</strong><span class="mb-1 rounded bg-[#f4f5f5] px-1.5 py-0.5 text-[8px] font-bold text-[#667074]">↗ +12% vs kemarin</span></div><div class="mt-3 flex justify-between text-[8px] text-[#8b9295]"><span>Target kapasitas: 50/hari</span><b id="capacityPct">0%</b></div><div class="mt-1 h-1 rounded-full bg-[#edf0f0]"><div id="capacityBar" class="h-1 rounded-full bg-[#1d2327]" style="width:0%"></div></div></article>
+                <article class="rounded-lg border border-[#1e2225] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,.06)]"><div class="flex items-start justify-between"><p class="mono text-[9px] font-bold tracking-widest text-[#22272a]">MASIH DI LINGKUNGAN</p><span class="rounded bg-[#111315] px-1.5 py-1 text-[10px] text-white">▣</span></div><div class="mt-2 flex items-end gap-2"><strong id="insideCount" class="text-2xl font-black">0</strong><span class="rounded-full bg-[#111315] px-2 py-0.5 text-[8px] font-bold text-white">● Sedang Berkunjung</span></div><div class="mt-4 flex justify-between text-[8px] text-[#8b9295]"><span>Semua ID Card terdata</span><b>Perlu Pengawasan</b></div></article>
+                <article class="rounded-lg border border-[#dfe2e3] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,.03)]"><div class="flex items-start justify-between"><p class="mono text-[9px] font-bold tracking-widest text-[#70777b]">SUDAH KELUAR (CHECKOUT)</p><span class="text-sm text-[#8d9497]">◷</span></div><div class="mt-2 flex items-end gap-2"><strong id="outsideCount" class="text-2xl font-black">0</strong><span class="mb-1 text-[8px] text-[#70777b]">Pengunjung</span></div><div class="mt-4 flex justify-between text-[8px] text-[#8b9295]"><span>Tingkat keberhasilan checkout:</span><b>100%</b></div></article>
+                <article class="rounded-lg border border-[#dfe2e3] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,.03)]"><div class="flex items-start justify-between"><p class="mono text-[9px] font-bold tracking-widest text-[#70777b]">RATA-RATA WAKTU TEMU</p><span class="text-sm text-[#8d9497]">◷</span></div><div class="mt-2 flex items-end gap-2"><strong id="avgDuration" class="text-2xl font-black">—</strong><span class="mb-1 text-[8px] font-bold">Menit / Tamu</span></div><div class="mt-4 flex justify-between text-[8px] text-[#8b9295]"><span>Batas normal: maks 90 menit</span><b>Sesuai SOP</b></div></article>
+            </section>
+
+            <section class="overflow-hidden rounded-lg border border-[#dfe2e3] bg-white shadow-[0_2px_8px_rgba(0,0,0,.03)]">
+                <div class="flex flex-col gap-3 border-b border-[#eceeef] px-3 py-3 sm:flex-row sm:items-center sm:justify-between"><div class="relative w-full sm:max-w-[330px]"><span class="pointer-events-none absolute left-3 top-2 text-[11px] text-[#a0a6a9]">⌕</span><input id="searchInput" type="search" placeholder="Cari nama pengunjung, tujuan, instansi, atau ID Card..." class="w-full rounded-md border border-[#e1e4e5] bg-[#fafbfb] py-2 pl-8 pr-3 text-[10px] outline-none focus:border-[#777f83]"></div><div class="flex flex-wrap items-center gap-2 text-[9px] text-[#7d8589]"><span>Status:</span><button data-status="Semua" class="filter-btn rounded-full bg-[#111315] px-3 py-1.5 font-bold text-white">Semua (<b id="allPill">0</b>)</button><button data-status="Di Dalam" class="filter-btn rounded-full border border-[#e0e3e4] bg-white px-3 py-1.5 font-bold">Masih Di Dalam (<b id="insidePill">0</b>)</button><button data-status="Sudah Keluar" class="filter-btn rounded-full border border-[#e0e3e4] bg-white px-3 py-1.5 font-bold">Selesai (<b id="outsidePill">0</b>)</button><select id="categoryFilter" class="rounded-full border border-[#e0e3e4] bg-white px-3 py-1.5 text-[9px] outline-none"><option value="Semua">Semua Kategori Tamu</option></select></div></div>
+                <div id="loadingState" class="flex items-center justify-center gap-2 px-5 py-16 text-xs text-[#7d8589]"><span class="spin h-4 w-4 rounded-full border-2 border-[#dfe3e4] border-t-[#111315]"></span> Memuat daftar kunjungan...</div>
+                <div id="emptyState" class="hidden px-5 py-16 text-center text-xs text-[#7d8589]">Tidak ada catatan yang cocok dengan pencarian.</div>
+                <div id="tableWrapper" class="table-wrap hidden overflow-x-auto"><table class="min-w-[1120px] w-full text-left"><thead class="bg-[#fafbfb] text-[8px] uppercase tracking-[.13em] text-[#7f878b]"><tr><th class="px-4 py-3 font-bold">Identitas<br>Waktu</th><th class="px-4 py-3 font-bold">Profil Pengunjung</th><th class="px-4 py-3 font-bold">Keperluan / Kategori</th><th class="px-4 py-3 font-bold">Pejabat / Guru<br>Ditemui</th><th class="px-4 py-3 font-bold">Durasi & Batas</th><th class="px-4 py-3 font-bold">Status</th><th class="px-4 py-3 text-right font-bold">Aksi</th></tr></thead><tbody id="guestTableBody" class="divide-y divide-[#eef0f1]"></tbody></table></div>
+                <div class="flex flex-col justify-between gap-2 border-t border-[#eceeef] px-4 py-3 text-[9px] text-[#858c90] sm:flex-row"><span id="rowSummary">Menampilkan 0 catatan kunjungan</span><div class="flex items-center gap-1"><button class="rounded border border-[#e0e3e4] px-2 py-1">Sebelumnya</button><button class="rounded bg-[#111315] px-2 py-1 font-bold text-white">1</button><button class="rounded border border-[#e0e3e4] px-2 py-1">Selanjutnya</button></div></div>
+            </section>
+        </div>
+    </main>
+    <footer class="border-t border-[#e0e3e4] bg-white px-4 py-3 text-[9px] text-[#8a9295]"><div class="mx-auto flex max-w-[1500px] flex-col justify-between gap-1 sm:flex-row"><span>Sistem Informasi Buku Tamu Digital • SMAN 1 Kandangan © 2026. Hak cipta dilindungi.</span><span class="mono">Server: SMAN1-DB-01 • Enkripsi: TLS 1.3 Aktif</span></div></footer>
+
+    <div id="detailModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4"><div class="fade w-full max-w-md rounded-xl bg-white p-5 shadow-2xl"><div class="flex items-start justify-between"><div><p class="mono text-[9px] tracking-widest text-[#899195]">DETAIL KUNJUNGAN</p><h2 id="modalName" class="mt-1 text-lg font-black">—</h2></div><button id="closeModal" class="rounded-md px-2 py-1 text-lg text-[#7c8488] hover:bg-[#f1f3f3]">×</button></div><div id="modalContent" class="mt-4 grid grid-cols-2 gap-3 text-xs"></div></div></div>
+
     <script>
         const SUPABASE_URL = 'https://jsyumznqizpcdfrandhh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('adminTanggal').textContent = new Date().toLocaleDateString('id-ID', options);
-            fetchDataAdmin();
-            setInterval(fetchDataAdmin, 10000); 
-        });
-
-        async function fetchDataAdmin() {
-            try {
-                const { data, error } = await _supabase.from('tamu').select('*').order('id', { ascending: false });
-                
-                const tbody = document.getElementById('tabelAdmin');
-                
-                if (error) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-10 text-center text-red-600 font-black text-lg">Error Database: ${error.message}</td></tr>`;
-                    return;
-                }
-
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-16 text-center text-slate-500 font-bold">Belum ada tamu terdaftar.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                renderTabelHTML(data, tbody);
-            } catch (error) {
-                document.getElementById('tabelAdmin').innerHTML = `<tr><td colspan="5" class="px-8 py-10 text-center text-red-600 font-bold">Koneksi terputus.</td></tr>`;
-            }
-        }
-
-        function renderTabelHTML(dataArray, tbody) {
-            dataArray.forEach((item) => {
-                const isSelesai = item.status === 'Selesai';
-                const rowHtml = `
-                    <tr class="hover:bg-blue-50/50 transition-colors ${isSelesai ? 'opacity-60 bg-slate-50 grayscale-[30%]' : ''}">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-4">
-                                <img src="${item.foto_url && item.foto_url.length > 50 ? item.foto_url : `https://ui-avatars.com/api/?name=${encodeURIComponent(item.nama)}&background=1e3a8a&color=fff`}" class="w-12 h-12 rounded-full object-cover shadow-sm border-2 border-white">
-                                <div>
-                                    <p class="font-black text-slate-800 text-base">${item.nama}</p>
-                                    <p class="text-xs text-slate-500 font-mono tracking-widest mt-0.5">VST-${item.id}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-8 py-5">
-                            <p class="font-bold text-slate-700">${item.tujuan}</p>
-                            <p class="text-xs text-slate-500 font-medium mt-1">Menemui: <span class="font-bold text-slate-600">${item.dituju}</span></p>
-                        </td>
-                        <td class="px-8 py-5">
-                            <div class="flex flex-col gap-1.5 text-xs font-bold text-slate-600">
-                                <div><span class="text-green-500 mr-2 tracking-wider">IN:</span>${item.waktu_masuk}</div>
-                                <div><span class="text-red-500 mr-2 tracking-wider">OUT:</span>${item.batas_waktu}</div>
-                            </div>
-                        </td>
-                        <td class="px-8 py-5 text-center">
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isSelesai ? 'bg-slate-200 text-slate-500' : 'bg-green-100 text-green-700 shadow-sm'}">
-                                ${!isSelesai ? '<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse mr-2"></span>' : ''}
-                                ${isSelesai ? 'Selesai' : 'Di Dalam Area'}
-                            </span>
-                        </td>
-                        <td class="px-8 py-5 text-right">
-                            ${!isSelesai ? 
-                            `<button onclick="selesaikanKunjunganDB('${item.id}', this)" class="px-5 py-2.5 bg-sekolah-navy text-white font-bold text-xs rounded-xl hover:bg-blue-800 transition-all shadow-md active:scale-95">Selesaikan</button>` 
-                            : 
-                            `<button disabled class="px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border-2 border-transparent">Selesai</button>`}
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', rowHtml);
-            });
-        }
-
-        async function selesaikanKunjunganDB(id, btnElement) {
-            btnElement.innerHTML = "Memproses...";
-            btnElement.disabled = true;
-            try {
-                const { error } = await _supabase.from('tamu').update({ status: 'Selesai' }).eq('id', id);
-                if (error) throw error;
-                fetchDataAdmin(); 
-            } catch (error) {
-                alert("Gagal memperbarui status.");
-                btnElement.innerHTML = "Selesaikan";
-                btnElement.disabled = false;
-            }
-        }
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI2';
+        // Gunakan key yang sama seperti halaman registrasi.
+        const db = supabase.createClient(SUPABASE_URL, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzeXVtem5xaXpwY2RmcmFuZGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI3OTQsImV4cCI6MjEwNTI4ODc5NH0.K5_OsvlUkQHr2j_1FtkEx0PPUcBXL5hsjBbwjZHsX4U');
+        let allGuests = [], activeStatus = 'Semua';
+        const $ = id => document.getElementById(id);
+        const esc = v => String(v ?? '-').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+        const statusOf = s => String(s || '').toLowerCase().includes('dalam') ? 'Di Dalam' : 'Sudah Keluar';
+        const photoOf = row => row.foto_url ? `<img src="${esc(row.foto_url)}" class="h-8 w-8 rounded object-cover grayscale" alt="Foto ${esc(row.nama)}">` : '<div class="flex h-8 w-8 items-center justify-center rounded bg-[#edf0f0] text-[10px] text-[#8b9295]">—</div>';
+        function showError(msg) { $('errorBox').innerHTML = `<b>Gagal memuat data.</b> ${esc(msg)} <span class="block text-[10px]">Periksa izin SELECT pada tabel tamu di Supabase.</span>`; $('errorBox').classList.remove('hidden'); }
+        function setClock() { const now = new Date(); $('clock').textContent = now.toLocaleTimeString('id-ID', {hour12:false}) + ' WITA'; $('dateNow').textContent = now.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'long', year:'numeric'}); }
+        function updateSummary() { const inside = allGuests.filter(r => statusOf(r.status) === 'Di Dalam').length; $('totalCount').textContent = allGuests.length; $('insideCount').textContent = inside; $('outsideCount').textContent = allGuests.length - inside; $('allPill').textContent = allGuests.length; $('insidePill').textContent = inside; $('outsidePill').textContent = allGuests.length - inside; const pct = Math.min(100, Math.round(allGuests.length / 50 * 100)); $('capacityPct').textContent = pct + '%'; $('capacityBar').style.width = pct + '%'; $('avgDuration').textContent = calculateAverage() || '—'; }
+        function calculateAverage() { const values = allGuests.map(r => { const a = String(r.waktu_masuk || '').match(/(\d{1,2}):(\d{2})/); const b = String(r.batas_waktu || '').match(/(\d{1,2}):(\d{2})/); if (!a || !b) return null; return ((+b[1]*60 + +b[2]) - (+a[1]*60 + +a[2]) + 1440) % 1440; }).filter(Boolean); return values.length ? Math.round(values.reduce((a,b)=>a+b,0)/values.length) + ' min' : ''; }
+        function render() { const q = $('searchInput').value.toLowerCase().trim(); const category = $('categoryFilter').value; const rows = allGuests.filter(r => { const hay = [r.id,r.nama,r.tujuan,r.dituju,r.tanggal,r.status].join(' ').toLowerCase(); return (activeStatus === 'Semua' || statusOf(r.status) === activeStatus) && (!q || hay.includes(q)) && (category === 'Semua' || String(r.tujuan || '').toLowerCase() === category.toLowerCase()); }); $('guestTableBody').innerHTML = rows.map((r,i) => { const inside = statusOf(r.status) === 'Di Dalam'; const badge = inside ? '<span class="rounded-full bg-[#111315] px-2 py-1 text-[8px] font-bold text-white">● Aktif di Dalam</span>' : '<span class="rounded-full border border-[#e0e3e4] bg-[#fafbfb] px-2 py-1 text-[8px] font-bold text-[#757d81]">✓ Selesai</span>'; const action = inside ? `<button data-checkout="${esc(r.id)}" class="rounded-md bg-[#111315] px-2.5 py-1.5 text-[9px] font-bold text-white hover:bg-[#303538]">Check<br>Out</button>` : `<button data-delete="${esc(r.id)}" class="rounded-md border border-red-200 bg-red-50 px-2 py-1.5 text-[9px] font-bold text-red-700 hover:bg-red-100" title="Hapus data tamu selesai">Hapus</button>`; return `<tr class="fade hover:bg-[#fbfcfc]"><td class="px-4 py-3 align-top"><b class="mono text-[10px]">#${esc(r.id || String(1000+i))}</b><span class="mt-1 block text-[8px] text-[#7f878b]">${esc(r.tanggal || 'Tanggal tidak tercatat')}<br>${esc(r.waktu_masuk || '--:--')} WITA</span></td><td class="px-4 py-3 align-top"><div class="flex gap-2">${photoOf(r)}<div><b class="block max-w-[150px] text-[10px]">${esc(r.nama)}</b><span class="block text-[8px] text-[#7f878b]">ID Tamu • VST-${esc(r.id || '0000')}</span><span class="block text-[8px] text-[#7f878b]">${esc(r.dituju || 'Umum')}</span></div></div></td><td class="px-4 py-3 align-top"><b class="block max-w-[180px] text-[10px]">${esc(r.tujuan)}</b><span class="mt-1 inline-block rounded bg-[#f0f2f2] px-1.5 py-0.5 text-[8px] text-[#687176]">${esc((r.tujuan || 'Tamu').split(' ')[0])}</span></td><td class="px-4 py-3 align-top"><b class="block text-[10px]">${esc(r.dituju || '-')}</b><span class="text-[8px] text-[#7f878b]">Ruang / tujuan sekolah</span></td><td class="px-4 py-3 align-top"><b class="mono text-[10px]">${esc(r.waktu_masuk || '--:--')} → ${esc(r.batas_waktu || '--:--')}</b><span class="block text-[8px] text-[#7f878b]">Batas waktu kunjungan</span></td><td class="px-4 py-3 align-top">${badge}</td><td class="px-4 py-3 align-top"><div class="flex items-center justify-end gap-2">${action}<button data-detail="${esc(r.id)}" class="text-[9px] text-[#6f777b] hover:underline">⊙ Detail</button></div></td></tr>`; }).join(''); $('tableWrapper').classList.toggle('hidden', !rows.length); $('emptyState').classList.toggle('hidden', !!rows.length); $('rowSummary').textContent = `Menampilkan ${rows.length} dari ${allGuests.length} catatan kunjungan`; document.querySelectorAll('[data-detail]').forEach(b => b.onclick=()=>openDetail(b.dataset.detail)); document.querySelectorAll('[data-checkout]').forEach(b=>b.onclick=()=>checkout(b.dataset.checkout)); document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteGuest(b.dataset.delete)); }
+        function openDetail(id) { const row = allGuests.find(r => String(r.id) === String(id)); if (!row) return; $('modalName').textContent = row.nama || 'Detail tamu'; $('modalContent').innerHTML = [['ID Tamu',`VST-${esc(row.id)}`],['Status',esc(statusOf(row.status))],['Tujuan',esc(row.tujuan)],['Menemui',esc(row.dituju || '-')],['Tanggal',esc(row.tanggal || '-')],['Waktu',`${esc(row.waktu_masuk || '-')} — ${esc(row.batas_waktu || '-')}`]].map(([k,v])=>`<div class="rounded-md bg-[#f7f8f8] p-3"><p class="mono text-[8px] uppercase tracking-wider text-[#899195]">${k}</p><p class="mt-1 text-[11px] font-bold">${v}</p></div>`).join(''); $('detailModal').classList.remove('hidden'); $('detailModal').classList.add('flex'); }
+        async function checkout(id) { const row = allGuests.find(r => String(r.id) === String(id)); if (!row) return; const { error } = await db.from('tamu').update({status:'Sudah Keluar'}).eq('id', id); if (error) { alert('Checkout gagal: ' + error.message); return; } row.status = 'Sudah Keluar'; updateSummary(); render(); }
+        async function deleteGuest(id) { const row = allGuests.find(r => String(r.id) === String(id)); if (!row || statusOf(row.status) !== 'Sudah Keluar') return; if (!confirm(`Hapus data tamu ${row.nama || ''}? Data yang dihapus tidak dapat dipulihkan.`)) return; const { error } = await db.from('tamu').delete().eq('id', id); if (error) { alert('Penghapusan gagal: ' + error.message); return; } allGuests = allGuests.filter(r => String(r.id) !== String(id)); updateSummary(); render(); }
+        async function loadGuests() { $('btnRefresh').disabled = true; $('loadingState').classList.remove('hidden'); $('tableWrapper').classList.add('hidden'); $('emptyState').classList.add('hidden'); $('errorBox').classList.add('hidden'); const {data,error} = await db.from('tamu').select('*').order('id',{ascending:false}); if(error){allGuests=[];updateSummary();showError(error.message);} else {allGuests=data||[]; const sel=$('categoryFilter'); [...new Set(allGuests.map(r=>r.tujuan).filter(Boolean))].forEach(v=>{if(![...sel.options].some(o=>o.value===v)){const o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o);}}); updateSummary();render();} $('loadingState').classList.add('hidden'); $('btnRefresh').disabled=false; }
+        $('btnRefresh').onclick=loadGuests; $('btnPrint').onclick=()=>window.print(); $('searchInput').oninput=render; $('categoryFilter').onchange=render; document.querySelectorAll('.filter-btn').forEach(btn=>btn.onclick=()=>{activeStatus=btn.dataset.status;document.querySelectorAll('.filter-btn').forEach(b=>{b.classList.remove('bg-[#111315]','text-white');b.classList.add('border','border-[#e0e3e4]','bg-white');});btn.classList.add('bg-[#111315]','text-white');btn.classList.remove('border','bg-white');render();}); $('closeModal').onclick=()=>{$('detailModal').classList.add('hidden');$('detailModal').classList.remove('flex');}; $('detailModal').onclick=e=>{if(e.target.id==='detailModal')$('closeModal').click();}; setClock(); setInterval(setClock,1000); loadGuests();
     </script>
 </body>
-                        </html>
-        
+</html>
